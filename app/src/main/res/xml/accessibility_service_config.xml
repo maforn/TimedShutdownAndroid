@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:packageNames="com.maforn.timedshutdown"
+    android:accessibilityEventTypes="typeAllMask"
+    android:accessibilityFlags="flagDefault"
+    android:accessibilityFeedbackType="feedbackSpoken"
+    android:notificationTimeout="100"
+    android:canPerformGestures="true"
+    android:settingsActivity="com.maforn.android.accessibility.ServiceSettingsActivity"
+    />

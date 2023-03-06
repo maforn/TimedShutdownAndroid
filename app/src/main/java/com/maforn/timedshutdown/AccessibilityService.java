@@ -1,0 +1,110 @@
+package com.maforn.timedshutdown;
+
+import static java.lang.Thread.sleep;
+
+import android.accessibilityservice.AccessibilityServiceInfo;
+import android.accessibilityservice.GestureDescription;
+import android.app.AlertDialog;
+import android.app.Service;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.ServiceInfo;
+import android.graphics.Path;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
+
+import java.util.List;
+
+public class AccessibilityService extends android.accessibilityservice.AccessibilityService {
+
+    SharedPreferences sharedPreferences;
+
+    public int onStartCommand(Intent paramIntent, int paramInt1, int paramInt2) {
+        Log.d("GLOBAL POWER DIALOG PERFORMED", String.valueOf(performGlobalAction(GLOBAL_ACTION_POWER_DIALOG)));
+        try {
+            sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        sharedPreferences = getApplicationContext().getSharedPreferences("Settings", MODE_PRIVATE);
+        float x1 = sharedPreferences.getFloat("X_ABS_false", 100);
+        float y1 = sharedPreferences.getFloat("Y_ABS_false", 100);
+        float x2 = -1, y2 = -1;
+        if (sharedPreferences.getBoolean("swipe_power_off", false)) {
+            x2 = sharedPreferences.getFloat("X_ABS_true", 100);
+            y2 = sharedPreferences.getFloat("Y_ABS_true", 100);
+        }
+
+        Log.d("GESTURE DISPATCHED", String.valueOf(this.dispatchGesture(createClick(x1, y1, x2, y2), null, null)));
+        return Service.START_STICKY;
+    }
+
+    // (x, y) in screen coordinates
+    private static GestureDescription createClick(float x1, float y1, float x2, float y2) {
+        final int DURATION = 400;
+
+        Path clickPath = new Path();
+        clickPath.moveTo(x1, y1);
+        // if x2 = y2 = -1 it's a click, not a stroke
+        if (x2 != -1 && y2 != -1)
+            clickPath.lineTo(x2, y2);
+        GestureDescription.StrokeDescription clickStroke =
+                new GestureDescription.StrokeDescription(clickPath, 0, DURATION);
+        GestureDescription.Builder clickBuilder = new GestureDescription.Builder();
+        clickBuilder.addStroke(clickStroke);
+        return clickBuilder.build();
+    }
+
+    public static void requireAccessibility(Context context) {
+        try {
+            AlertDialog alertDialog = (new AlertDialog.Builder(context)).create();
+            alertDialog.setTitle("Permission");
+            alertDialog.setMessage("\nIn order to work the accessibility permission is required!\n");
+            String ok_string = "GO";
+            alertDialog.setButton(-1, ok_string, (param1DialogInterface, param1Int) -> {
+                try {
+                    Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                    context.startActivity(intent);
+                } catch (Exception ignored) {
+                }
+                param1DialogInterface.dismiss();
+            });
+            String cancel_string = "Cancel";
+            alertDialog.setButton(-2, cancel_string, (param1DialogInterface, param1Int) -> param1DialogInterface.dismiss());
+            alertDialog.setOnDismissListener(param1DialogInterface -> {
+            });
+            alertDialog.show();
+        } catch (Exception exception) {
+            // TODO: error occurred?
+            Log.d("ERROR", String.valueOf(exception));
+        }
+    }
+
+    public static boolean isAccessibilityServiceEnabled(Context context, Class<? extends android.accessibilityservice.AccessibilityService> service) {
+        AccessibilityManager am = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
+        List<AccessibilityServiceInfo> enabledServices = am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_ALL_MASK);
+
+        for (AccessibilityServiceInfo enabledService : enabledServices) {
+            ServiceInfo enabledServiceInfo = enabledService.getResolveInfo().serviceInfo;
+            if (enabledServiceInfo.packageName.equals(context.getPackageName()) && enabledServiceInfo.name.equals(service.getName()))
+                return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
+
+    }
+
+    @Override
+    public void onInterrupt() {
+
+    }
+}
