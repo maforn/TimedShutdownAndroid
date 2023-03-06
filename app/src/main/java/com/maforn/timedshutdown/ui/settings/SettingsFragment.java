@@ -2,8 +2,10 @@ package com.maforn.timedshutdown.ui.settings;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,7 +15,9 @@ import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
+import com.maforn.timedshutdown.AccessibilityService;
 import com.maforn.timedshutdown.databinding.FragmentSettingsBinding;
 
 public class SettingsFragment extends Fragment {
@@ -35,21 +39,38 @@ public class SettingsFragment extends Fragment {
         sharedPreferences = getContext().getSharedPreferences("Settings", MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
-        boolean useSwipe = sharedPreferences.getBoolean("swipe_power_off", false);
+        int powerOffType = sharedPreferences.getInt("power_off_method", 0);
 
-        binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                editor.putBoolean("swipe_power_off", checkedId == binding.radioSwipe.getId());
-                editor.apply();
-                displayDraggables();
-            }
+        binding.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            editor.putInt(
+                    "power_off_method",
+                    checkedId == binding.radioClick.getId() ? 0 : checkedId == binding.radioTwoClick.getId() ? 1 : 2
+                    );
+            editor.apply();
+            displayDraggables();
         });
 
-        if (useSwipe) {
-            binding.radioGroup.check(binding.radioSwipe.getId());
+        // if it's not the default check the one that is required
+        if (powerOffType != 0) {
+            binding.radioGroup.check(powerOffType == 1 ? binding.radioTwoClick.getId() : binding.radioSwipe.getId());
             displayDraggables();
         }
+
+        binding.buttonPowerDialog.setOnClickListener(view -> {
+            Intent intent = new Intent(getContext(), AccessibilityService.class);
+            getContext().startService(intent);
+        });
+
+        binding.buttonReset.setOnClickListener(view -> {
+            binding.radioGroup.check(binding.radioClick.getId());
+            editor.clear();
+            editor.apply();
+            getActivity().recreate();
+        });
+
+        binding.buttonHelp.setOnClickListener(view -> {
+            //TODO: either a modal or navigate to info fragment
+        });
 
         draggableOne = binding.draggableOne;
         draggableTwo = binding.draggableTwo;
@@ -57,15 +78,14 @@ public class SettingsFragment extends Fragment {
         draggableOne.setOnTouchListener(drag);
         draggableTwo.setOnTouchListener(drag);
 
-        draggableOne.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (sharedPreferences.contains("X_false")) {
-                    draggableOne.setX(sharedPreferences.getFloat("X_false", 100));
-                    draggableOne.setY(sharedPreferences.getFloat("Y_false", 100));
-                    draggableTwo.setX(sharedPreferences.getFloat("X_true", 100));
-                    draggableTwo.setY(sharedPreferences.getFloat("Y_true", 100));
-                }
+        draggableOne.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            if (sharedPreferences.contains("X_false")) {
+                draggableOne.setX(sharedPreferences.getFloat("X_false", 100));
+                draggableOne.setY(sharedPreferences.getFloat("Y_false", 100));
+            }
+            if (sharedPreferences.contains("X_true")) {
+                draggableTwo.setX(sharedPreferences.getFloat("X_true", 100));
+                draggableTwo.setY(sharedPreferences.getFloat("Y_true", 100));
             }
         });
 
@@ -117,7 +137,7 @@ public class SettingsFragment extends Fragment {
     };
 
     private void displayDraggables(){
-        if(sharedPreferences.getBoolean("swipe_power_off",false)){
+        if(sharedPreferences.getInt("power_off_method",0) != 0){
             binding.draggableTwo.setVisibility(View.VISIBLE);
         }else{
             binding.draggableTwo.setVisibility(View.GONE);

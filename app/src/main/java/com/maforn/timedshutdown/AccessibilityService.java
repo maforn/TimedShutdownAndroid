@@ -35,23 +35,35 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
         float x1 = sharedPreferences.getFloat("X_ABS_false", 100);
         float y1 = sharedPreferences.getFloat("Y_ABS_false", 100);
         float x2 = -1, y2 = -1;
-        if (sharedPreferences.getBoolean("swipe_power_off", false)) {
+
+        int power_off_type = sharedPreferences.getInt("power_off_method", 0);
+        if (power_off_type != 0) {
             x2 = sharedPreferences.getFloat("X_ABS_true", 100);
             y2 = sharedPreferences.getFloat("Y_ABS_true", 100);
         }
 
-        Log.d("GESTURE DISPATCHED", String.valueOf(this.dispatchGesture(createClick(x1, y1, x2, y2), null, null)));
+        Log.d("GESTURE DISPATCHED", String.valueOf(this.dispatchGesture(createClick(x1, y1, x2, y2, power_off_type == 2), null, null)));
+        // if two clicks were required
+        if (power_off_type == 1) {
+            try {
+                sleep(3000);
+                Log.d("GESTURE DISPATCHED", String.valueOf(this.dispatchGesture(createClick(x2, y2, x2, y2, false), null, null)));
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         return Service.START_STICKY;
     }
 
     // (x, y) in screen coordinates
-    private static GestureDescription createClick(float x1, float y1, float x2, float y2) {
+    private static GestureDescription createClick(float x1, float y1, float x2, float y2, boolean swipe) {
         final int DURATION = 400;
 
         Path clickPath = new Path();
         clickPath.moveTo(x1, y1);
-        // if x2 = y2 = -1 it's a click, not a stroke
-        if (x2 != -1 && y2 != -1)
+        // if it's not a swipe it's going to click the single place
+        if (swipe)
             clickPath.lineTo(x2, y2);
         GestureDescription.StrokeDescription clickStroke =
                 new GestureDescription.StrokeDescription(clickPath, 0, DURATION);

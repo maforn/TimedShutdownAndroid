@@ -67,44 +67,38 @@ public class TimerFragment extends Fragment {
 
         timerText = (TextView) binding.timerText;
 
-        binding.buttonStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((Activity) getContext()).getWindow().addFlags(
-                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
-                                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
-                                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        binding.buttonStart.setOnClickListener(v -> {
+            ((Activity) getContext()).getWindow().addFlags(
+                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                            WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
+                            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
+                            WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-                isTiming = true;
+            isTiming = true;
 
-                countDownTimer = new CountDownTimer(counter * 1000L, 1000) {
-                    public void onTick(long millisUntilFinished) {
-                        timerText.setText(String.valueOf(counter));
-                        counter--;
-                    }
+            countDownTimer = new CountDownTimer(counter * 1000L, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    timerText.setText(String.valueOf(counter));
+                    counter--;
+                }
 
-                    public void onFinish() {
-                        timerText.setText("...");
-                        Intent intent = new Intent(getContext(), AccessibilityService.class);
-                        Log.i("ASD", String.valueOf(getContext().startService(intent)));
-                        isTiming = false;
-                    }
-                }.start();
-            }
+                public void onFinish() {
+                    timerText.setText("...");
+                    Intent intent = new Intent(getContext(), AccessibilityService.class);
+                    Log.d("ASD", String.valueOf(getContext().startService(intent)));
+                    isTiming = false;
+                }
+            }.start();
         });
 
-        binding.buttonStop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(countDownTimer != null) {
-                    countDownTimer.cancel();
-                    countDownTimer = null;
-                }
-                isTiming = false;
-
+        binding.buttonStop.setOnClickListener(view -> {
+            if(countDownTimer != null) {
+                countDownTimer.cancel();
+                countDownTimer = null;
             }
+            isTiming = false;
+
         });
 
         return binding.getRoot();
