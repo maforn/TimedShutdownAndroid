@@ -10,21 +10,68 @@
         android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checkedButton="@id/radio_click">
+        android:checkedButton="@id/radio_click"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <RadioButton
             android:id="@+id/radio_click"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Click" />
+            android:text="@string/one_click" />
+
+        <RadioButton
+            android:id="@+id/radio_two_click"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/two_clicks" />
 
         <RadioButton
             android:id="@+id/radio_swipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Swipe" />
+            android:text="@string/swipe" />
 
     </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/buttonHelp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_info_24"
+            android:contentDescription="@string/img_help_button"
+            android:background="@drawable/image_button_border"
+            app:tint="?attr/colorPrimary"
+            android:layout_marginBottom="6dp"/>
+
+        <ImageButton
+            android:id="@+id/buttonPowerDialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_power_24dp"
+            android:contentDescription="@string/img_call_power_dialog"
+            android:background="@drawable/image_button_border"
+            app:tint="?attr/colorPrimary" />
+
+        <Button
+            android:id="@+id/buttonReset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reset"
+            android:textStyle="bold"
+            android:backgroundTint="?attr/colorOnPrimary"
+            android:textColor="?attr/colorPrimary"
+            app:strokeColor="?attr/colorPrimary"
+            app:strokeWidth="1dp"/>
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/relative_settings"

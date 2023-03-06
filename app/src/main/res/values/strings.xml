@@ -5,4 +5,10 @@
     <string name="title_info">Info</string>
     <string name="start_timer">Start</string>
     <string name="stop_timer">Stop</string>
+    <string name="two_clicks">Two Clicks</string>
+    <string name="swipe">Swipe</string>
+    <string name="one_click">One Click</string>
+    <string name="reset">Reset</string>
+    <string name="img_call_power_dialog">Call power dialog</string>
+    <string name="img_help_button">Help button</string>
 </resources>
