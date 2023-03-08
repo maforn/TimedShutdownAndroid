@@ -46,31 +46,34 @@
             android:id="@+id/buttonHelp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_info_24"
+            android:background="@drawable/image_button_border"
             android:contentDescription="@string/img_help_button"
-            android:background="@drawable/image_button_border"
-            app:tint="?attr/colorPrimary"
-            android:layout_marginBottom="6dp"/>
-
-        <ImageButton
-            android:id="@+id/buttonPowerDialog"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_power_24dp"
-            android:contentDescription="@string/img_call_power_dialog"
-            android:background="@drawable/image_button_border"
+            android:minHeight="48dp"
+            android:src="@drawable/ic_info_24"
             app:tint="?attr/colorPrimary" />
 
         <Button
             android:id="@+id/buttonReset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/reset"
-            android:textStyle="bold"
             android:backgroundTint="?attr/colorOnPrimary"
+            android:minHeight="48dip"
+            android:paddingVertical="12dp"
+            android:text="@string/reset"
             android:textColor="?attr/colorPrimary"
+            android:textStyle="bold"
             app:strokeColor="?attr/colorPrimary"
-            app:strokeWidth="1dp"/>
+            app:strokeWidth="1dp" />
+
+        <ImageButton
+            android:id="@+id/buttonPowerDialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/image_button_border"
+            android:contentDescription="@string/img_call_power_dialog"
+            android:minHeight="48dp"
+            android:src="@drawable/ic_power_24dp"
+            app:tint="?attr/colorPrimary" />
     </LinearLayout>
 
     <RelativeLayout

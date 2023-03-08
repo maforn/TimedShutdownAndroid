@@ -86,6 +86,7 @@ public class TimerFragment extends Fragment {
                 public void onFinish() {
                     timerText.setText("...");
                     Intent intent = new Intent(getContext(), AccessibilityService.class);
+                    intent.putExtra("exec_gesture", true);
                     Log.d("ASD", String.valueOf(getContext().startService(intent)));
                     isTiming = false;
                 }

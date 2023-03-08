@@ -7,7 +7,6 @@ import android.accessibilityservice.GestureDescription;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ServiceInfo;
@@ -25,31 +24,34 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
 
     public int onStartCommand(Intent paramIntent, int paramInt1, int paramInt2) {
         Log.d("GLOBAL POWER DIALOG PERFORMED", String.valueOf(performGlobalAction(GLOBAL_ACTION_POWER_DIALOG)));
-        try {
-            sleep(3000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
 
-        sharedPreferences = getApplicationContext().getSharedPreferences("Settings", MODE_PRIVATE);
-        float x1 = sharedPreferences.getFloat("X_ABS_false", 100);
-        float y1 = sharedPreferences.getFloat("Y_ABS_false", 100);
-        float x2 = -1, y2 = -1;
-
-        int power_off_type = sharedPreferences.getInt("power_off_method", 0);
-        if (power_off_type != 0) {
-            x2 = sharedPreferences.getFloat("X_ABS_true", 100);
-            y2 = sharedPreferences.getFloat("Y_ABS_true", 100);
-        }
-
-        Log.d("GESTURE DISPATCHED", String.valueOf(this.dispatchGesture(createClick(x1, y1, x2, y2, power_off_type == 2), null, null)));
-        // if two clicks were required
-        if (power_off_type == 1) {
+        if(paramIntent.getBooleanExtra("exec_gesture", false)) {
             try {
                 sleep(3000);
-                Log.d("GESTURE DISPATCHED", String.valueOf(this.dispatchGesture(createClick(x2, y2, x2, y2, false), null, null)));
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
+            }
+
+            sharedPreferences = getApplicationContext().getSharedPreferences("Settings", MODE_PRIVATE);
+            float x1 = sharedPreferences.getFloat("X_ABS_false", 100);
+            float y1 = sharedPreferences.getFloat("Y_ABS_false", 100);
+            float x2 = -1, y2 = -1;
+
+            int power_off_type = sharedPreferences.getInt("power_off_method", 0);
+            if (power_off_type != 0) {
+                x2 = sharedPreferences.getFloat("X_ABS_true", 100);
+                y2 = sharedPreferences.getFloat("Y_ABS_true", 100);
+            }
+
+            Log.d("GESTURE DISPATCHED", String.valueOf(this.dispatchGesture(createClick(x1, y1, x2, y2, power_off_type == 2), null, null)));
+            // if two clicks were required
+            if (power_off_type == 1) {
+                try {
+                    sleep(3000);
+                    Log.d("GESTURE DISPATCHED", String.valueOf(this.dispatchGesture(createClick(x2, y2, x2, y2, false), null, null)));
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
 
