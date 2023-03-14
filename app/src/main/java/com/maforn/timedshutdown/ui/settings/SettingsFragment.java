@@ -5,20 +5,19 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import com.maforn.timedshutdown.AccessibilityService;
+import com.maforn.timedshutdown.R;
 import com.maforn.timedshutdown.databinding.FragmentSettingsBinding;
+
+import java.util.Objects;
 
 public class SettingsFragment extends Fragment {
 
@@ -36,7 +35,7 @@ public class SettingsFragment extends Fragment {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        sharedPreferences = getContext().getSharedPreferences("Settings", MODE_PRIVATE);
+        sharedPreferences = Objects.requireNonNull(getContext()).getSharedPreferences("Settings", MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
         int powerOffType = sharedPreferences.getInt("power_off_method", 0);
@@ -45,7 +44,7 @@ public class SettingsFragment extends Fragment {
             editor.putInt(
                     "power_off_method",
                     checkedId == binding.radioClick.getId() ? 0 : checkedId == binding.radioTwoClick.getId() ? 1 : 2
-                    );
+            );
             editor.apply();
             displayDraggables();
         });
@@ -69,7 +68,7 @@ public class SettingsFragment extends Fragment {
         });
 
         binding.buttonHelp.setOnClickListener(view -> {
-            //TODO: either a modal or navigate to info fragment
+            // TODO: send to info page
         });
 
         draggableOne = binding.draggableOne;
@@ -115,7 +114,7 @@ public class SettingsFragment extends Fragment {
                                 .setDuration(0)
                                 .start();
                     }
-                break;
+                    break;
 
                 case MotionEvent.ACTION_UP:
                     editor.putFloat("X_" + (view.getId() == draggableTwo.getId()), dX + event.getRawX());
@@ -129,24 +128,24 @@ public class SettingsFragment extends Fragment {
                     Log.d("X_FALSE_ABS", String.valueOf(event.getRawX()));
                     Log.d("Y_FALSE_ABS", String.valueOf(event.getRawY()));*/
 
-            default:
-                return false;
+                default:
+                    return false;
             }
-        return true;
+            return true;
         }
     };
 
-    private void displayDraggables(){
-        if(sharedPreferences.getInt("power_off_method",0) != 0){
+    private void displayDraggables() {
+        if (sharedPreferences.getInt("power_off_method", 0) != 0) {
             binding.draggableTwo.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             binding.draggableTwo.setVisibility(View.GONE);
         }
     }
 
     @Override
-    public void onDestroyView(){
+    public void onDestroyView() {
         super.onDestroyView();
-        binding=null;
+        binding = null;
     }
 }
