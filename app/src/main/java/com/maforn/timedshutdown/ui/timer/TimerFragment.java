@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,8 +44,8 @@ public class TimerFragment extends Fragment {
 
         binding = FragmentTimerBinding.inflate(inflater, container, false);
 
-        SharedPreferences sP = Objects.requireNonNull(getContext()).getSharedPreferences("Settings", MODE_PRIVATE);
-        if (!sP.contains("X_ABS_")) {
+        SharedPreferences sP = Objects.requireNonNull(getContext()).getSharedPreferences("Timer", MODE_PRIVATE);
+        if (!sP.contains("firstTime")) {
             AlertDialog alertDialog = (new AlertDialog.Builder(getContext())).create();
             alertDialog.setTitle(getString(R.string.title_settings));
             alertDialog.setMessage(getString(R.string.alert_settings_text));
@@ -66,6 +65,11 @@ public class TimerFragment extends Fragment {
             });
             alertDialog.setButton(-1, getString(R.string.alert_permission_cancel), (paramDialogInterface, paramInt) -> {
                 paramDialogInterface.dismiss();
+            });
+            alertDialog.setOnDismissListener(dialogInterface -> {
+                SharedPreferences.Editor editor = sP.edit();
+                editor.putBoolean("firstTime", false);
+                editor.apply();
             });
             alertDialog.show();
         }
