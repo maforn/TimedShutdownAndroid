@@ -106,8 +106,7 @@ public class SettingsFragment extends Fragment {
 
                 case MotionEvent.ACTION_MOVE:
 
-                    if (true) {
-                        //if (event.getRawX() + dX > 0 && event.getRawY() + dY > 0 && event.getRawX() + dX < binding.getRoot().getWidth() && event.getRawY() + dY < binding.getRoot().getHeight()) {
+                    if (event.getRawX() + dX > 0 && event.getRawY() + dY > 0 && event.getRawX() + dX < binding.getRoot().getWidth() && event.getRawY() + dY < binding.getRoot().getHeight()) {
                         view.animate()
                                 .x(event.getRawX() + dX)
                                 .y(event.getRawY() + dY)
@@ -123,7 +122,7 @@ public class SettingsFragment extends Fragment {
                     editor.putFloat("Y_ABS_" + (view.getId() == draggableTwo.getId()), event.getRawY());
                     editor.apply();
 
-                    /*Log.d("X_FALSE", String.valueOf(dX + event.getRawX()));
+                    /*DEBUG Log.d("X_FALSE", String.valueOf(dX + event.getRawX()));
                     Log.d("Y_FALSE", String.valueOf(dY + event.getRawY()));
                     Log.d("X_FALSE_ABS", String.valueOf(event.getRawX()));
                     Log.d("Y_FALSE_ABS", String.valueOf(event.getRawY()));*/

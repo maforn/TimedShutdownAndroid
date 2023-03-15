@@ -63,9 +63,7 @@ public class TimerFragment extends Fragment {
                 }
                 paramDialogInterface.dismiss();
             });
-            alertDialog.setButton(-1, getString(R.string.alert_permission_cancel), (paramDialogInterface, paramInt) -> {
-                paramDialogInterface.dismiss();
-            });
+            alertDialog.setButton(-1, getString(R.string.alert_permission_cancel), (paramDialogInterface, paramInt) -> paramDialogInterface.dismiss());
             alertDialog.setOnDismissListener(dialogInterface -> {
                 SharedPreferences.Editor editor = sP.edit();
                 editor.putBoolean("firstTime", false);
@@ -100,7 +98,7 @@ public class TimerFragment extends Fragment {
             }
         });
 
-        timerText = (TextView) binding.timerText;
+        timerText = binding.timerText;
 
         binding.buttonStart.setOnClickListener(v -> {
             if (!isTiming) {

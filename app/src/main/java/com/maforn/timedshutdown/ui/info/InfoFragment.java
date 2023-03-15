@@ -21,7 +21,7 @@ public class InfoFragment extends Fragment {
 
         binding = FragmentInfoBinding.inflate(inflater, container, false);
 
-        TextView contribute = (TextView) binding.contributeTextView;
+        TextView contribute = binding.contributeTextView;
         contribute.setMovementMethod(LinkMovementMethod.getInstance());
 
         return binding.getRoot();

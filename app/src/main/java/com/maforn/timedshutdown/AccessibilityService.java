@@ -12,9 +12,9 @@ import android.content.SharedPreferences;
 import android.content.pm.ServiceInfo;
 import android.graphics.Path;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -23,7 +23,9 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
     SharedPreferences sharedPreferences;
 
     public int onStartCommand(Intent paramIntent, int paramInt1, int paramInt2) {
-        Log.d("GLOBAL POWER DIALOG PERFORMED", String.valueOf(performGlobalAction(GLOBAL_ACTION_POWER_DIALOG)));
+        if(!performGlobalAction(GLOBAL_ACTION_POWER_DIALOG)) {
+            Toast.makeText(this, "Action not performed, is the permission missing?", Toast.LENGTH_SHORT).show();
+        }
 
         if(paramIntent.getBooleanExtra("exec_gesture", false)) {
             try {
@@ -43,12 +45,16 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                 y2 = sharedPreferences.getFloat("Y_ABS_true", 100);
             }
 
-            Log.d("GESTURE DISPATCHED", String.valueOf(this.dispatchGesture(createClick(x1, y1, x2, y2, power_off_type == 2), null, null)));
+            if(!this.dispatchGesture(createClick(x1, y1, x2, y2, power_off_type == 2), null, null)) {
+                Toast.makeText(this, "Action not performed, is the permission missing?", Toast.LENGTH_SHORT).show();
+            }
             // if two clicks were required
             if (power_off_type == 1) {
                 try {
                     sleep(3000);
-                    Log.d("GESTURE DISPATCHED", String.valueOf(this.dispatchGesture(createClick(x2, y2, x2, y2, false), null, null)));
+                    if(!this.dispatchGesture(createClick(x2, y2, x2, y2, false), null, null)) {
+                        Toast.makeText(this, "Action not performed, is the permission missing?", Toast.LENGTH_SHORT).show();
+                    }
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
