@@ -23,8 +23,8 @@ public class SettingsFragment extends Fragment {
 
     private FragmentSettingsBinding binding;
 
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     View draggableOne, draggableTwo;
 
@@ -107,7 +107,8 @@ public class SettingsFragment extends Fragment {
 
                 case MotionEvent.ACTION_MOVE:
 
-                    if (event.getRawX() + dX > 0 && event.getRawY() + dY > 0 && event.getRawX() + dX < binding.getRoot().getWidth() && event.getRawY() + dY < binding.getRoot().getHeight()) {
+                    if (true) {
+                    //if (event.getRawX() + dX > 0 && event.getRawY() + dY > 0 && event.getRawX() + dX < binding.getRoot().getWidth() && event.getRawY() + dY < binding.getRoot().getHeight()) {
                         view.animate()
                                 .x(event.getRawX() + dX)
                                 .y(event.getRawY() + dY)

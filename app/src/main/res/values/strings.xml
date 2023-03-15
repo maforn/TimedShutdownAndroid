@@ -15,5 +15,6 @@
     <string name="info_button_desc">This button will open this tab</string>
     <string name="reset_button_desc">This button will reset the position of the draggable items to the center of the screen</string>
     <string name="power_button_desc">This button will call the power dialog so that it is possible to check which action should be performed</string>
+    <string name="draggables_desc">These draggable elements can be repositioned around the screen to reproduce the gestures (click(s)/swipe) used to power off the phone</string>
     <string name="info_text_settings">On the <b>Settings tab</b> it is possible to <b>select the type of gestures required to turn off the phone</b>. After selecting the type of gesture (one click, two clicks or a swipe) the user has to drag the draggable circles where the click(s) should be simulated. In case two clicks are selected the app will simulate first the click of circle one and then the click of circle two, with a delay of 3 seconds between. In case the swipe is selected, the app will simulate a swipe from point one to point two.</string>
 </resources>

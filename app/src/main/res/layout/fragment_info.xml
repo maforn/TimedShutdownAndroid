@@ -46,37 +46,38 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginVertical="8dp"
             app:layout_constrainedHeight="true"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="313dp">
 
             <ImageButton
-                android:id="@+id/imageButton4"
+                android:id="@+id/infoButton"
                 android:layout_width="88dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/image_button_border"
                 android:contentDescription="@string/img_help_button"
                 android:minHeight="48dp"
                 android:src="@drawable/ic_info_24"
-                app:layout_constraintBottom_toBottomOf="@+id/textView2"
+                app:layout_constraintBottom_toBottomOf="@+id/textInfo"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView2"
+                app:layout_constraintTop_toTopOf="@+id/textInfo"
                 app:tint="?attr/colorPrimary" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/textInfo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
                 android:gravity="center_vertical"
                 android:text="@string/info_button_desc"
-                app:layout_constraintBottom_toTopOf="@+id/textView"
+                app:layout_constraintBottom_toTopOf="@+id/textReset"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageButton4"
+                app:layout_constraintStart_toEndOf="@+id/infoButton"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/buttonConstr"
+                android:id="@+id/resetButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="?attr/colorOnPrimary"
@@ -85,49 +86,130 @@
                 android:text="@string/reset"
                 android:textColor="?attr/colorPrimary"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/textView"
+                app:layout_constraintBottom_toBottomOf="@+id/textReset"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView"
+                app:layout_constraintTop_toTopOf="@+id/textReset"
                 app:strokeColor="?attr/colorPrimary"
                 app:strokeWidth="1dp" />
 
             <ImageButton
-                android:id="@+id/imageButton5"
-                android:layout_width="88dp"
+                android:id="@+id/powerButton"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/image_button_border"
                 android:contentDescription="@string/img_call_power_dialog"
                 android:minHeight="48dp"
                 android:src="@drawable/ic_power_24dp"
                 app:layout_constraintBaseline_toBottomOf="parent"
-                app:layout_constraintBottom_toBottomOf="@+id/textView3"
+                app:layout_constraintBottom_toBottomOf="@+id/textPower"
+                app:layout_constraintEnd_toEndOf="@+id/resetButton"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView3"
+                app:layout_constraintTop_toTopOf="@+id/textPower"
                 app:tint="?attr/colorPrimary" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/textReset"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
                 android:text="@string/reset_button_desc"
-                app:layout_constraintBottom_toTopOf="@+id/textView3"
+                app:layout_constraintBottom_toTopOf="@+id/textPower"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/buttonConstr"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                app:layout_constraintStart_toEndOf="@+id/resetButton"
+                app:layout_constraintTop_toBottomOf="@+id/textInfo" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/textPower"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
-                android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:text="@string/power_button_desc"
+                app:layout_constraintBottom_toTopOf="@+id/textDraggables"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/powerButton"
+                app:layout_constraintTop_toBottomOf="@+id/textReset" />
+
+            <TextView
+                android:id="@+id/textDraggables"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:gravity="center_vertical"
+                android:text="@string/draggables_desc"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageButton5"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/powerButton"
+                app:layout_constraintTop_toBottomOf="@id/textPower" />
+
+            <RelativeLayout
+                android:id="@+id/draggable_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:scaleX="1.25"
+                android:scaleY="1.25"
+                app:layout_constraintBottom_toBottomOf="@+id/textDraggables"
+                app:layout_constraintEnd_toStartOf="@+id/draggable_two"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textDraggables">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@id/img_circle_one"
+                    android:layout_alignTop="@id/img_circle_one"
+                    android:layout_alignEnd="@id/img_circle_one"
+                    android:layout_alignBottom="@id/img_circle_one"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="?attr/colorPrimary"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/img_circle_one"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="Circle one"
+                    android:src="@drawable/outline_circle_24" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/draggable_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:scaleX="1.25"
+                android:scaleY="1.25"
+                app:layout_constraintBottom_toBottomOf="@+id/textDraggables"
+                app:layout_constraintEnd_toStartOf="@+id/textDraggables"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/draggable_one"
+                app:layout_constraintTop_toTopOf="@+id/textDraggables">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@id/img_circle_two"
+                    android:layout_alignTop="@id/img_circle_two"
+                    android:layout_alignEnd="@id/img_circle_two"
+                    android:layout_alignBottom="@id/img_circle_two"
+                    android:gravity="center"
+                    android:text="2"
+                    android:textColor="?attr/colorPrimary"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/img_circle_two"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/outline_circle_24" />
+            </RelativeLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View

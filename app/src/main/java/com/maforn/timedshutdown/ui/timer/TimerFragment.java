@@ -15,10 +15,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.maforn.timedshutdown.AccessibilityService;
 import com.maforn.timedshutdown.databinding.FragmentTimerBinding;
+
+import java.util.Objects;
 
 public class TimerFragment extends Fragment {
 
@@ -39,7 +40,7 @@ public class TimerFragment extends Fragment {
 
         binding = FragmentTimerBinding.inflate(inflater, container, false);
 
-        if (!AccessibilityService.isAccessibilityServiceEnabled(getContext(), AccessibilityService.class)) {
+        if (!AccessibilityService.isAccessibilityServiceEnabled(Objects.requireNonNull(getContext()), AccessibilityService.class)) {
             AccessibilityService.requireAccessibility(getContext());
         }
 
@@ -75,26 +76,28 @@ public class TimerFragment extends Fragment {
                             WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
                             WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-            isTiming = true;
+            if (!isTiming) {
 
-            countDownTimer = new CountDownTimer(counter * 1000L, 1000) {
-                public void onTick(long millisUntilFinished) {
-                    timerText.setText(String.valueOf(counter));
-                    counter--;
-                }
+                isTiming = true;
+                countDownTimer = new CountDownTimer(counter * 1000L, 1000) {
+                    public void onTick(long millisUntilFinished) {
+                        timerText.setText(String.valueOf(counter));
+                        counter--;
+                    }
 
-                public void onFinish() {
-                    timerText.setText("...");
-                    Intent intent = new Intent(getContext(), AccessibilityService.class);
-                    intent.putExtra("exec_gesture", true);
-                    Log.d("ASD", String.valueOf(getContext().startService(intent)));
-                    isTiming = false;
-                }
-            }.start();
+                    public void onFinish() {
+                        timerText.setText("...");
+                        Intent intent = new Intent(getContext(), AccessibilityService.class);
+                        intent.putExtra("exec_gesture", true);
+                        Log.d("ASD", String.valueOf(Objects.requireNonNull(getContext()).startService(intent)));
+                        isTiming = false;
+                    }
+                }.start();
+            }
         });
 
         binding.buttonStop.setOnClickListener(view -> {
-            if(countDownTimer != null) {
+            if (countDownTimer != null) {
                 countDownTimer.cancel();
                 countDownTimer = null;
             }
