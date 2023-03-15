@@ -75,28 +75,19 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
     }
 
     public static void requireAccessibility(Context context) {
-        try {
-            AlertDialog alertDialog = (new AlertDialog.Builder(context)).create();
-            alertDialog.setTitle("Permission");
-            alertDialog.setMessage("\nIn order to work the accessibility permission is required!\n");
-            String ok_string = "GO";
-            alertDialog.setButton(-1, ok_string, (param1DialogInterface, param1Int) -> {
-                try {
-                    Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                    context.startActivity(intent);
-                } catch (Exception ignored) {
-                }
-                param1DialogInterface.dismiss();
-            });
-            String cancel_string = "Cancel";
-            alertDialog.setButton(-2, cancel_string, (param1DialogInterface, param1Int) -> param1DialogInterface.dismiss());
-            alertDialog.setOnDismissListener(param1DialogInterface -> {
-            });
-            alertDialog.show();
-        } catch (Exception exception) {
-            // TODO: error occurred?
-            Log.d("ERROR", String.valueOf(exception));
-        }
+        AlertDialog alertDialog = (new AlertDialog.Builder(context)).create();
+        alertDialog.setTitle(context.getString(R.string.alert_permission_title));
+        alertDialog.setMessage(context.getString(R.string.alert_permission_text));
+        alertDialog.setButton(-1, context.getString(R.string.alert_permission_SETTINGS), (paramDialogInterface, paramInt) -> {
+            try {
+                Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                context.startActivity(intent);
+            } catch (Exception ignored) {
+            }
+            paramDialogInterface.dismiss();
+        });
+        alertDialog.setButton(-2, context.getString(R.string.alert_permission_cancel), (paramDialogInterface, paramInt) -> paramDialogInterface.dismiss());
+        alertDialog.show();
     }
 
     public static boolean isAccessibilityServiceEnabled(Context context, Class<? extends android.accessibilityservice.AccessibilityService> service) {

@@ -9,13 +9,33 @@
         android:id="@+id/navigation_settings"
         android:name="com.maforn.timedshutdown.ui.settings.SettingsFragment"
         android:label="@string/title_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settingsFragment_to_infoFragment"
+            app:destination="@id/navigation_info"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/mobile_navigation"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_timer"
         android:name="com.maforn.timedshutdown.ui.timer.TimerFragment"
         android:label="@string/title_timer"
-        tools:layout="@layout/fragment_timer" />
+        tools:layout="@layout/fragment_timer">
+        <action
+            android:id="@+id/action_timerFragment_to_settingsFragment"
+            app:destination="@id/navigation_settings"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/mobile_navigation"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_timerFragment_to_infoFragment"
+            app:destination="@id/navigation_info"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/mobile_navigation"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_info"

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.maforn.timedshutdown.AccessibilityService;
 import com.maforn.timedshutdown.R;
@@ -46,13 +47,13 @@ public class SettingsFragment extends Fragment {
                     checkedId == binding.radioClick.getId() ? 0 : checkedId == binding.radioTwoClick.getId() ? 1 : 2
             );
             editor.apply();
-            displayDraggables();
+            displaySecondDraggable();
         });
 
         // if it's not the default check the one that is required
         if (powerOffType != 0) {
             binding.radioGroup.check(powerOffType == 1 ? binding.radioTwoClick.getId() : binding.radioSwipe.getId());
-            displayDraggables();
+            displaySecondDraggable();
         }
 
         binding.buttonPowerDialog.setOnClickListener(view -> {
@@ -64,12 +65,10 @@ public class SettingsFragment extends Fragment {
             binding.radioGroup.check(binding.radioClick.getId());
             editor.clear();
             editor.apply();
-            getActivity().recreate();
+            Objects.requireNonNull(getActivity()).recreate();
         });
 
-        binding.buttonHelp.setOnClickListener(view -> {
-            // TODO: send to info page
-        });
+        binding.buttonHelp.setOnClickListener(view -> Navigation.findNavController(view).navigate(R.id.action_settingsFragment_to_infoFragment));
 
         draggableOne = binding.draggableOne;
         draggableTwo = binding.draggableTwo;
@@ -108,7 +107,7 @@ public class SettingsFragment extends Fragment {
                 case MotionEvent.ACTION_MOVE:
 
                     if (true) {
-                    //if (event.getRawX() + dX > 0 && event.getRawY() + dY > 0 && event.getRawX() + dX < binding.getRoot().getWidth() && event.getRawY() + dY < binding.getRoot().getHeight()) {
+                        //if (event.getRawX() + dX > 0 && event.getRawY() + dY > 0 && event.getRawX() + dX < binding.getRoot().getWidth() && event.getRawY() + dY < binding.getRoot().getHeight()) {
                         view.animate()
                                 .x(event.getRawX() + dX)
                                 .y(event.getRawY() + dY)
@@ -136,7 +135,7 @@ public class SettingsFragment extends Fragment {
         }
     };
 
-    private void displayDraggables() {
+    private void displaySecondDraggable() {
         if (sharedPreferences.getInt("power_off_method", 0) != 0) {
             binding.draggableTwo.setVisibility(View.VISIBLE);
         } else {

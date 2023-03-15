@@ -1,22 +1,28 @@
 package com.maforn.timedshutdown.ui.timer;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.maforn.timedshutdown.AccessibilityService;
+import com.maforn.timedshutdown.R;
 import com.maforn.timedshutdown.databinding.FragmentTimerBinding;
 
 import java.util.Objects;
@@ -28,7 +34,6 @@ public class TimerFragment extends Fragment {
     private int counter = 60;
 
     private boolean isTiming = false;
-    Button button;
     TextView timerText;
 
     CountDownTimer countDownTimer = null;
@@ -39,6 +44,31 @@ public class TimerFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentTimerBinding.inflate(inflater, container, false);
+
+        SharedPreferences sP = Objects.requireNonNull(getContext()).getSharedPreferences("Settings", MODE_PRIVATE);
+        if (!sP.contains("X_ABS_")) {
+            AlertDialog alertDialog = (new AlertDialog.Builder(getContext())).create();
+            alertDialog.setTitle(getString(R.string.title_settings));
+            alertDialog.setMessage(getString(R.string.alert_settings_text));
+            alertDialog.setButton(-3, getString(R.string.title_settings), (paramDialogInterface, paramInt) -> {
+                try {
+                    Navigation.findNavController(container).navigate(R.id.action_timerFragment_to_settingsFragment);
+                } catch (Exception ignored) {
+                }
+                paramDialogInterface.dismiss();
+            });
+            alertDialog.setButton(-2, getString(R.string.title_info), (paramDialogInterface, paramInt) -> {
+                try {
+                    Navigation.findNavController(container).navigate(R.id.action_timerFragment_to_infoFragment);
+                } catch (Exception ignored) {
+                }
+                paramDialogInterface.dismiss();
+            });
+            alertDialog.setButton(-1, getString(R.string.alert_permission_cancel), (paramDialogInterface, paramInt) -> {
+                paramDialogInterface.dismiss();
+            });
+            alertDialog.show();
+        }
 
         if (!AccessibilityService.isAccessibilityServiceEnabled(Objects.requireNonNull(getContext()), AccessibilityService.class)) {
             AccessibilityService.requireAccessibility(getContext());
@@ -69,14 +99,16 @@ public class TimerFragment extends Fragment {
         timerText = (TextView) binding.timerText;
 
         binding.buttonStart.setOnClickListener(v -> {
-            ((Activity) getContext()).getWindow().addFlags(
-                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                            WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
-                            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
-                            WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
             if (!isTiming) {
+
+                ((Activity) getContext()).getWindow().addFlags(
+                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
+                                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
+                                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+                counter = numberPickerMin.getValue() * 60 + numberPickerSec.getValue();
 
                 isTiming = true;
                 countDownTimer = new CountDownTimer(counter * 1000L, 1000) {
