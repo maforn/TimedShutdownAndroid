@@ -12,7 +12,7 @@ If you want to contribute, you are welcome to do so!
 You can:
 
 *   help with the translation of the app
-*   openi issues and PRs (including a corresponding issue)
+*   open issues and PRs (including a corresponding issue)
 
 ## Disclaimer
 
