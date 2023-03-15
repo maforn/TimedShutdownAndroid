@@ -18,14 +18,10 @@ public class InfoFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        InfoViewModel infoViewModel =
-                new ViewModelProvider(this).get(InfoViewModel.class);
 
         binding = FragmentInfoBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textNotifications;
-        infoViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

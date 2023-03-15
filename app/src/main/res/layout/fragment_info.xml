@@ -1,30 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.info.InfoFragment">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="?android:attr/actionBarSize"
+    tools:context=".ui.info.InfoFragment"
+    android:fadeScrollbars="false" >
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:paddingBottom="16dp"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/text_notifications"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:justificationMode="none"
+            android:text="@string/info_text_1"
+            android:textAlignment="textStart"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginVertical="4dp"
+            android:background="?attr/colorPrimaryVariant" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_settings"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/info_text_settings"
+            android:textSize="16sp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constrainedHeight="true"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="313dp">
+
+            <ImageButton
+                android:id="@+id/imageButton4"
+                android:layout_width="88dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/image_button_border"
+                android:contentDescription="@string/img_help_button"
+                android:minHeight="48dp"
+                android:src="@drawable/ic_info_24"
+                app:layout_constraintBottom_toBottomOf="@+id/textView2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView2"
+                app:tint="?attr/colorPrimary" />
 
             <TextView
-                android:id="@+id/text_notifications"
-                android:layout_width="match_parent"
+                android:id="@+id/textView2"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:textAlignment="center"
-                android:textSize="20sp" />
-        </LinearLayout>
-    </ScrollView>
+                android:layout_marginStart="6dp"
+                android:gravity="center_vertical"
+                android:text="@string/info_button_desc"
+                app:layout_constraintBottom_toTopOf="@+id/textView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageButton4"
+                app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/buttonConstr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?attr/colorOnPrimary"
+                android:minHeight="48dip"
+                android:paddingVertical="12dp"
+                android:text="@string/reset"
+                android:textColor="?attr/colorPrimary"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/textView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView"
+                app:strokeColor="?attr/colorPrimary"
+                app:strokeWidth="1dp" />
+
+            <ImageButton
+                android:id="@+id/imageButton5"
+                android:layout_width="88dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/image_button_border"
+                android:contentDescription="@string/img_call_power_dialog"
+                android:minHeight="48dp"
+                android:src="@drawable/ic_power_24dp"
+                app:layout_constraintBaseline_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/textView3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView3"
+                app:tint="?attr/colorPrimary" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="@string/reset_button_desc"
+                app:layout_constraintBottom_toTopOf="@+id/textView3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/buttonConstr"
+                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/power_button_desc"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageButton5"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginVertical="4dp"
+            android:background="?attr/colorPrimaryVariant" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_timer"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</ScrollView>

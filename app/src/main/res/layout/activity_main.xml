@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_above="@+id/nav_view"
-        android:background="?attr/colorPrimary"
+        android:background="?attr/colorPrimaryVariant"
         app:layout_constraintBottom_toTopOf="@+id/nav_view" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -32,6 +32,7 @@
         android:layout_height="match_parent"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@id/nav_view"
+        android:layout_marginBottom="2dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
