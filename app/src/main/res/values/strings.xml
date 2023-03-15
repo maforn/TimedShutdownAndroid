@@ -11,7 +11,7 @@
     <string name="reset">Reset</string>
     <string name="img_call_power_dialog">Call power dialog</string>
     <string name="img_help_button">Help button</string>
-    <string name="info_text_1">This app uses the accessibility service to simulate the manual gestures to power off the phone. \n<b>The accessibility service is required</b> in order to be able to call the power dialog and then simulate the gestures to turn off the phone.</string>
+    <string name="info_text_1">This app uses the accessibility service to simulate the manual gestures to power off the phone. \n<b>The accessibility service is required</b> in order to be able to call the power dialog and then simulate the gestures to turn off the phone. If your android version is at least 13, you may have to check the restricted settings section.</string>
     <string name="info_button_desc">This button will open this tab</string>
     <string name="reset_button_desc">This button will reset the position of the draggable items to the center of the screen</string>
     <string name="power_button_desc">This button will call the power dialog so that it is possible to check which action should be performed. <b>This button will not power off the phone</b>, it will just call the power dialog. To power off the phone use the timer in the Timer tab.</string>
@@ -19,7 +19,8 @@
     <string name="info_text_settings">On the <b>Settings tab</b> it is possible to <b>select the type of gestures required to turn off the phone</b>. After selecting the type of gesture (one click, two clicks or a swipe) the user has to drag the draggable circles where the click(s) should be simulated. In case two clicks are selected the app will simulate first the click of circle one and then the click of circle two, with a delay of 3 seconds between. In case the swipe is selected, the app will simulate a swipe from point one to point two.</string>
     <string name="info_text_timer">On the <b>Timer tab</b> it is possible to <b>set up a timer to power off the phone</b>. It is first necessary to give the accessibility permission and to set up the settings tab for the app to be able to emulate the power off gesture.\n<b>The timer is in seconds</b> and the spinner on the right will select how many seconds while the spinner on the left will select how many minutes the timer will wait before powering off the phone.\n<b>This app should <i>theoretically</i> work even if the screen is off</b>, but that may vary based on the battery optimization, power saving mode, phone model and so on. It is suggested to leave the phone (even locked) on the timer tab after starting the countdown.</string>
     <string name="alert_permission_title">Permission</string>
-    <string name="alert_permission_text">The accessibility permission is required to emulate the power off gesture.\nPlease habilitate it in the settings.</string>
+    <string name="alert_permission_text">The accessibility permission is required to emulate the power off gesture.\nPlease enable it in the settings.</string>
+    <string name="alert_permission_text_API33">The accessibility permission is required to emulate the power off gesture.\nPlease enable it in the restricted settings section.</string>
     <string name="alert_permission_SETTINGS">SETTINGS</string>
     <string name="alert_permission_cancel">Cancel</string>
     <string name="alert_settings_text">Remember to set in the Settings tab the movement to power off the phone.\nIf you need help consult the Info tab.</string>

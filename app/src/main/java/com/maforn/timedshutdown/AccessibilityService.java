@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ServiceInfo;
 import android.graphics.Path;
+import android.os.Build;
 import android.provider.Settings;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
@@ -83,7 +84,10 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
     public static void requireAccessibility(Context context) {
         AlertDialog alertDialog = (new AlertDialog.Builder(context)).create();
         alertDialog.setTitle(context.getString(R.string.alert_permission_title));
-        alertDialog.setMessage(context.getString(R.string.alert_permission_text));
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
+            alertDialog.setMessage(context.getString(R.string.alert_permission_text));
+        else
+            alertDialog.setMessage(context.getString(R.string.alert_permission_text_API33));
         alertDialog.setButton(-1, context.getString(R.string.alert_permission_SETTINGS), (paramDialogInterface, paramInt) -> {
             try {
                 Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);

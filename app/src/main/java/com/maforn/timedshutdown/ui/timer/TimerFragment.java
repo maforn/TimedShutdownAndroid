@@ -2,6 +2,7 @@ package com.maforn.timedshutdown.ui.timer;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -39,6 +40,7 @@ public class TimerFragment extends Fragment {
 
     NumberPicker numberPickerSec, numberPickerMin;
 
+    @SuppressLint("DefaultLocale")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -83,7 +85,7 @@ public class TimerFragment extends Fragment {
         numberPickerSec.setOnValueChangedListener((picker, oldVal, newVal) -> {
             if (!isTiming) {
                 counter = newVal + 60 * numberPickerMin.getValue();
-                timerText.setText(String.valueOf(counter));
+                timerText.setText(String.format("%02d:%02d", numberPickerMin.getValue(), newVal));
             }
         });
 
@@ -94,7 +96,7 @@ public class TimerFragment extends Fragment {
         numberPickerMin.setOnValueChangedListener((picker, oldVal, newVal) -> {
             if (!isTiming) {
                 counter = newVal * 60 + numberPickerSec.getValue();
-                timerText.setText(String.valueOf(counter));
+                timerText.setText(String.format("%02d:%02d", newVal, numberPickerSec.getValue()));
             }
         });
 
@@ -115,7 +117,7 @@ public class TimerFragment extends Fragment {
                 isTiming = true;
                 countDownTimer = new CountDownTimer(counter * 1000L, 1000) {
                     public void onTick(long millisUntilFinished) {
-                        timerText.setText(String.valueOf(counter));
+                        timerText.setText(String.format("%02d:%02d", counter / 60, counter % 60));
                         counter--;
                     }
 
