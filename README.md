@@ -3,7 +3,7 @@
 alt="Download from Google Play" 
 height="80">](https://play.google.com/store/apps/details?id=TODO)
 
-**An Android app that uses the accessibility service to simulate the user gestures and power off the phone.**
+**An Android app that uses the accessibility permission to simulate the user gestures and power off the phone.**
 
 ![App screenshots](/doc/AppImagesMerged.jpg "App screenshots")
 

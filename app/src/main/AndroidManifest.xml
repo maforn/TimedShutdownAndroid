@@ -22,8 +22,8 @@
         </activity>
         <service android:name=".AccessibilityService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
-            android:label=""
-            android:exported="true">
+            android:label="Timed Shutdown"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
