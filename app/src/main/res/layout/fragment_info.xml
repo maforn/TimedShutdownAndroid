@@ -37,6 +37,17 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
+        <ImageView
+            android:id="@+id/thumbnailImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginVertical="8dp"
+            android:background="@drawable/image_button_border"
+            app:tint="?attr/colorPrimary"
+            app:srcCompat="@drawable/baseline_ondemand_video_24"
+            android:contentDescription="Play helping video" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,13 +64,14 @@
 
             <ImageButton
                 android:id="@+id/infoButton"
-                android:layout_width="88dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/image_button_border"
                 android:contentDescription="@string/img_help_button"
                 android:minHeight="48dp"
                 android:src="@drawable/ic_info_24"
                 app:layout_constraintBottom_toBottomOf="@+id/textInfo"
+                app:layout_constraintEnd_toEndOf="@+id/resetButton"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textInfo"
                 app:tint="?attr/colorPrimary" />
@@ -68,12 +80,11 @@
                 android:id="@+id/textInfo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
                 android:gravity="center_vertical"
                 android:text="@string/info_button_desc"
                 app:layout_constraintBottom_toTopOf="@+id/textReset"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/infoButton"
+                app:layout_constraintStart_toStartOf="@+id/textReset"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
@@ -112,6 +123,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/reset_button_desc"
                 app:layout_constraintBottom_toTopOf="@+id/textPower"
                 app:layout_constraintEnd_toEndOf="parent"
