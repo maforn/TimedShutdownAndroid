@@ -37,6 +37,14 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/info_text_settings_1"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <ImageView
             android:id="@+id/thumbnailImageView"
             android:layout_width="wrap_content"
@@ -44,15 +52,18 @@
             android:layout_gravity="center_horizontal|center_vertical"
             android:layout_marginVertical="8dp"
             android:background="@drawable/image_button_border"
-            app:tint="?attr/colorPrimary"
+            android:contentDescription="Play helping video"
             app:srcCompat="@drawable/baseline_ondemand_video_24"
-            android:contentDescription="Play helping video" />
+            app:tint="?attr/colorPrimary" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/info_text_settings"
-            android:textSize="16sp" />
+            android:text="@string/info_text_settings_2"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

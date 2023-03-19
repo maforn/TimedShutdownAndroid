@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.maforn.timedshutdown.AccessibilityService;
+import com.maforn.timedshutdown.MainActivity;
 import com.maforn.timedshutdown.R;
 import com.maforn.timedshutdown.databinding.FragmentTimerBinding;
 
@@ -122,11 +123,14 @@ public class TimerFragment extends Fragment {
                     }
 
                     public void onFinish() {
-                        timerText.setText("...");
-                        Intent intent = new Intent(getContext(), AccessibilityService.class);
-                        intent.putExtra("exec_gesture", true);
-                        Log.d("ASD", String.valueOf(Objects.requireNonNull(getContext()).startService(intent)));
-                        isTiming = false;
+                        // if the app was not forcefully terminated and the context still exists
+                        if (getContext() != null) {
+                            timerText.setText("00:00");
+                            Intent intent = new Intent(getContext(), AccessibilityService.class);
+                            intent.putExtra("exec_gesture", true);
+                            Objects.requireNonNull(getContext()).startService(intent);
+                            isTiming = false;
+                        }
                     }
                 }.start();
             }
