@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +21,8 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.maforn.timedshutdown.AccessibilityService;
-import com.maforn.timedshutdown.MainActivity;
 import com.maforn.timedshutdown.R;
 import com.maforn.timedshutdown.databinding.FragmentTimerBinding;
-
-import java.util.Objects;
 
 public class TimerFragment extends Fragment {
 
@@ -47,7 +43,7 @@ public class TimerFragment extends Fragment {
 
         binding = FragmentTimerBinding.inflate(inflater, container, false);
 
-        SharedPreferences sP = Objects.requireNonNull(getContext()).getSharedPreferences("Timer", MODE_PRIVATE);
+        SharedPreferences sP = requireContext().getSharedPreferences("Timer", MODE_PRIVATE);
         if (!sP.contains("firstTime")) {
             AlertDialog alertDialog = (new AlertDialog.Builder(getContext())).create();
             alertDialog.setTitle(getString(R.string.title_settings));
@@ -75,7 +71,7 @@ public class TimerFragment extends Fragment {
             alertDialog.show();
         }
 
-        if (!AccessibilityService.isAccessibilityServiceEnabled(Objects.requireNonNull(getContext()), AccessibilityService.class)) {
+        if (!AccessibilityService.isAccessibilityServiceEnabled(requireContext(), AccessibilityService.class)) {
             AccessibilityService.requireAccessibility(getContext());
         }
 
@@ -106,9 +102,8 @@ public class TimerFragment extends Fragment {
         binding.buttonStart.setOnClickListener(v -> {
             if (!isTiming) {
 
-                ((Activity) getContext()).getWindow().addFlags(
+                ((Activity) requireContext()).getWindow().addFlags(
                         WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
                                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
                                 WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
                                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -122,13 +117,14 @@ public class TimerFragment extends Fragment {
                         counter--;
                     }
 
+                    @SuppressLint("SetTextI18n")
                     public void onFinish() {
                         // if the app was not forcefully terminated and the context still exists
                         if (getContext() != null) {
                             timerText.setText("00:00");
                             Intent intent = new Intent(getContext(), AccessibilityService.class);
                             intent.putExtra("exec_gesture", true);
-                            Objects.requireNonNull(getContext()).startService(intent);
+                            requireContext().startService(intent);
                             isTiming = false;
                         }
                     }

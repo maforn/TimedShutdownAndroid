@@ -18,8 +18,6 @@ import com.maforn.timedshutdown.AccessibilityService;
 import com.maforn.timedshutdown.R;
 import com.maforn.timedshutdown.databinding.FragmentSettingsBinding;
 
-import java.util.Objects;
-
 public class SettingsFragment extends Fragment {
 
     private FragmentSettingsBinding binding;
@@ -36,7 +34,7 @@ public class SettingsFragment extends Fragment {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        sharedPreferences = Objects.requireNonNull(getContext()).getSharedPreferences("Settings", MODE_PRIVATE);
+        sharedPreferences = requireContext().getSharedPreferences("Settings", MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
         int powerOffType = sharedPreferences.getInt("power_off_method", 0);
@@ -58,14 +56,14 @@ public class SettingsFragment extends Fragment {
 
         binding.buttonPowerDialog.setOnClickListener(view -> {
             Intent intent = new Intent(getContext(), AccessibilityService.class);
-            getContext().startService(intent);
+            requireContext().startService(intent);
         });
 
         binding.buttonReset.setOnClickListener(view -> {
             binding.radioGroup.check(binding.radioClick.getId());
             editor.clear();
             editor.apply();
-            Objects.requireNonNull(getActivity()).recreate();
+            requireActivity().recreate();
         });
 
         binding.buttonHelp.setOnClickListener(view -> Navigation.findNavController(view).navigate(R.id.action_settingsFragment_to_infoFragment));

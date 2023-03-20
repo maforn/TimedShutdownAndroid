@@ -32,7 +32,7 @@ public class InfoFragment extends Fragment {
 
         ImageView thumbnailImageView = binding.thumbnailImageView;
 
-        String videoPath = "android.resource://" + Objects.requireNonNull(getContext()).getPackageName() + "/" + R.raw.screen_record;
+        String videoPath = "android.resource://" + requireContext().getPackageName() + "/" + R.raw.screen_record;
 
         thumbnailImageView.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), FullscreenActivity.class);
