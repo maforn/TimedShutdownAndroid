@@ -11,7 +11,7 @@
     <string name="reset">Reset</string>
     <string name="img_call_power_dialog">Call power dialog</string>
     <string name="img_help_button">Help button</string>
-    <string name="info_text_1">This app uses the accessibility service to simulate the manual gestures used to power off the phone. \n<b>The accessibility permission is required</b> in order to be able to call the power dialog and then simulate the gestures to turn off the phone. If your android version is at least 13, you may have to check the restricted settings section.</string>
+    <string name="info_text_1">This app uses the accessibility permission to simulate the manual gestures used to power off the phone. \n<b>The accessibility permission is required</b> in order to be able to call the power dialog and then simulate the gestures to turn off the phone. If your android version is at least 13, you may have to check the restricted settings section.</string>
     <string name="info_button_desc">This button will open this tab</string>
     <string name="reset_button_desc">This button will reset the position of the draggable items to the center of the screen</string>
     <string name="power_button_desc">This button will call the power dialog so that it is possible to check which action should be performed. <b>This button will not power off the phone</b>, it will just call the power dialog. To power off the phone use the timer in the Timer tab.</string>

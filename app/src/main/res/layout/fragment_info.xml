@@ -272,6 +272,7 @@
             android:id="@+id/contributeTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8sp"
             android:text="@string/info_text_contribute"
             android:textSize="16sp" />
 
