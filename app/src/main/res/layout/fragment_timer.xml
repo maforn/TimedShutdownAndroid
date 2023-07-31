@@ -22,6 +22,22 @@
             android:orientation="horizontal">
 
             <NumberPicker
+                android:id="@+id/numberPickerHour"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_marginBottom="4sp"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:text=":"
+                android:textSize="34sp"
+                tools:ignore="HardcodedText" />
+
+            <NumberPicker
                 android:id="@+id/numberPickerMin"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content" />
@@ -45,36 +61,58 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/timerText"
             android:layout_centerInParent="true"
-            android:gravity="center_vertical">
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical">
+
+                <Button
+                    android:id="@+id/buttonStart"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="?attr/colorOnPrimary"
+                    android:text="@string/start_timer"
+                    android:textColor="?attr/colorPrimary"
+                    android:textStyle="bold"
+                    app:strokeColor="?attr/colorPrimary"
+                    app:strokeWidth="1dp" />
+
+                <Button
+                    android:id="@+id/buttonStop"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:backgroundTint="?attr/colorOnPrimary"
+                    android:text="@string/stop_timer"
+                    android:textColor="?attr/colorPrimary"
+                    android:textStyle="bold"
+                    app:strokeColor="?attr/colorPrimary"
+                    app:strokeWidth="1dp" />
+
+            </LinearLayout>
 
             <Button
+                android:id="@+id/buttonSelect"
                 style="?android:attr/buttonBarButtonStyle"
-                android:id="@+id/buttonStart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
                 android:backgroundTint="?attr/colorOnPrimary"
-                android:text="@string/start_timer"
+                android:text="@string/select_timer"
                 android:textColor="?attr/colorPrimary"
                 android:textStyle="bold"
                 app:strokeColor="?attr/colorPrimary"
                 app:strokeWidth="1dp" />
 
-            <Button
-                style="?android:attr/buttonBarButtonStyle"
-                android:id="@+id/buttonStop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20sp"
-                android:backgroundTint="?attr/colorOnPrimary"
-                android:text="@string/stop_timer"
-                android:textColor="?attr/colorPrimary"
-                android:textStyle="bold"
-                app:strokeColor="?attr/colorPrimary"
-                app:strokeWidth="1dp" />
         </LinearLayout>
 
         <TextView
@@ -83,7 +121,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="00:00"
+            android:text="00:00:00"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="40sp"
             tools:ignore="HardcodedText" />

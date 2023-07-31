@@ -5,6 +5,7 @@ import static android.content.Context.MODE_PRIVATE;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,6 +25,8 @@ import com.maforn.timedshutdown.AccessibilityService;
 import com.maforn.timedshutdown.R;
 import com.maforn.timedshutdown.databinding.FragmentTimerBinding;
 
+import java.util.Calendar;
+
 public class TimerFragment extends Fragment {
 
     private FragmentTimerBinding binding;
@@ -35,7 +38,7 @@ public class TimerFragment extends Fragment {
 
     CountDownTimer countDownTimer = null;
 
-    NumberPicker numberPickerSec, numberPickerMin;
+    NumberPicker numberPickerSec, numberPickerMin, numberPickerHour;
 
     @SuppressLint("DefaultLocale")
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -81,8 +84,8 @@ public class TimerFragment extends Fragment {
         numberPickerSec.setWrapSelectorWheel(true);
         numberPickerSec.setOnValueChangedListener((picker, oldVal, newVal) -> {
             if (!isTiming) {
-                counter = newVal + 60 * numberPickerMin.getValue();
-                timerText.setText(String.format("%02d:%02d", numberPickerMin.getValue(), newVal));
+                counter = newVal + 60 * numberPickerMin.getValue() + 3600 * numberPickerHour.getValue();
+                timerText.setText(String.format("%02d:%02d:%02d", numberPickerHour.getValue(), numberPickerMin.getValue(), newVal));
             }
         });
 
@@ -92,8 +95,19 @@ public class TimerFragment extends Fragment {
         numberPickerMin.setWrapSelectorWheel(true);
         numberPickerMin.setOnValueChangedListener((picker, oldVal, newVal) -> {
             if (!isTiming) {
-                counter = newVal * 60 + numberPickerSec.getValue();
-                timerText.setText(String.format("%02d:%02d", newVal, numberPickerSec.getValue()));
+                counter = 3600 * numberPickerHour.getValue() + newVal * 60 + numberPickerSec.getValue();
+                timerText.setText(String.format("%02d:%02d:%02d", numberPickerHour.getValue(), newVal, numberPickerSec.getValue()));
+            }
+        });
+
+        numberPickerHour = binding.numberPickerHour;
+        numberPickerHour.setMinValue(0);
+        numberPickerHour.setMaxValue(23);
+        numberPickerHour.setWrapSelectorWheel(true);
+        numberPickerHour.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            if (!isTiming) {
+                counter = newVal * 3600 + numberPickerMin.getValue() * 60 + numberPickerSec.getValue();
+                timerText.setText(String.format("%02d:%02d:%02d", newVal, numberPickerMin.getValue(), numberPickerSec.getValue()));
             }
         });
 
@@ -108,12 +122,12 @@ public class TimerFragment extends Fragment {
                                 WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
                                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-                counter = numberPickerMin.getValue() * 60 + numberPickerSec.getValue();
+                counter = numberPickerHour.getValue() * 3600 + numberPickerMin.getValue() * 60 + numberPickerSec.getValue();
 
                 isTiming = true;
                 countDownTimer = new CountDownTimer(counter * 1000L, 1000) {
                     public void onTick(long millisUntilFinished) {
-                        timerText.setText(String.format("%02d:%02d", counter / 60, counter % 60));
+                        timerText.setText(String.format("%02d:%02d:%02d", counter / 3600, (counter % 3600) / 60, counter % 60));
                         counter--;
                     }
 
@@ -121,7 +135,7 @@ public class TimerFragment extends Fragment {
                     public void onFinish() {
                         // if the app was not forcefully terminated and the context still exists
                         if (getContext() != null) {
-                            timerText.setText("00:00");
+                            timerText.setText("00:00:00");
                             Intent intent = new Intent(getContext(), AccessibilityService.class);
                             intent.putExtra("exec_gesture", true);
                             requireContext().startService(intent);
@@ -139,6 +153,27 @@ public class TimerFragment extends Fragment {
             }
             isTiming = false;
 
+        });
+
+        binding.buttonSelect.setOnClickListener(view -> {
+            if (!isTiming) {
+                Calendar currentTime = Calendar.getInstance();
+                int hour = currentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = currentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(getContext(), (timePicker, selectedHour, selectedMinute) -> {
+                    counter = (selectedHour - hour) * 3600 + (selectedMinute - minute) * 60;
+                    if (counter < 0) {
+                        counter += 3600 * 24;
+                    }
+                    timerText.setText(String.format("%02d:%02d:00", counter / 3600, (counter % 3600) / 60));
+                    numberPickerMin.setValue((counter % 3600) / 60);
+                    numberPickerHour.setValue(counter / 3600);
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+
+            }
         });
 
         return binding.getRoot();
