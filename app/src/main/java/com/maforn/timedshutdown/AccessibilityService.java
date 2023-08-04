@@ -13,6 +13,7 @@ import android.content.pm.ServiceInfo;
 import android.graphics.Path;
 import android.os.Build;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Toast;
@@ -24,17 +25,13 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
     SharedPreferences sharedPreferences;
 
     public int onStartCommand(Intent paramIntent, int paramInt1, int paramInt2) {
-        if(!performGlobalAction(GLOBAL_ACTION_POWER_DIALOG)) {
-            Toast.makeText(this, "Action not performed, is the permission missing?", Toast.LENGTH_SHORT).show();
+        if (!(paramIntent.getBooleanExtra("exec_gesture", false) || paramIntent.getBooleanExtra("exec_gesture2", false))) {
+            if (!performGlobalAction(GLOBAL_ACTION_POWER_DIALOG)) {
+                Toast.makeText(this, "Action not performed, is the permission missing?", Toast.LENGTH_SHORT).show();
+            }
         }
 
-        if(paramIntent.getBooleanExtra("exec_gesture", false)) {
-            try {
-                sleep(3000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-
+        if (paramIntent.getBooleanExtra("exec_gesture", false)) {
             sharedPreferences = getApplicationContext().getSharedPreferences("Settings", MODE_PRIVATE);
             float x1 = sharedPreferences.getFloat("X_ABS_false", 100);
             float y1 = sharedPreferences.getFloat("Y_ABS_false", 100);
@@ -46,18 +43,27 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                 y2 = sharedPreferences.getFloat("Y_ABS_true", 100);
             }
 
-            if(!this.dispatchGesture(createClick(x1, y1, x2, y2, power_off_type == 2), null, null)) {
+            if (!this.dispatchGesture(createClick(x1, y1, x2, y2, power_off_type == 2), null, null)) {
                 Toast.makeText(this, "Action not performed, is the permission missing?", Toast.LENGTH_SHORT).show();
             }
+        }
+
+        if (paramIntent.getBooleanExtra("exec_gesture2", false)) {
+            sharedPreferences = getApplicationContext().getSharedPreferences("Settings", MODE_PRIVATE);
+            float x1 = sharedPreferences.getFloat("X_ABS_false", 100);
+            float y1 = sharedPreferences.getFloat("Y_ABS_false", 100);
+            float x2 = -1, y2 = -1;
+
+            int power_off_type = sharedPreferences.getInt("power_off_method", 0);
+            if (power_off_type != 0) {
+                x2 = sharedPreferences.getFloat("X_ABS_true", 100);
+                y2 = sharedPreferences.getFloat("Y_ABS_true", 100);
+            }
+
             // if two clicks were required
             if (power_off_type == 1) {
-                try {
-                    sleep(3000);
-                    if(!this.dispatchGesture(createClick(x2, y2, x2, y2, false), null, null)) {
-                        Toast.makeText(this, "Action not performed, is the permission missing?", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                if (!this.dispatchGesture(createClick(x2, y2, x2, y2, false), null, null)) {
+                    Toast.makeText(this, "Action not performed, is the permission missing?", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -78,6 +84,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                 new GestureDescription.StrokeDescription(clickPath, 0, DURATION);
         GestureDescription.Builder clickBuilder = new GestureDescription.Builder();
         clickBuilder.addStroke(clickStroke);
+
         return clickBuilder.build();
     }
 

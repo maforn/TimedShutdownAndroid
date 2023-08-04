@@ -2,6 +2,8 @@ package com.maforn.timedshutdown.ui.timer;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import static java.lang.Thread.sleep;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,6 +12,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -136,9 +139,24 @@ public class TimerFragment extends Fragment {
                         // if the app was not forcefully terminated and the context still exists
                         if (getContext() != null) {
                             timerText.setText("00:00:00");
+                            // call the power off function
                             Intent intent = new Intent(getContext(), AccessibilityService.class);
-                            intent.putExtra("exec_gesture", true);
                             requireContext().startService(intent);
+                            // use an handler to wait 2.5 sec and then start the power off sequence
+                            Handler handler = new Handler();
+                            handler.postDelayed(() -> {
+                                Intent intent12 = new Intent(getContext(), AccessibilityService.class);
+                                intent12.putExtra("exec_gesture", true);
+                                requireContext().startService(intent12);
+                                // handler added for the second click option
+                                Handler handler1 = new Handler();
+                                handler1.postDelayed(() -> {
+                                    Intent intent1 = new Intent(getContext(), AccessibilityService.class);
+                                    intent1.putExtra("exec_gesture2", true);
+                                    requireContext().startService(intent1);
+                                }, 2500);
+                            }, 2500);
+
                             isTiming = false;
                         }
                     }
