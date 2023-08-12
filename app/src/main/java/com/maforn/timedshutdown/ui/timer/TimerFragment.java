@@ -7,12 +7,16 @@ import static java.lang.Thread.sleep;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.KeyguardManager;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.PowerManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -123,6 +127,7 @@ public class TimerFragment extends Fragment {
                         WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
                                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
                                 WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
+                                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
                                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
                 counter = numberPickerHour.getValue() * 3600 + numberPickerMin.getValue() * 60 + numberPickerSec.getValue();
@@ -138,6 +143,12 @@ public class TimerFragment extends Fragment {
                     public void onFinish() {
                         // if the app was not forcefully terminated and the context still exists
                         if (getContext() != null) {
+
+                            PowerManager pm = (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
+                            PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP
+                                    | PowerManager.ON_AFTER_RELEASE, "timed-shutdown:wl");
+
+                            wakeLock.acquire(10 * 1000L /*10 seconds*/);
                             timerText.setText("00:00:00");
                             // call the power off function
                             Intent intent = new Intent(getContext(), AccessibilityService.class);

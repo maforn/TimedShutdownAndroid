@@ -10,8 +10,8 @@ android {
         applicationId "com.maforn.timedshutdown"
         minSdk 26
         targetSdk 33
-        versionCode 9
-        versionName "1.51"
+        versionCode 10
+        versionName "1.52"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
