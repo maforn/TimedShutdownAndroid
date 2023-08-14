@@ -2,6 +2,7 @@ package com.maforn.timedshutdown.ui.settings;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -27,6 +28,8 @@ public class SettingsFragment extends Fragment {
 
     View draggableOne, draggableTwo;
 
+    int idRadioClick, idRadioLongPress, idRadioTwoClick, idRadioSwipe;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -38,11 +41,22 @@ public class SettingsFragment extends Fragment {
         editor = sharedPreferences.edit();
 
         int powerOffType = sharedPreferences.getInt("power_off_method", 0);
+        /*
+        * powerOffType:
+        *   0 - one click
+        *   1 - long press
+        *   2 - two clicks
+        *   3 - swipe
+         */
+        idRadioClick = binding.radioClick.getId();
+        idRadioLongPress = binding.radioLongPress.getId();
+        idRadioTwoClick = binding.radioTwoClick.getId();
+        idRadioSwipe = binding.radioSwipe.getId();
 
         binding.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             editor.putInt(
                     "power_off_method",
-                    checkedId == binding.radioClick.getId() ? 0 : checkedId == binding.radioTwoClick.getId() ? 1 : 2
+                    getChecked(checkedId)
             );
             editor.apply();
             displaySecondDraggable();
@@ -50,7 +64,7 @@ public class SettingsFragment extends Fragment {
 
         // if it's not the default check the one that is required
         if (powerOffType != 0) {
-            binding.radioGroup.check(powerOffType == 1 ? binding.radioTwoClick.getId() : binding.radioSwipe.getId());
+            binding.radioGroup.check(powerOffType == 1 ? idRadioLongPress : (powerOffType == 2 ? idRadioTwoClick : idRadioSwipe));
             displaySecondDraggable();
         }
 
@@ -88,10 +102,23 @@ public class SettingsFragment extends Fragment {
         return root;
     }
 
+    private int getChecked(int checkedId) {
+        if (checkedId == idRadioClick) {
+            return 0;
+        } else if (checkedId == idRadioLongPress) {
+            return 1;
+        } else if (checkedId == idRadioTwoClick) {
+            return 2;
+        } else { // idRadioSwipe
+            return 3;
+        }
+    }
+
 
     View.OnTouchListener drag = new View.OnTouchListener() {
         float dX, dY;
 
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View view, MotionEvent event) {
             switch (event.getAction()) {
@@ -133,7 +160,7 @@ public class SettingsFragment extends Fragment {
     };
 
     private void displaySecondDraggable() {
-        if (sharedPreferences.getInt("power_off_method", 0) != 0) {
+        if (sharedPreferences.getInt("power_off_method", 0) > 1) {
             binding.draggableTwo.setVisibility(View.VISIBLE);
         } else {
             binding.draggableTwo.setVisibility(View.GONE);

@@ -21,6 +21,12 @@
             android:text="@string/one_click" />
 
         <RadioButton
+            android:id="@+id/radio_long_press"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/long_press" />
+
+        <RadioButton
             android:id="@+id/radio_two_click"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

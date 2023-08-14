@@ -36,6 +36,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
             float x1 = sharedPreferences.getFloat("X_ABS_false", 100);
             float y1 = sharedPreferences.getFloat("Y_ABS_false", 100);
             float x2 = -1, y2 = -1;
+            int duration = 400;
 
             int power_off_type = sharedPreferences.getInt("power_off_method", 0);
             if (power_off_type != 0) {
@@ -43,7 +44,10 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                 y2 = sharedPreferences.getFloat("Y_ABS_true", 100);
             }
 
-            if (!this.dispatchGesture(createClick(x1, y1, x2, y2, power_off_type == 2), null, null)) {
+            if (power_off_type == 1) {
+                duration = 5000;
+            }
+            if (!this.dispatchGesture(createClick(x1, y1, x2, y2, power_off_type == 3, duration), null, null)) {
                 Toast.makeText(this, "Action not performed, is the permission missing?", Toast.LENGTH_SHORT).show();
             }
         }
@@ -61,8 +65,8 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
             }
 
             // if two clicks were required
-            if (power_off_type == 1) {
-                if (!this.dispatchGesture(createClick(x2, y2, x2, y2, false), null, null)) {
+            if (power_off_type == 2) {
+                if (!this.dispatchGesture(createClick(x2, y2, x2, y2, false, 400), null, null)) {
                     Toast.makeText(this, "Action not performed, is the permission missing?", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -72,8 +76,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
     }
 
     // (x, y) in screen coordinates
-    private static GestureDescription createClick(float x1, float y1, float x2, float y2, boolean swipe) {
-        final int DURATION = 400;
+    private static GestureDescription createClick(float x1, float y1, float x2, float y2, boolean swipe, int duration) {
 
         Path clickPath = new Path();
         clickPath.moveTo(x1, y1);
@@ -81,7 +84,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
         if (swipe)
             clickPath.lineTo(x2, y2);
         GestureDescription.StrokeDescription clickStroke =
-                new GestureDescription.StrokeDescription(clickPath, 0, DURATION);
+                new GestureDescription.StrokeDescription(clickPath, 0, duration);
         GestureDescription.Builder clickBuilder = new GestureDescription.Builder();
         clickBuilder.addStroke(clickStroke);
 

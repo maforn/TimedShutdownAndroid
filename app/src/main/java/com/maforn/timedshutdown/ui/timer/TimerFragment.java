@@ -48,8 +48,7 @@ public class TimerFragment extends Fragment {
     NumberPicker numberPickerSec, numberPickerMin, numberPickerHour;
 
     @SuppressLint("DefaultLocale")
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentTimerBinding.inflate(inflater, container, false);
 
@@ -123,12 +122,7 @@ public class TimerFragment extends Fragment {
         binding.buttonStart.setOnClickListener(v -> {
             if (!isTiming) {
 
-                ((Activity) requireContext()).getWindow().addFlags(
-                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
-                                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
-                                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                ((Activity) requireContext()).getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD | WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
                 counter = numberPickerHour.getValue() * 3600 + numberPickerMin.getValue() * 60 + numberPickerSec.getValue();
 
@@ -145,8 +139,7 @@ public class TimerFragment extends Fragment {
                         if (getContext() != null) {
 
                             PowerManager pm = (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
-                            PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP
-                                    | PowerManager.ON_AFTER_RELEASE, "timed-shutdown:wl");
+                            PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, "timed-shutdown:wl");
 
                             wakeLock.acquire(10 * 1000L /*10 seconds*/);
                             timerText.setText("00:00:00");
@@ -160,12 +153,16 @@ public class TimerFragment extends Fragment {
                                 intent12.putExtra("exec_gesture", true);
                                 requireContext().startService(intent12);
                                 // handler added for the second click option
-                                Handler handler1 = new Handler();
-                                handler1.postDelayed(() -> {
-                                    Intent intent1 = new Intent(getContext(), AccessibilityService.class);
-                                    intent1.putExtra("exec_gesture2", true);
-                                    requireContext().startService(intent1);
-                                }, 2500);
+                                SharedPreferences sharedPreferences = getContext().getSharedPreferences("Settings", MODE_PRIVATE);
+                                int power_off_type = sharedPreferences.getInt("power_off_method", 0);
+                                if (power_off_type == 2) {
+                                    Handler handler1 = new Handler();
+                                    handler1.postDelayed(() -> {
+                                        Intent intent1 = new Intent(getContext(), AccessibilityService.class);
+                                        intent1.putExtra("exec_gesture2", true);
+                                        requireContext().startService(intent1);
+                                    }, 2500);
+                                }
                             }, 2500);
 
                             isTiming = false;
