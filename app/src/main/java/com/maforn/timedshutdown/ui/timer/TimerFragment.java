@@ -188,6 +188,10 @@ public class TimerFragment extends Fragment {
                 int minute = currentTime.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker;
                 mTimePicker = new TimePickerDialog(getContext(), (timePicker, selectedHour, selectedMinute) -> {
+                    SharedPreferences.Editor editor = sP.edit();
+                    editor.putInt("selectedHour", selectedHour);
+                    editor.putInt("selectedMinute", selectedMinute);
+                    editor.apply();
                     counter = (selectedHour - hour) * 3600 + (selectedMinute - minute) * 60;
                     if (counter < 0) {
                         counter += 3600 * 24;
@@ -199,6 +203,21 @@ public class TimerFragment extends Fragment {
                 mTimePicker.setTitle("Select Time");
                 mTimePicker.show();
 
+            }
+        });
+
+        binding.buttonLastSelected.setOnClickListener(view -> {
+            if (!isTiming) {
+                Calendar currentTime = Calendar.getInstance();
+                int hour = currentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = currentTime.get(Calendar.MINUTE);
+                counter = (sP.getInt("selectedHour", 0) - hour) * 3600 + (sP.getInt("selectedMinute", 0) - minute) * 60;
+                if (counter < 0) {
+                    counter += 3600 * 24;
+                }
+                timerText.setText(String.format("%02d:%02d:00", counter / 3600, (counter % 3600) / 60));
+                numberPickerMin.setValue((counter % 3600) / 60);
+                numberPickerHour.setValue(counter / 3600);
             }
         });
 
