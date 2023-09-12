@@ -2,12 +2,9 @@ package com.maforn.timedshutdown.ui.timer;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import static java.lang.Thread.sleep;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.KeyguardManager;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -47,12 +44,23 @@ public class TimerFragment extends Fragment {
 
     NumberPicker numberPickerSec, numberPickerMin, numberPickerHour;
 
+    SharedPreferences sP;
+
+    @SuppressLint("DefaultLocale")
+    private void setCounter(int seconds, int minutes, int hours) {
+        counter = seconds + 60 * minutes + 3600 * hours;
+        SharedPreferences.Editor editor = sP.edit();
+        editor.putInt("lastCounter", counter);
+        editor.apply();
+        timerText.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
+    }
+
     @SuppressLint("DefaultLocale")
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentTimerBinding.inflate(inflater, container, false);
+        sP = requireContext().getSharedPreferences("Timer", MODE_PRIVATE);
 
-        SharedPreferences sP = requireContext().getSharedPreferences("Timer", MODE_PRIVATE);
         if (!sP.contains("firstTime")) {
             AlertDialog alertDialog = (new AlertDialog.Builder(getContext())).create();
             alertDialog.setTitle(getString(R.string.title_settings));
@@ -90,8 +98,7 @@ public class TimerFragment extends Fragment {
         numberPickerSec.setWrapSelectorWheel(true);
         numberPickerSec.setOnValueChangedListener((picker, oldVal, newVal) -> {
             if (!isTiming) {
-                counter = newVal + 60 * numberPickerMin.getValue() + 3600 * numberPickerHour.getValue();
-                timerText.setText(String.format("%02d:%02d:%02d", numberPickerHour.getValue(), numberPickerMin.getValue(), newVal));
+                setCounter(newVal, numberPickerMin.getValue(), numberPickerHour.getValue());
             }
         });
 
@@ -101,8 +108,7 @@ public class TimerFragment extends Fragment {
         numberPickerMin.setWrapSelectorWheel(true);
         numberPickerMin.setOnValueChangedListener((picker, oldVal, newVal) -> {
             if (!isTiming) {
-                counter = 3600 * numberPickerHour.getValue() + newVal * 60 + numberPickerSec.getValue();
-                timerText.setText(String.format("%02d:%02d:%02d", numberPickerHour.getValue(), newVal, numberPickerSec.getValue()));
+                setCounter(numberPickerSec.getValue(), newVal, numberPickerHour.getValue());
             }
         });
 
@@ -112,12 +118,20 @@ public class TimerFragment extends Fragment {
         numberPickerHour.setWrapSelectorWheel(true);
         numberPickerHour.setOnValueChangedListener((picker, oldVal, newVal) -> {
             if (!isTiming) {
-                counter = newVal * 3600 + numberPickerMin.getValue() * 60 + numberPickerSec.getValue();
-                timerText.setText(String.format("%02d:%02d:%02d", newVal, numberPickerMin.getValue(), numberPickerSec.getValue()));
+                setCounter(numberPickerSec.getValue(), numberPickerMin.getValue(), newVal);
             }
         });
 
         timerText = binding.timerText;
+
+        // get last used timer
+        if (sP.contains("lastCounter")) {
+            counter = sP.getInt("lastCounter", 0);
+            numberPickerHour.setValue(counter / 3600);
+            numberPickerMin.setValue((counter % 3600) / 60);
+            numberPickerSec.setValue(counter % 60);
+            timerText.setText(String.format("%02d:%02d:%02d", counter / 3600, (counter % 3600) / 60, counter % 60));
+        }
 
         binding.buttonStart.setOnClickListener(v -> {
             if (!isTiming) {
@@ -206,7 +220,17 @@ public class TimerFragment extends Fragment {
             }
         });
 
-        binding.buttonLastSelected.setOnClickListener(view -> {
+        binding.buttonLastTimer.setOnClickListener(view -> {
+            if (!isTiming) {
+                counter = sP.getInt("lastCounter", 0);
+                timerText.setText(String.format("%02d:%02d:%02d", counter / 3600, (counter % 3600) / 60, counter % 60));
+                numberPickerSec.setValue(counter % 60);
+                numberPickerMin.setValue((counter % 3600) / 60);
+                numberPickerHour.setValue(counter / 3600);
+            }
+        });
+
+        binding.buttonLastTime.setOnClickListener(view -> {
             if (!isTiming) {
                 Calendar currentTime = Calendar.getInstance();
                 int hour = currentTime.get(Calendar.HOUR_OF_DAY);
