@@ -256,6 +256,25 @@
             android:textSize="16sp" />
 
         <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginVertical="4dp"
+            android:background="?attr/colorPrimaryVariant" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_schedule"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/info_text_schedule"
+            android:textSize="16sp" />
+
+        <View
             android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="2dp"
