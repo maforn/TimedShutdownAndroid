@@ -12,6 +12,11 @@
         android:title="@string/title_timer" />
 
     <item
+        android:id="@+id/navigation_schedule"
+        android:icon="@drawable/ic_alarm_24"
+        android:title="@string/title_schedule" />
+
+    <item
         android:id="@+id/navigation_info"
         android:icon="@drawable/ic_info_24"
         android:title="@string/title_info" />

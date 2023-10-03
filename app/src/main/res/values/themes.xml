@@ -13,4 +13,8 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="Theme.TimedShutdown.Switch">
+        <!-- Active thumb color & Active track color(30% transparency) -->
+        <item name="colorControlActivated">?attr/colorPrimary</item>
+    </style>
 </resources>

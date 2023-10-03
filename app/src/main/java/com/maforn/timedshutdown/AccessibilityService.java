@@ -1,7 +1,5 @@
 package com.maforn.timedshutdown;
 
-import static java.lang.Thread.sleep;
-
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.accessibilityservice.GestureDescription;
 import android.app.AlertDialog;
@@ -13,7 +11,6 @@ import android.content.pm.ServiceInfo;
 import android.graphics.Path;
 import android.os.Build;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Toast;
@@ -27,7 +24,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
     public int onStartCommand(Intent paramIntent, int paramInt1, int paramInt2) {
         if (!(paramIntent.getBooleanExtra("exec_gesture", false) || paramIntent.getBooleanExtra("exec_gesture2", false))) {
             if (!performGlobalAction(GLOBAL_ACTION_POWER_DIALOG)) {
-                Toast.makeText(this, "Action not performed, is the permission missing?", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.not_performed, Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -48,7 +45,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                 duration = 5000;
             }
             if (!this.dispatchGesture(createClick(x1, y1, x2, y2, power_off_type == 3, duration), null, null)) {
-                Toast.makeText(this, "Action not performed, is the permission missing?", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.not_performed, Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -67,7 +64,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
             // if two clicks were required
             if (power_off_type == 2) {
                 if (!this.dispatchGesture(createClick(x2, y2, x2, y2, false, 400), null, null)) {
-                    Toast.makeText(this, "Action not performed, is the permission missing?", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.not_performed, Toast.LENGTH_SHORT).show();
                 }
             }
         }

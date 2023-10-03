@@ -5,15 +5,10 @@ import static android.content.Context.MODE_PRIVATE;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.PowerManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +21,9 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.maforn.timedshutdown.AccessibilityService;
+import com.maforn.timedshutdown.AccessibilitySupportService;
 import com.maforn.timedshutdown.R;
 import com.maforn.timedshutdown.databinding.FragmentTimerBinding;
-
-import java.util.Calendar;
 
 public class TimerFragment extends Fragment {
 
@@ -49,9 +43,7 @@ public class TimerFragment extends Fragment {
     @SuppressLint("DefaultLocale")
     private void setCounter(int seconds, int minutes, int hours) {
         counter = seconds + 60 * minutes + 3600 * hours;
-        SharedPreferences.Editor editor = sP.edit();
-        editor.putInt("lastCounter", counter);
-        editor.apply();
+        sP.edit().putInt("lastCounter", counter).apply();
         timerText.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
     }
 
@@ -81,9 +73,7 @@ public class TimerFragment extends Fragment {
             });
             alertDialog.setButton(-1, getString(R.string.alert_permission_cancel), (paramDialogInterface, paramInt) -> paramDialogInterface.dismiss());
             alertDialog.setOnDismissListener(dialogInterface -> {
-                SharedPreferences.Editor editor = sP.edit();
-                editor.putBoolean("firstTime", false);
-                editor.apply();
+                sP.edit().putBoolean("firstTime", false).apply();
             });
             alertDialog.show();
         }
@@ -151,33 +141,10 @@ public class TimerFragment extends Fragment {
                     public void onFinish() {
                         // if the app was not forcefully terminated and the context still exists
                         if (getContext() != null) {
-
-                            PowerManager pm = (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
-                            PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, "timed-shutdown:wl");
-
-                            wakeLock.acquire(10 * 1000L /*10 seconds*/);
                             timerText.setText("00:00:00");
-                            // call the power off function
-                            Intent intent = new Intent(getContext(), AccessibilityService.class);
+                            // call the power off service
+                            Intent intent = new Intent(getContext(), AccessibilitySupportService.class);
                             requireContext().startService(intent);
-                            // use an handler to wait 2.5 sec and then start the power off sequence
-                            Handler handler = new Handler();
-                            handler.postDelayed(() -> {
-                                Intent intent12 = new Intent(getContext(), AccessibilityService.class);
-                                intent12.putExtra("exec_gesture", true);
-                                requireContext().startService(intent12);
-                                // handler added for the second click option
-                                SharedPreferences sharedPreferences = getContext().getSharedPreferences("Settings", MODE_PRIVATE);
-                                int power_off_type = sharedPreferences.getInt("power_off_method", 0);
-                                if (power_off_type == 2) {
-                                    Handler handler1 = new Handler();
-                                    handler1.postDelayed(() -> {
-                                        Intent intent1 = new Intent(getContext(), AccessibilityService.class);
-                                        intent1.putExtra("exec_gesture2", true);
-                                        requireContext().startService(intent1);
-                                    }, 2500);
-                                }
-                            }, 2500);
 
                             isTiming = false;
                         }
@@ -195,51 +162,11 @@ public class TimerFragment extends Fragment {
 
         });
 
-        binding.buttonSelect.setOnClickListener(view -> {
-            if (!isTiming) {
-                Calendar currentTime = Calendar.getInstance();
-                int hour = currentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = currentTime.get(Calendar.MINUTE);
-                TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(getContext(), (timePicker, selectedHour, selectedMinute) -> {
-                    SharedPreferences.Editor editor = sP.edit();
-                    editor.putInt("selectedHour", selectedHour);
-                    editor.putInt("selectedMinute", selectedMinute);
-                    editor.apply();
-                    counter = (selectedHour - hour) * 3600 + (selectedMinute - minute) * 60;
-                    if (counter < 0) {
-                        counter += 3600 * 24;
-                    }
-                    timerText.setText(String.format("%02d:%02d:00", counter / 3600, (counter % 3600) / 60));
-                    numberPickerMin.setValue((counter % 3600) / 60);
-                    numberPickerHour.setValue(counter / 3600);
-                }, hour, minute, true);//Yes 24 hour time
-                mTimePicker.setTitle("Select Time");
-                mTimePicker.show();
-
-            }
-        });
-
         binding.buttonLastTimer.setOnClickListener(view -> {
             if (!isTiming) {
                 counter = sP.getInt("lastCounter", 0);
                 timerText.setText(String.format("%02d:%02d:%02d", counter / 3600, (counter % 3600) / 60, counter % 60));
                 numberPickerSec.setValue(counter % 60);
-                numberPickerMin.setValue((counter % 3600) / 60);
-                numberPickerHour.setValue(counter / 3600);
-            }
-        });
-
-        binding.buttonLastTime.setOnClickListener(view -> {
-            if (!isTiming) {
-                Calendar currentTime = Calendar.getInstance();
-                int hour = currentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = currentTime.get(Calendar.MINUTE);
-                counter = (sP.getInt("selectedHour", 0) - hour) * 3600 + (sP.getInt("selectedMinute", 0) - minute) * 60;
-                if (counter < 0) {
-                    counter += 3600 * 24;
-                }
-                timerText.setText(String.format("%02d:%02d:00", counter / 3600, (counter % 3600) / 60));
                 numberPickerMin.setValue((counter % 3600) / 60);
                 numberPickerHour.setValue(counter / 3600);
             }
