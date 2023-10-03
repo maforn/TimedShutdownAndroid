@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,19 +121,17 @@ public class ScheduleFragment extends Fragment {
                 paramDialogInterface.dismiss();
             });
             alertDialog.setButton(-1, getString(R.string.alert_permission_cancel), (paramDialogInterface, paramInt) -> paramDialogInterface.dismiss());
-            alertDialog.setOnDismissListener(dialogInterface -> {
-                sP.edit().putBoolean("firstTime", false).apply();
-            });
+            alertDialog.setOnDismissListener(dialogInterface -> sP.edit().putBoolean("firstTime", false).apply());
             alertDialog.show();
         }
 
         // setup add schedule FAB
         binding.addSchedule.setOnClickListener(v -> {
             Calendar currentTime = Calendar.getInstance();
-            currentTime.add(Calendar.MINUTE, -1);
             int hour = currentTime.get(Calendar.HOUR_OF_DAY);
             int minute = currentTime.get(Calendar.MINUTE);
-            // create an entry for the time minus one minute
+
+            // create an entry for the current time
             JSONObject jsonObject;
             JSONArray arr;
             try {
@@ -158,24 +157,24 @@ public class ScheduleFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void cancelSchedules(int id) {
-        Intent alarmIntent = new Intent(requireContext(), AccessibilitySupportService.class);
+    private static void cancelSchedules(int id, Context context, AlarmManager alarmManager) {
+        Intent alarmIntent = new Intent(context, AccessibilitySupportService.class);
 
         alarmIntent.putExtra("id", id);
-        PendingIntent pendingIntent = PendingIntent.getService(requireContext(), id * 10, alarmIntent, PendingIntent.FLAG_MUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getService(context, id * 10, alarmIntent, PendingIntent.FLAG_MUTABLE);
         alarmManager.cancel(pendingIntent);
 
-        alarmIntent = new Intent(requireContext(), AccessibilitySupportService.class);
+        alarmIntent = new Intent(context, AccessibilitySupportService.class);
         for (int i = 0; i < 7; i++) {
             try {
-                pendingIntent = PendingIntent.getService(requireContext(), id * 10 + i, alarmIntent, PendingIntent.FLAG_IMMUTABLE);
+                pendingIntent = PendingIntent.getService(context, id * 10 + i, alarmIntent, PendingIntent.FLAG_IMMUTABLE);
                 alarmManager.cancel(pendingIntent);
             } catch (Exception ignored) {
             }
         }
     }
 
-    private void setSchedule(JSONObject jsonObject) {
+    public static void setSchedule(JSONObject jsonObject, Context context, AlarmManager alarmManager) {
         try {
             int id = jsonObject.getInt("id");
             int hour = jsonObject.getInt("hour");
@@ -183,9 +182,9 @@ public class ScheduleFragment extends Fragment {
             int[] repeating = JSonArray2IntArray(jsonObject.getJSONArray("repeating"));
             boolean checked = jsonObject.getBoolean("active");
 
-            cancelSchedules(id);
+            cancelSchedules(id, context, alarmManager);
 
-            Intent alarmIntent = new Intent(requireContext(), AccessibilitySupportService.class);
+            Intent alarmIntent = new Intent(context, AccessibilitySupportService.class);
 
             if (checked) {
                 Calendar alarmCalendar = Calendar.getInstance();
@@ -200,11 +199,11 @@ public class ScheduleFragment extends Fragment {
                 if (repeating.length == 0) {
                     alarmIntent.putExtra("id", id);
 
-                    PendingIntent pendingIntent = PendingIntent.getService(requireContext(), id * 10, alarmIntent, PendingIntent.FLAG_MUTABLE);
+                    PendingIntent pendingIntent = PendingIntent.getService(context, id * 10, alarmIntent, PendingIntent.FLAG_MUTABLE);
                     alarmManager.setAlarmClock(new AlarmManager.AlarmClockInfo(alarmCalendar.getTimeInMillis(), pendingIntent), pendingIntent);
                 } else {
                     for (int i = 0; i < repeating.length; i++) {
-                        PendingIntent pendingIntent = PendingIntent.getService(requireContext(), id * 10 + i, alarmIntent, PendingIntent.FLAG_IMMUTABLE);
+                        PendingIntent pendingIntent = PendingIntent.getService(context, id * 10 + i, alarmIntent, PendingIntent.FLAG_IMMUTABLE);
                         alarmCalendar.set(Calendar.DAY_OF_WEEK, repeating[i]);
                         long alarmTime = alarmCalendar.getTimeInMillis();
                         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000, pendingIntent);
@@ -226,7 +225,7 @@ public class ScheduleFragment extends Fragment {
         boolean checked = jsonObject.getBoolean("active");
 
         // get the layout and set the margins
-        View addView = getLayoutInflater().inflate(R.layout.schedule, null);
+        @SuppressLint("InflateParams") View addView = getLayoutInflater().inflate(R.layout.schedule, null);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.MATCH_PARENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT
@@ -254,10 +253,10 @@ public class ScheduleFragment extends Fragment {
                     throw new RuntimeException(e);
                 }
 
-                setSchedule(jsonObject);
+                setSchedule(jsonObject, requireContext(), alarmManager);
 
                 mainText.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
-            }, hour, minute, true);//Yes 24 hour time
+            }, hour, minute, true);
             mTimePicker.setTitle("Select Time");
             mTimePicker.show();
         });
@@ -290,7 +289,7 @@ public class ScheduleFragment extends Fragment {
                     arr.put(index, jsonObject.put("repeating", rep));
                     sP.edit().putString("schedules", jO.toString()).apply();
 
-                    setSchedule(jsonObject);
+                    setSchedule(jsonObject, requireContext(), alarmManager);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
@@ -309,7 +308,7 @@ public class ScheduleFragment extends Fragment {
                 arr.put(index, jsonObject.put("active", ((SwitchCompat) v1).isChecked()));
                 sP.edit().putString("schedules", jO.toString()).apply();
 
-                setSchedule(jsonObject);
+                setSchedule(jsonObject, requireContext(), alarmManager);
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
@@ -326,7 +325,7 @@ public class ScheduleFragment extends Fragment {
                 arr.remove(index);
                 sP.edit().putString("schedules", jO.toString()).apply();
 
-                cancelSchedules(id);
+                cancelSchedules(id, requireContext(), alarmManager);
 
                 // Start the animation
                 addView.animate()
