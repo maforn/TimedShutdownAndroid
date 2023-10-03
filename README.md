@@ -5,7 +5,8 @@ height="80">](https://play.google.com/store/apps/details?id=com.maforn.timedshut
 
 **An Android app that uses the accessibility permission to simulate the user gestures and power off the phone.**
 
-![App screenshots](/doc/AppImagesMerged.jpg "App screenshots")
+![App screenshots1](/doc/AppImagesMerged.jpg "App screenshots1")
+![App screenshots2](/doc/AppImagesMerged.png "App screenshots2")
 
 ## How to contribute
 If you want to contribute, you are welcome to do so!
