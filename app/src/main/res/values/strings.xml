@@ -12,6 +12,9 @@
     <string name="long_press">Long Press</string>
     <string name="one_click">One Click</string>
     <string name="reset">Reset</string>
+    <string name="changeTimeFormat">12H/24H</string>
+    <string name="H12">12H</string>
+    <string name="H24">24H</string>
     <string name="img_call_power_dialog">Call power dialog</string>
     <string name="img_help_button">Help button</string>
     <string name="info_text_1">This app uses the accessibility permission to simulate the manual gestures used to power off the phone. \n<b>The accessibility permission is required</b> in order to be able to call the power dialog and then simulate the gestures to turn off the phone. If your android version is at least 13, you may have to check the restricted settings section.</string>
@@ -29,6 +32,7 @@
     <string name="alert_permission_SETTINGS">SETTINGS</string>
     <string name="alert_permission_cancel">Cancel</string>
     <string name="alert_settings_text">Remember to set in the Settings tab the movement to power off the phone.\nIf you need help consult the Info tab.</string>
+    <string name="alert_settings_hours_format">Choose between 24 hours format and 12 hours format in the schedule tab.</string>
     <string name="info_title_contribute">Contribute</string>
     <string name="info_text_contribute">This app is totally open-source and you can contribute to its developing or signal any bugs in the <a href="https://github.com/maforn/TimedShutdownAndroid">github page</a>.</string>
     <string name="accessibility_description">The app requires the accessibility permission to emulate the manual gestures that are used to power off the phone. The permission will not be used for anything else.</string>

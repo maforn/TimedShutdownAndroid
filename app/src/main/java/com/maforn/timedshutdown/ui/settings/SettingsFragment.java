@@ -3,6 +3,7 @@ package com.maforn.timedshutdown.ui.settings;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -42,11 +43,11 @@ public class SettingsFragment extends Fragment {
 
         int powerOffType = sharedPreferences.getInt("power_off_method", 0);
         /*
-        * powerOffType:
-        *   0 - one click
-        *   1 - long press
-        *   2 - two clicks
-        *   3 - swipe
+         * powerOffType:
+         *   0 - one click
+         *   1 - long press
+         *   2 - two clicks
+         *   3 - swipe
          */
         idRadioClick = binding.radioClick.getId();
         idRadioLongPress = binding.radioLongPress.getId();
@@ -81,6 +82,23 @@ public class SettingsFragment extends Fragment {
         });
 
         binding.buttonHelp.setOnClickListener(view -> Navigation.findNavController(view).navigate(R.id.action_settingsFragment_to_infoFragment));
+
+        binding.buttonTimeFormat.setOnClickListener(view -> {
+            AlertDialog alertDialog = (new AlertDialog.Builder(getContext())).create();
+            alertDialog.setTitle(getString(R.string.changeTimeFormat));
+            alertDialog.setMessage(getString(R.string.alert_settings_hours_format));
+            alertDialog.setButton(-3, getString(R.string.H12), (paramDialogInterface, paramInt) -> {
+                editor.putBoolean("is_24_hour", false);
+                editor.apply();
+                paramDialogInterface.dismiss();
+            });
+            alertDialog.setButton(-1, getString(R.string.H24), (paramDialogInterface, paramInt) -> {
+                editor.putBoolean("is_24_hour", true);
+                editor.apply();
+                paramDialogInterface.dismiss();
+            });
+            alertDialog.show();
+        });
 
         draggableOne = binding.draggableOne;
         draggableTwo = binding.draggableTwo;

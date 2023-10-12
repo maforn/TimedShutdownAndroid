@@ -15,7 +15,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +47,8 @@ public class ScheduleFragment extends Fragment {
     private SharedPreferences sP;
 
     private AlarmManager alarmManager;
+
+    private boolean is24Hour;
 
     private int getDay(int id, @NonNull View addView) {
         if (id == addView.findViewById(R.id.sunday).getId())
@@ -96,6 +97,8 @@ public class ScheduleFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentScheduleBinding.inflate(inflater, container, false);
+
+        is24Hour = requireContext().getSharedPreferences("Settings", MODE_PRIVATE).getBoolean("is_24_hour", true);
 
         sP = requireContext().getSharedPreferences("Schedule", MODE_PRIVATE);
 
@@ -217,6 +220,18 @@ public class ScheduleFragment extends Fragment {
     }
 
     @SuppressLint("DefaultLocale")
+    private void setHoursText(int hour, int minute, TextView text) {
+        if (is24Hour) {
+            text.setText(String.format("%02d:%02d", hour, minute));
+        } else {
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.HOUR_OF_DAY, hour);
+            cal.set(Calendar.MINUTE, minute);
+            text.setText(String.format("%02d:%02d %s", cal.get(Calendar.HOUR), minute, cal.get(Calendar.AM_PM) == Calendar.PM ? "PM" : "AM"));
+        }
+    }
+
+    @SuppressLint("DefaultLocale")
     private void addElement(@NonNull JSONObject jsonObject) throws JSONException {
         int id = jsonObject.getInt("id");
         int hour = jsonObject.getInt("hour");
@@ -235,7 +250,7 @@ public class ScheduleFragment extends Fragment {
 
         // set up the main time text
         TextView mainText = addView.findViewById(R.id.mainText);
-        mainText.setText(String.format("%02d:%02d", hour, minute));
+        setHoursText(hour, minute, mainText);
 
         // add a general on click listener to change the time when the schedule will go off
         addView.setOnClickListener(v -> {
@@ -255,8 +270,8 @@ public class ScheduleFragment extends Fragment {
 
                 setSchedule(jsonObject, requireContext(), alarmManager);
 
-                mainText.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
-            }, hour, minute, true);
+                setHoursText(selectedHour, selectedMinute, mainText);
+            }, hour, minute, is24Hour);
             mTimePicker.setTitle("Select Time");
             mTimePicker.show();
         });
