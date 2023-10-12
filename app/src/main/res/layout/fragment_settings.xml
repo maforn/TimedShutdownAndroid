@@ -121,14 +121,15 @@
                 android:gravity="center"
                 android:text="1"
                 android:textColor="?attr/colorPrimary"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
 
             <ImageView
                 android:id="@+id/img_circle_one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/outline_circle_24"
-                android:contentDescription="Circle one" />
+                android:contentDescription="@string/circle_one" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -150,13 +151,15 @@
                 android:gravity="center"
                 android:textColor="?attr/colorPrimary"
                 android:text="2"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
 
             <ImageView
                 android:id="@+id/img_circle_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/outline_circle_24" />
+                android:src="@drawable/outline_circle_24"
+                android:contentDescription="@string/circle_two" />
         </RelativeLayout>
 
     </RelativeLayout>

@@ -129,6 +129,22 @@
                 app:layout_constraintTop_toTopOf="@+id/textPower"
                 app:tint="?attr/colorPrimary" />
 
+            <Button
+                android:id="@+id/H12H24Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?attr/colorOnPrimary"
+                android:minHeight="48dip"
+                android:paddingVertical="12dp"
+                android:text="@string/changeTimeFormat"
+                android:textColor="?attr/colorPrimary"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/textH12H24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textH12H24"
+                app:strokeColor="?attr/colorPrimary"
+                app:strokeWidth="1dp" />
+
             <TextView
                 android:id="@+id/textReset"
                 android:layout_width="0dp"
@@ -142,13 +158,25 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInfo" />
 
             <TextView
+                android:id="@+id/textH12H24"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/h12h24_button_desc"
+                app:layout_constraintBottom_toTopOf="@+id/textDraggables"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/H12H24Button"
+                app:layout_constraintTop_toBottomOf="@+id/textPower" />
+
+            <TextView
                 android:id="@+id/textPower"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
                 android:gravity="center_vertical"
                 android:text="@string/power_button_desc"
-                app:layout_constraintBottom_toTopOf="@+id/textDraggables"
+                app:layout_constraintBottom_toTopOf="@+id/textH12H24"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/powerButton"
                 app:layout_constraintTop_toBottomOf="@+id/textReset" />
@@ -163,8 +191,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/powerButton"
-                app:layout_constraintTop_toBottomOf="@id/textPower" />
+                app:layout_constraintStart_toEndOf="@+id/H12H24Button"
+                app:layout_constraintTop_toBottomOf="@id/textH12H24" />
 
             <RelativeLayout
                 android:id="@+id/draggable_one"
@@ -197,7 +225,7 @@
                     android:id="@+id/img_circle_one"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="Circle one"
+                    android:contentDescription="@string/circle_one"
                     android:src="@drawable/outline_circle_24" />
             </RelativeLayout>
 
@@ -231,7 +259,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:src="@drawable/outline_circle_24" />
+                    android:src="@drawable/outline_circle_24"
+                    android:contentDescription="@string/circle_two" />
             </RelativeLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
