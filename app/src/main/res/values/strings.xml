@@ -34,7 +34,7 @@
     <string name="alert_settings_text">Remember to set in the Settings tab the movement to power off the phone.\nIf you need help consult the Info tab.</string>
     <string name="alert_settings_hours_format">Choose between 24 hours format and 12 hours format in the schedule tab.</string>
     <string name="info_title_contribute">Contribute</string>
-    <string name="info_text_contribute">This app is open-source; you can contribute to the develoement, request new features or signal any bugs on the <a href="https://github.com/maforn/TimedShutdownAndroid">github page</a>.</string>
+    <string name="info_text_contribute">This app is open-source; you can contribute to the development, request new features or signal any bugs on the <a href="https://github.com/maforn/TimedShutdownAndroid">github page</a>.</string>
     <string name="accessibility_description">The app requires the accessibility permission to emulate the manual gestures that are used to power off the phone. The permission will not be used for anything else.</string>
     <string name="repeat">Repeat:</string>
     <string name="f">F</string>
