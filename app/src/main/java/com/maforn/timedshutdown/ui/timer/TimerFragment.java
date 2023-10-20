@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -113,15 +115,6 @@ public class TimerFragment extends Fragment {
         });
 
         timerText = binding.timerText;
-
-        // get last used timer
-        if (sP.contains("lastCounter")) {
-            counter = sP.getInt("lastCounter", 0);
-            numberPickerHour.setValue(counter / 3600);
-            numberPickerMin.setValue((counter % 3600) / 60);
-            numberPickerSec.setValue(counter % 60);
-            timerText.setText(String.format("%02d:%02d:%02d", counter / 3600, (counter % 3600) / 60, counter % 60));
-        }
 
         binding.buttonStart.setOnClickListener(v -> {
             if (!isTiming) {
