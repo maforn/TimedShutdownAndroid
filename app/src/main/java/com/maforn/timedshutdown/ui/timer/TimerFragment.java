@@ -1,24 +1,28 @@
 package com.maforn.timedshutdown.ui.timer;
 
 import static android.content.Context.MODE_PRIVATE;
+import static android.content.Context.POWER_SERVICE;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -82,6 +86,28 @@ public class TimerFragment extends Fragment {
 
         if (!AccessibilityService.isAccessibilityServiceEnabled(requireContext(), AccessibilityService.class)) {
             AccessibilityService.requireAccessibility(getContext());
+        }
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Intent intent = new Intent();
+            String packageName = requireContext().getPackageName();
+            PowerManager pm = (PowerManager) requireContext().getSystemService(POWER_SERVICE);
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                AlertDialog alertDialog = (new AlertDialog.Builder(getContext())).create();
+                alertDialog.setTitle(getString(R.string.battery_optimization));
+                alertDialog.setMessage(getString(R.string.battery_optimization_toast));
+                alertDialog.setButton(-3, getString(R.string.title_settings), (paramDialogInterface, paramInt) -> {
+                    try {
+                        Toast.makeText(requireContext(), "Battery optimization -> All apps -> " + getString(R.string.app_name) + " -> Don't optimize", Toast.LENGTH_LONG).show();
+                        intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+                        startActivity(intent);
+                    } catch (Exception ignored) {
+                    }
+                    paramDialogInterface.dismiss();
+                });
+                alertDialog.setButton(-1, getString(R.string.alert_permission_cancel), (paramDialogInterface, paramInt) -> paramDialogInterface.dismiss());
+                alertDialog.show();
+            }
         }
 
         numberPickerSec = binding.numberPickerSec;

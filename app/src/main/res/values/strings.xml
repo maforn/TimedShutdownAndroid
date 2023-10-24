@@ -48,4 +48,7 @@
     <string name="circle_two">Circle two</string>
     <string name="circle_one">Circle one</string>
     <string name="h12h24_button_desc">This button will open a dialog to select the preference between 12 and 24 hours format</string>
+    <string name="required_ignoring_optimization">Ignoring Battery Optimization is required for the app to work.</string>
+    <string name="battery_optimization">Battery Optimization</string>
+    <string name="battery_optimization_toast">Ignoring battery optimization is required for this app to work.\nPlease enable it in the Settings.</string>
 </resources>
