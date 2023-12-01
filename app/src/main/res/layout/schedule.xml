@@ -63,56 +63,56 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textOff="@string/s"
-                android:textOn="@string/s" />
+                android:textOff="@string/sunday"
+                android:textOn="@string/sunday" />
 
             <ToggleButton
                 android:id="@+id/monday"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textOff="@string/m"
-                android:textOn="@string/m" />
+                android:textOff="@string/monday"
+                android:textOn="@string/monday" />
 
             <ToggleButton
                 android:id="@+id/tuesday"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textOff="@string/t"
-                android:textOn="@string/t" />
+                android:textOff="@string/tuesday"
+                android:textOn="@string/tuesday" />
 
             <ToggleButton
                 android:id="@+id/wednesday"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textOff="@string/w"
-                android:textOn="@string/w" />
+                android:textOff="@string/wednesday"
+                android:textOn="@string/wednesday" />
 
             <ToggleButton
                 android:id="@+id/thursday"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textOff="@string/t"
-                android:textOn="@string/t" />
+                android:textOff="@string/thursday"
+                android:textOn="@string/thursday" />
 
             <ToggleButton
                 android:id="@+id/friday"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textOff="@string/f"
-                android:textOn="@string/f" />
+                android:textOff="@string/friday"
+                android:textOn="@string/friday" />
 
             <ToggleButton
                 android:id="@+id/saturday"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textOff="@string/s"
-                android:textOn="@string/s" />
+                android:textOff="@string/saturday"
+                android:textOn="@string/saturday" />
         </LinearLayout>
     </LinearLayout>
 

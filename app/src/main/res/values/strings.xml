@@ -22,26 +22,29 @@
     <string name="reset_button_desc">This button will reset the position of the draggable items to the center of the screen</string>
     <string name="power_button_desc">This button will call the power dialog so that it is possible to check which action should be performed. <b>This button will not power off the phone</b>, it will just call the power dialog. To power off the phone use the timer in the Timer tab.</string>
     <string name="draggables_desc">These draggable elements can be repositioned around the screen to reproduce the gestures (click(s)/swipe) used to power off the phone</string>
-    <string name="info_text_settings_1">On the <b>Settings tab</b> it is possible to <b>select the type of gestures required to turn off the phone</b>. After selecting the type of gesture (one click, a single long press that lasts 5s, two clicks or a swipe) the user has to drag the draggable circles where the click(s) should be simulated. Click the button to watch a short video about how it works.</string>
+    <string name="info_text_settings_1">On the <b>Settings tab</b> you have to set up the gestures that this app will simulate to shutdown your phone.\nWhile this app <b>automatically bring out the power dialog</b>, you have to give it instructions on <b>where the shutdown button is on your screen and how to interact with it</b>.\nFirst, select the type of gesture (one tap, two successive taps, a long press that lasts 5 seconds, or a swipe between point 1 and 2). Then, drag the numbered circles around the screen to correspond with where the shutdown button is on your power dialog screen.\nClick the button below to watch a short video about how it works.</string>
     <string name="info_text_settings_2">In case two clicks are selected the app will simulate first the click of circle one and then the click of circle two, with a delay of 2.5 seconds between. In case the swipe is selected, the app will simulate a swipe from point one to point two.</string>
     <string name="info_text_timer">On the <b>Timer tab</b> it is possible to <b>set up a timer to power off the phone</b>. It is first necessary to give the accessibility permission and to set up the settings tab for the app to be able to emulate the power off gesture.\n<b>The timer is in seconds</b> and the spinner on the right will select how many seconds, the spinner on the center how many minutes, the spinner on the left how many hours the timer will wait before powering off the phone. The last timer manually selected can be restored with the button <b>Last Timer</b>.\n<b>This app should <i>theoretically</i> work even if the screen is off</b>, but that may vary based on the battery optimization, power saving mode, phone model and so on. It is suggested to leave the phone (even locked) on the timer tab after starting the countdown. The power off gestures could require extra time after the set timer if the time while the screen is totally off is more than 5 minutes.</string>
-    <string name="info_text_schedule">On the <b>Schedule tab</b> it is possible to <b>schedule up to 10 alarms to power off the phone</b>. It is first necessary to do the same setup required by the timer tab.\nIt is possible to create new schedules by clicking on the + green button at the bottom of the screen; each schedule can be switched on and off with the switch button and it can be removed with the delete (bin) button. To set the hour when it will shut down the phone you can click on the schedule and a time picker will be shown.\nIt is possible to set the schedule as a repeating one with the toggle buttons at the bottom of each schedule. If none of them are activate the alarm will only repeat once and then turn itself off, else it will repeat at the set hour every week at the specified day(s).\n<b>Please keep in mind</b> that according to the official documentation, <b>setting up schedules can be extremely expensive on battery use</b>.</string>
+    <string name="info_text_schedule">On the <b>Schedule tab</b> it is possible to <b>schedule up to 10 alarms to power off the phone</b>. It is first necessary to do the same setup required by the timer tab.\nYou can switch between 24 and 12 hour format with the button, all the timers and time pickers will be displayed like that.\nIt is possible to create new schedules by clicking on the + green button at the bottom of the screen; each schedule can be switched on and off with the switch button and it can be removed with the delete (bin) button. To set the hour when it will shut down the phone you can click on the schedule and a time picker will be shown.\nIt is possible to set the schedule as a repeating one with the toggle buttons at the bottom of each schedule. If none of them are activate the alarm will only repeat once and then turn itself off, else it will repeat at the set hour every week at the specified day(s).\n<b>Please keep in mind</b> that according to the official documentation, <b>setting up schedules can be extremely expensive on battery use</b>.</string>
     <string name="alert_permission_title">Permission</string>
     <string name="alert_permission_text">The accessibility permission is required to emulate the power off gesture.\nPlease enable it in the settings.</string>
     <string name="alert_permission_text_API33">The accessibility permission is required to emulate the power off gesture.\nPlease enable it in the restricted settings section.</string>
     <string name="alert_permission_SETTINGS">SETTINGS</string>
     <string name="alert_permission_cancel">Cancel</string>
+    <string name="alert_permission_ok">Ok</string>
     <string name="alert_settings_text">Remember to set in the Settings tab the movement to power off the phone.\nIf you need help consult the Info tab.</string>
     <string name="alert_settings_hours_format">Choose between 24 hours format and 12 hours format in the schedule tab.</string>
     <string name="info_title_contribute">Contribute</string>
     <string name="info_text_contribute">This app is open-source; you can contribute to the development, request new features or signal any bugs on the <a href="https://github.com/maforn/TimedShutdownAndroid">github page</a>.</string>
-    <string name="accessibility_description">The app requires the accessibility permission to emulate the manual gestures that are used to power off the phone. The permission will not be used for anything else.</string>
+    <string name="accessibility_description" translatable="false">The app requires the accessibility permission to emulate the manual gestures that are used to power off the phone. The permission will not be used for anything else.</string>
     <string name="repeat">Repeat:</string>
-    <string name="f">F</string>
-    <string name="m">M</string>
-    <string name="s">S</string>
-    <string name="t">T</string>
-    <string name="w">W</string>
+    <string name="friday">F</string>
+    <string name="monday">M</string>
+    <string name="sunday">S</string>
+    <string name="saturday">S</string>
+    <string name="tuesday">T</string>
+    <string name="thursday">T</string>
+    <string name="wednesday">W</string>
     <string name="scrollable_description">Scrollable list of scheduled shut down</string>
     <string name="not_performed">Action not performed, is the accessibility permission missing?</string>
     <string name="schedule_disclaimer">Here you can schedule specific power off alarms. Keep in mind that this is really taxing on the battery of the phone.</string>

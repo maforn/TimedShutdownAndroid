@@ -98,9 +98,28 @@ public class ScheduleFragment extends Fragment {
 
         binding = FragmentScheduleBinding.inflate(inflater, container, false);
 
-        is24Hour = requireContext().getSharedPreferences("Settings", MODE_PRIVATE).getBoolean("is_24_hour", true);
-
         sP = requireContext().getSharedPreferences("Schedule", MODE_PRIVATE);
+
+        is24Hour = sP.getBoolean("is_24_hour", true);
+
+        binding.buttonTimeFormat.setOnClickListener(view -> {
+            AlertDialog alertDialog = (new AlertDialog.Builder(getContext())).create();
+            alertDialog.setTitle(getString(R.string.changeTimeFormat));
+            alertDialog.setMessage(getString(R.string.alert_settings_hours_format));
+            alertDialog.setButton(-3, getString(R.string.H12), (paramDialogInterface, paramInt) -> {
+                sP.edit().putBoolean("is_24_hour", false).apply();
+                is24Hour = false;
+                recreateView();
+                paramDialogInterface.dismiss();
+            });
+            alertDialog.setButton(-1, getString(R.string.H24), (paramDialogInterface, paramInt) -> {
+                sP.edit().putBoolean("is_24_hour", true).apply();
+                is24Hour = true;
+                recreateView();
+                paramDialogInterface.dismiss();
+            });
+            alertDialog.show();
+        });
 
         // set up AlarmManager and check if the permission was granted
         alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
@@ -123,7 +142,7 @@ public class ScheduleFragment extends Fragment {
                 }
                 paramDialogInterface.dismiss();
             });
-            alertDialog.setButton(-1, getString(R.string.alert_permission_cancel), (paramDialogInterface, paramInt) -> paramDialogInterface.dismiss());
+            alertDialog.setButton(-1, getString(R.string.alert_permission_ok), (paramDialogInterface, paramInt) -> paramDialogInterface.dismiss());
             alertDialog.setOnDismissListener(dialogInterface -> sP.edit().putBoolean("firstTime", false).apply());
             alertDialog.show();
         }
@@ -188,7 +207,6 @@ public class ScheduleFragment extends Fragment {
             cancelSchedules(id, context, alarmManager);
 
             Intent alarmIntent = new Intent(context, AccessibilitySupportService.class);
-
             if (checked) {
                 Calendar alarmCalendar = Calendar.getInstance();
                 alarmCalendar.set(Calendar.HOUR_OF_DAY, hour);
@@ -208,8 +226,10 @@ public class ScheduleFragment extends Fragment {
                     for (int i = 0; i < repeating.length; i++) {
                         PendingIntent pendingIntent = PendingIntent.getService(context, id * 10 + i, alarmIntent, PendingIntent.FLAG_IMMUTABLE);
                         alarmCalendar.set(Calendar.DAY_OF_WEEK, repeating[i]);
+                        if (alarmCalendar.getTimeInMillis() <= Calendar.getInstance().getTimeInMillis())
+                            alarmCalendar.add(Calendar.HOUR_OF_DAY, 24 * 7);
                         long alarmTime = alarmCalendar.getTimeInMillis();
-                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000, pendingIntent);
+                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 * 7, pendingIntent);
                     }
 
                 }
@@ -367,6 +387,10 @@ public class ScheduleFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // Needs to be here because switch.setChecked() does not work within OnCreate if it's not the first time
+        recreateView();
+    }
+
+    private void recreateView() {
         binding.mainLayout.removeAllViews();
         if (sP.contains("schedules")) {
             try {

@@ -83,23 +83,6 @@ public class SettingsFragment extends Fragment {
 
         binding.buttonHelp.setOnClickListener(view -> Navigation.findNavController(view).navigate(R.id.action_settingsFragment_to_infoFragment));
 
-        binding.buttonTimeFormat.setOnClickListener(view -> {
-            AlertDialog alertDialog = (new AlertDialog.Builder(getContext())).create();
-            alertDialog.setTitle(getString(R.string.changeTimeFormat));
-            alertDialog.setMessage(getString(R.string.alert_settings_hours_format));
-            alertDialog.setButton(-3, getString(R.string.H12), (paramDialogInterface, paramInt) -> {
-                editor.putBoolean("is_24_hour", false);
-                editor.apply();
-                paramDialogInterface.dismiss();
-            });
-            alertDialog.setButton(-1, getString(R.string.H24), (paramDialogInterface, paramInt) -> {
-                editor.putBoolean("is_24_hour", true);
-                editor.apply();
-                paramDialogInterface.dismiss();
-            });
-            alertDialog.show();
-        });
-
         draggableOne = binding.draggableOne;
         draggableTwo = binding.draggableTwo;
 

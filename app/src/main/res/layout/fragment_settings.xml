@@ -80,19 +80,6 @@
             android:minHeight="48dp"
             android:src="@drawable/ic_power_24dp"
             app:tint="?attr/colorPrimary" />
-
-        <Button
-            android:id="@+id/buttonTimeFormat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="?attr/colorOnPrimary"
-            android:minHeight="48dip"
-            android:paddingVertical="12dp"
-            android:text="@string/changeTimeFormat"
-            android:textColor="?attr/colorPrimary"
-            android:textStyle="bold"
-            app:strokeColor="?attr/colorPrimary"
-            app:strokeWidth="1dp" />
     </LinearLayout>
 
     <RelativeLayout
