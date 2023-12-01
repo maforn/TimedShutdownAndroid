@@ -15,6 +15,8 @@ You can:
 *   help with the translation of the app
 *   open issues and PRs (including a corresponding issue)
 
+Crowdin: [![Crowdin](https://badges.crowdin.net/timed-shutdown-android/localized.svg)](https://crowdin.com/project/timed-shutdown-android)
+
 ## Disclaimer
 
 Google Play and the Google Play logo are trademarks of Google Inc.
