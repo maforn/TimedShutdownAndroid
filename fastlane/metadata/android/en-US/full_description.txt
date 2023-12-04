@@ -1,0 +1,6 @@
+Are you used to turning off your phone before going to sleep and want to listen to some relaxing music?
+With this app, you won't have to move your sore arms and fingers, you can just set a timer, and the phone will turn off after a while!
+
+Android does not have any simple way to power off the phone without root, so the best we can do is emulate the manual gestures used to shut down the phone. To do this, the app will use the accessibility permission, but it will not register any user's data.
+
+This app is not professional and it's just a side-project of mine that I decided to share with everyone. If you want to contribute or check the code, it can all be found on my github (github.com/maforn). Any help is more than welcome!
