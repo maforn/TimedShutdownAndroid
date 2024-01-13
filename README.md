@@ -1,9 +1,13 @@
 # Timed Shutdown Android app (no root)
+
+**An Android app that uses the accessibility permission to simulate the user gestures and power off the phone.**
+
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/com.maforn.timedshutdown/)
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" 
 alt="Download from Google Play" 
 height="80">](https://play.google.com/store/apps/details?id=com.maforn.timedshutdown)
-
-**An Android app that uses the accessibility permission to simulate the user gestures and power off the phone.**
 
 ![App screenshots1](/doc/AppImagesMerged.jpg "App screenshots1")
 ![App screenshots2](/doc/AppImagesMerged.png "App screenshots2")
