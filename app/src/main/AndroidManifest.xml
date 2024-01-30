@@ -30,6 +30,9 @@
         <activity
             android:name=".FullscreenActivity"
             android:label="Tutorial Video" />
+        <activity
+            android:name=".AutoSupportActivity"
+            android:exported="true" />
 
         <service
             android:name=".AccessibilityService"
@@ -46,7 +49,7 @@
         </service>
         <service
             android:name=".AccessibilitySupportService"
-            android:exported="true" />
+            android:exported="false" />
 
         <receiver
             android:name=".BootBroadcastReceiver"
