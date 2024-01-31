@@ -19,7 +19,7 @@
             android:id="@+id/text_notifications"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:justificationMode="none"
+            android:justificationMode="inter_word"
             android:text="@string/info_text_1"
             android:textAlignment="textStart"
             android:textSize="16sp" />
@@ -42,6 +42,7 @@
             android:layout_height="wrap_content"
             android:text="@string/info_text_settings_1"
             android:textSize="16sp"
+            android:justificationMode="inter_word"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -60,6 +61,7 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
             android:text="@string/info_text_settings_2"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -255,6 +257,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
             android:text="@string/info_text_timer"
             android:textSize="16sp" />
 
@@ -274,11 +277,32 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
             android:text="@string/info_text_schedule"
             android:textSize="16sp" />
 
         <View
-            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginVertical="4dp"
+            android:background="?attr/colorPrimaryVariant" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/info_title_automate"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8sp"
+            android:justificationMode="inter_word"
+            android:text="@string/info_text_automate"
+            android:textSize="16sp" />
+
+        <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginVertical="4dp"
@@ -296,6 +320,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8sp"
+            android:justificationMode="inter_word"
             android:text="@string/info_text_contribute"
             android:textSize="16sp" />
 
