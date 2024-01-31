@@ -1,0 +1,3 @@
+- Added automation support (e.g. Tasker, Automate)
+- Included French translations
+- Minor bugs fixed
