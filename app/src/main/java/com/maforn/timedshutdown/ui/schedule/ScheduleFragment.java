@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -226,9 +227,14 @@ public class ScheduleFragment extends Fragment {
                     for (int i = 0; i < repeating.length; i++) {
                         PendingIntent pendingIntent = PendingIntent.getService(context, id * 10 + i, alarmIntent, PendingIntent.FLAG_IMMUTABLE);
                         alarmCalendar.set(Calendar.DAY_OF_WEEK, repeating[i]);
-                        if (alarmCalendar.getTimeInMillis() <= Calendar.getInstance().getTimeInMillis())
-                            alarmCalendar.add(Calendar.HOUR_OF_DAY, 24 * 7);
-                        long alarmTime = alarmCalendar.getTimeInMillis();
+                        // create a new instance for each day so that the main is not influenced
+                        Calendar dayCalendar = Calendar.getInstance();
+                        dayCalendar.setTimeInMillis(alarmCalendar.getTimeInMillis());
+
+                        if (dayCalendar.getTimeInMillis() <= Calendar.getInstance().getTimeInMillis())
+                            dayCalendar.add(Calendar.HOUR_OF_DAY, 24 * 7);
+                        long alarmTime = dayCalendar.getTimeInMillis();
+
                         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 * 7, pendingIntent);
                     }
 
