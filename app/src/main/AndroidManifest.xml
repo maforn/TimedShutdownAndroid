@@ -29,10 +29,14 @@
         </activity>
         <activity
             android:name=".FullscreenActivity"
-            android:label="Tutorial Video" />
+            android:screenOrientation="sensorPortrait"
+            android:label="Tutorial Video"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".AutomationSupportActivity"
-            android:exported="true" />
+            android:screenOrientation="sensorPortrait"
+            android:exported="true"
+            tools:ignore="LockedOrientationActivity" />
 
         <service
             android:name=".AccessibilityService"

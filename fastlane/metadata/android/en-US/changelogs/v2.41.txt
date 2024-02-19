@@ -1,0 +1,1 @@
+- Fixed wrong orientation of automation support activity
