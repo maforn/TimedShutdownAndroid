@@ -33,37 +33,35 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
             float x1 = sharedPreferences.getFloat("X_ABS_false", 100);
             float y1 = sharedPreferences.getFloat("Y_ABS_false", 100);
             float x2 = -1, y2 = -1;
-            int duration = 400;
+            int duration = 200;
 
-            int power_off_type = sharedPreferences.getInt("power_off_method", 0);
-            if (power_off_type != 0) {
+            PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];
+            if (power_off_type != PowerOffType.ONECLICK) {
                 x2 = sharedPreferences.getFloat("X_ABS_true", 100);
                 y2 = sharedPreferences.getFloat("Y_ABS_true", 100);
             }
 
-            if (power_off_type == 1) {
+            if (power_off_type == PowerOffType.LONGPRESS) {
                 duration = 5000;
             }
-            if (!this.dispatchGesture(createClick(x1, y1, x2, y2, power_off_type == 3, duration), null, null)) {
+            if (!this.dispatchGesture(createClick(x1, y1, x2, y2, power_off_type == PowerOffType.SWIPE, duration), null, null)) {
                 Toast.makeText(this, R.string.not_performed, Toast.LENGTH_SHORT).show();
             }
         }
 
         if (paramIntent.getBooleanExtra("exec_gesture2", false)) {
             sharedPreferences = getApplicationContext().getSharedPreferences("Settings", MODE_PRIVATE);
-            float x1 = sharedPreferences.getFloat("X_ABS_false", 100);
-            float y1 = sharedPreferences.getFloat("Y_ABS_false", 100);
             float x2 = -1, y2 = -1;
+            int duration = 200;
 
-            int power_off_type = sharedPreferences.getInt("power_off_method", 0);
-            if (power_off_type != 0) {
+            PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];            if (power_off_type != PowerOffType.ONECLICK) {
                 x2 = sharedPreferences.getFloat("X_ABS_true", 100);
                 y2 = sharedPreferences.getFloat("Y_ABS_true", 100);
             }
 
             // if two clicks were required
-            if (power_off_type == 2) {
-                if (!this.dispatchGesture(createClick(x2, y2, x2, y2, false, 400), null, null)) {
+            if (power_off_type == PowerOffType.TWOCLICKS) {
+                if (!this.dispatchGesture(createClick(x2, y2, x2, y2, false, duration), null, null)) {
                     Toast.makeText(this, R.string.not_performed, Toast.LENGTH_SHORT).show();
                 }
             }

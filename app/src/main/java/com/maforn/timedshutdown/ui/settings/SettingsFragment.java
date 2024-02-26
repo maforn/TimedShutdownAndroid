@@ -11,12 +11,14 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.maforn.timedshutdown.AccessibilityService;
+import com.maforn.timedshutdown.PowerOffType;
 import com.maforn.timedshutdown.R;
 import com.maforn.timedshutdown.databinding.FragmentSettingsBinding;
 
@@ -41,14 +43,8 @@ public class SettingsFragment extends Fragment {
         sharedPreferences = requireContext().getSharedPreferences("Settings", MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
-        int powerOffType = sharedPreferences.getInt("power_off_method", 0);
-        /*
-         * powerOffType:
-         *   0 - one click
-         *   1 - long press
-         *   2 - two clicks
-         *   3 - swipe
-         */
+        PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];
+
         idRadioClick = binding.radioClick.getId();
         idRadioLongPress = binding.radioLongPress.getId();
         idRadioTwoClick = binding.radioTwoClick.getId();
@@ -64,8 +60,8 @@ public class SettingsFragment extends Fragment {
         });
 
         // if it's not the default check the one that is required
-        if (powerOffType != 0) {
-            binding.radioGroup.check(powerOffType == 1 ? idRadioLongPress : (powerOffType == 2 ? idRadioTwoClick : idRadioSwipe));
+        if (power_off_type != PowerOffType.ONECLICK) {
+            binding.radioGroup.check(power_off_type == PowerOffType.LONGPRESS ? idRadioLongPress : (power_off_type == PowerOffType.TWOCLICKS ? idRadioTwoClick : idRadioSwipe));
             displaySecondDraggable();
         }
 
@@ -82,6 +78,33 @@ public class SettingsFragment extends Fragment {
         });
 
         binding.buttonHelp.setOnClickListener(view -> Navigation.findNavController(view).navigate(R.id.action_settingsFragment_to_infoFragment));
+
+        binding.buttonSetDelay.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Set Clicks Delays");
+
+            View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_delay, (ViewGroup) getView(), false);
+
+            final EditText inputInitialDelay = (EditText) viewInflated.findViewById(R.id.inputInitialDelay);
+            final EditText inputDelayFirstAction = (EditText) viewInflated.findViewById(R.id.inputDelayFirstAction);
+            final EditText inputDelaySecondAction = (EditText) viewInflated.findViewById(R.id.inputDelaySecondAction);
+            inputInitialDelay.setText(String.valueOf(sharedPreferences.getInt("initial_delay", 2000)));
+            inputDelayFirstAction.setText(String.valueOf(sharedPreferences.getInt("first_delay", 2500)));
+            inputDelaySecondAction.setText(String.valueOf(sharedPreferences.getInt("second_delay", 2500)));
+
+            builder.setView(viewInflated);
+
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                editor.putInt("initial_delay", Math.max(50, Integer.parseInt(inputInitialDelay.getText().toString())));
+                editor.putInt("first_delay", Math.max(50, Integer.parseInt(inputDelayFirstAction.getText().toString())));
+                editor.putInt("second_delay", Math.max(50, Integer.parseInt(inputDelaySecondAction.getText().toString())));
+                editor.apply();
+                dialog.dismiss();
+            });
+            builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
+
+            builder.show();
+        });
 
         draggableOne = binding.draggableOne;
         draggableTwo = binding.draggableTwo;
@@ -105,13 +128,13 @@ public class SettingsFragment extends Fragment {
 
     private int getChecked(int checkedId) {
         if (checkedId == idRadioClick) {
-            return 0;
+            return PowerOffType.ONECLICK.ordinal();
         } else if (checkedId == idRadioLongPress) {
-            return 1;
+            return PowerOffType.LONGPRESS.ordinal();
         } else if (checkedId == idRadioTwoClick) {
-            return 2;
+            return PowerOffType.TWOCLICKS.ordinal();
         } else { // idRadioSwipe
-            return 3;
+            return PowerOffType.SWIPE.ordinal();
         }
     }
 
@@ -161,7 +184,8 @@ public class SettingsFragment extends Fragment {
     };
 
     private void displaySecondDraggable() {
-        if (sharedPreferences.getInt("power_off_method", 0) > 1) {
+        PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];
+        if (power_off_type == PowerOffType.SWIPE || power_off_type == PowerOffType.TWOCLICKS) {
             binding.draggableTwo.setVisibility(View.VISIBLE);
         } else {
             binding.draggableTwo.setVisibility(View.GONE);

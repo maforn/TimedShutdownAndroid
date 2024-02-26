@@ -114,6 +114,21 @@
                 app:strokeWidth="1dp" />
 
             <ImageButton
+                android:id="@+id/delayButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/image_button_border"
+                android:contentDescription="@string/img_call_power_dialog"
+                android:minHeight="48dp"
+                android:src="@drawable/baseline_hourglass_top_24"
+                app:layout_constraintBaseline_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/textDelay"
+                app:layout_constraintEnd_toEndOf="@+id/resetButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textDelay"
+                app:tint="?attr/colorPrimary" />
+
+            <ImageButton
                 android:id="@+id/powerButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -123,7 +138,7 @@
                 android:src="@drawable/ic_power_24dp"
                 app:layout_constraintBaseline_toBottomOf="parent"
                 app:layout_constraintBottom_toBottomOf="@+id/textPower"
-                app:layout_constraintEnd_toEndOf="@+id/resetButton"
+                app:layout_constraintEnd_toEndOf="@+id/delayButton"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textPower"
                 app:tint="?attr/colorPrimary" />
@@ -135,10 +150,22 @@
                 android:layout_marginStart="6dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/reset_button_desc"
-                app:layout_constraintBottom_toTopOf="@+id/textPower"
+                app:layout_constraintBottom_toTopOf="@+id/textDelay"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/resetButton"
                 app:layout_constraintTop_toBottomOf="@+id/textInfo" />
+
+            <TextView
+                android:id="@+id/textDelay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/delay_button_desc"
+                app:layout_constraintBottom_toTopOf="@+id/textPower"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/delayButton"
+                app:layout_constraintTop_toBottomOf="@+id/textReset" />
 
             <TextView
                 android:id="@+id/textPower"
@@ -150,7 +177,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/textDraggables"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/powerButton"
-                app:layout_constraintTop_toBottomOf="@+id/textReset" />
+                app:layout_constraintTop_toBottomOf="@+id/textDelay" />
 
             <TextView
                 android:id="@+id/textDraggables"
@@ -232,8 +259,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:src="@drawable/outline_circle_24"
-                    android:contentDescription="@string/circle_two" />
+                    android:contentDescription="@string/circle_two"
+                    android:src="@drawable/outline_circle_24" />
             </RelativeLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

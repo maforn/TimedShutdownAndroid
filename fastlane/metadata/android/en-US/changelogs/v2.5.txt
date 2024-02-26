@@ -1,0 +1,2 @@
+- Added settings for custom delays between performed actions
+- Decreased emulated click time from 400ms to 200ms

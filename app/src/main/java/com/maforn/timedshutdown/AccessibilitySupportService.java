@@ -45,32 +45,33 @@ public class AccessibilitySupportService extends Service {
 
         wakeLock.acquire(10 * 1000L /*10 seconds*/);
 
-        Toast.makeText(this, "Executing actions to shut down the phone in 2 sec...", Toast.LENGTH_SHORT).show();
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("Settings", MODE_PRIVATE);
+
+        Toast.makeText(this, "Shutting down in " + sharedPreferences.getInt("initial_delay", 2000) + " milli sec...", Toast.LENGTH_SHORT).show();
 
         Handler baseHandler = new Handler();
         baseHandler.postDelayed(() -> {
             // call the power off function
             Intent intent = new Intent(getApplicationContext(), AccessibilityService.class);
             getApplicationContext().startService(intent);
-            // use an handler to wait 2.5 sec and then start the power off sequence
+            // use an handler to wait the required time and then start the power off sequence
             Handler handler = new Handler();
             handler.postDelayed(() -> {
                 Intent intent12 = new Intent(getApplicationContext(), AccessibilityService.class);
                 intent12.putExtra("exec_gesture", true);
                 getApplicationContext().startService(intent12);
                 // handler added for the second click option
-                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("Settings", MODE_PRIVATE);
-                int power_off_type = sharedPreferences.getInt("power_off_method", 0);
-                if (power_off_type == 2) {
+                PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];
+                if (power_off_type == PowerOffType.TWOCLICKS) {
                     Handler handler1 = new Handler();
                     handler1.postDelayed(() -> {
                         Intent intent1 = new Intent(getApplicationContext(), AccessibilityService.class);
                         intent1.putExtra("exec_gesture2", true);
                         getApplicationContext().startService(intent1);
-                    }, 2500);
+                    }, sharedPreferences.getInt("second_delay", 2500));
                 }
-            }, 2500);
-        }, 2000);
+            }, sharedPreferences.getInt("first_delay", 2500));
+        }, sharedPreferences.getInt("initial_delay", 2000));
 
         return Service.START_STICKY;
     }
