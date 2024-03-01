@@ -95,10 +95,13 @@ public class SettingsFragment extends Fragment {
             builder.setView(viewInflated);
 
             builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                editor.putInt("initial_delay", Math.max(50, Integer.parseInt(inputInitialDelay.getText().toString())));
-                editor.putInt("first_delay", Math.max(50, Integer.parseInt(inputDelayFirstAction.getText().toString())));
-                editor.putInt("second_delay", Math.max(50, Integer.parseInt(inputDelaySecondAction.getText().toString())));
-                editor.apply();
+                try {
+                    editor.putInt("initial_delay", Math.min(Math.max(50, Integer.parseInt(inputInitialDelay.getText().toString())), 10000));
+                    editor.putInt("first_delay", Math.min(Math.max(50, Integer.parseInt(inputDelayFirstAction.getText().toString())), 10000));
+                    editor.putInt("second_delay", Math.min(Math.max(50, Integer.parseInt(inputDelaySecondAction.getText().toString())), 10000));
+                    editor.apply();
+                }
+                catch (Exception e) {}
                 dialog.dismiss();
             });
             builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());

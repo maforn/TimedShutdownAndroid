@@ -23,7 +23,7 @@ public class AccessibilitySupportService extends Service {
         // start the power off service
 
         // if it was called by a single time alarm, deactivate it
-        if (paramIntent.getIntExtra("id", -1) != -1) {
+        if (paramIntent.hasExtra("id")) {
             int id = paramIntent.getIntExtra("id", 0);
             SharedPreferences sP = getApplicationContext().getSharedPreferences("Schedule", MODE_PRIVATE);
             JSONObject jO;
