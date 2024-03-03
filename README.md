@@ -13,7 +13,7 @@ height="80">](https://play.google.com/store/apps/details?id=com.maforn.timedshut
 ![App screenshots2](/doc/AppImagesMerged.png "App screenshots2")
 
 ## How to contribute
-If you want to contribute, you are welcome to do so!
+If you want to contribute, you are welcome to do so! All the Java files have relevant comments (app/src/main/java/com/maforn/timedshutdown).
 You can:
 
 *   help with the translation of the app

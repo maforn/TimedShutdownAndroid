@@ -25,13 +25,15 @@ public class InfoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
+        // bind the fragment to the main navigation activity
         binding = FragmentInfoBinding.inflate(inflater, container, false);
 
+        // set up links in textView
         TextView contribute = binding.contributeTextView;
         contribute.setMovementMethod(LinkMovementMethod.getInstance());
 
+        // set up the tutorial video link
         ImageView thumbnailImageView = binding.thumbnailImageView;
-
         String videoPath = "android.resource://" + requireContext().getPackageName() + "/" + R.raw.screen_record;
 
         thumbnailImageView.setOnClickListener(v -> {

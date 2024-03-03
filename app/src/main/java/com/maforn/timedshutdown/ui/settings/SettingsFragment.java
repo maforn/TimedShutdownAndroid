@@ -37,12 +37,14 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
+        // bind the fragment to the main navigation activity
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         sharedPreferences = requireContext().getSharedPreferences("Settings", MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
+        // get the gesture power off type specified by the user
         PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];
 
         idRadioClick = binding.radioClick.getId();
@@ -50,6 +52,7 @@ public class SettingsFragment extends Fragment {
         idRadioTwoClick = binding.radioTwoClick.getId();
         idRadioSwipe = binding.radioSwipe.getId();
 
+        // set up the listener to set the power off method on click
         binding.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             editor.putInt(
                     "power_off_method",
@@ -59,17 +62,19 @@ public class SettingsFragment extends Fragment {
             displaySecondDraggable();
         });
 
-        // if it's not the default check the one that is required
+        // if it's not the default power off type, check the selected radio group
         if (power_off_type != PowerOffType.ONECLICK) {
             binding.radioGroup.check(power_off_type == PowerOffType.LONGPRESS ? idRadioLongPress : (power_off_type == PowerOffType.TWOCLICKS ? idRadioTwoClick : idRadioSwipe));
             displaySecondDraggable();
         }
 
+        // set the on click event on the power dialog button
         binding.buttonPowerDialog.setOnClickListener(view -> {
             Intent intent = new Intent(getContext(), AccessibilityService.class);
             requireContext().startService(intent);
         });
 
+        // set the on click event on the reset button: reset the draggables position
         binding.buttonReset.setOnClickListener(view -> {
             binding.radioGroup.check(binding.radioClick.getId());
             editor.clear();
@@ -77,31 +82,40 @@ public class SettingsFragment extends Fragment {
             requireActivity().recreate();
         });
 
+        // on info button click navigate to the info activity
         binding.buttonHelp.setOnClickListener(view -> Navigation.findNavController(view).navigate(R.id.action_settingsFragment_to_infoFragment));
 
+        // on delay button click open a dialog to allow the user to set personalised delays between events
         binding.buttonSetDelay.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle("Set Clicks Delays");
 
+            // get custom view to inflate into the dialog
             View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_delay, (ViewGroup) getView(), false);
 
-            final EditText inputInitialDelay = (EditText) viewInflated.findViewById(R.id.inputInitialDelay);
-            final EditText inputDelayFirstAction = (EditText) viewInflated.findViewById(R.id.inputDelayFirstAction);
-            final EditText inputDelaySecondAction = (EditText) viewInflated.findViewById(R.id.inputDelaySecondAction);
+            // get and set the input fields
+            final EditText inputInitialDelay = viewInflated.findViewById(R.id.inputInitialDelay);
+            final EditText inputDelayFirstAction = viewInflated.findViewById(R.id.inputDelayFirstAction);
+            final EditText inputDelaySecondAction = viewInflated.findViewById(R.id.inputDelaySecondAction);
             inputInitialDelay.setText(String.valueOf(sharedPreferences.getInt("initial_delay", 2000)));
             inputDelayFirstAction.setText(String.valueOf(sharedPreferences.getInt("first_delay", 2500)));
             inputDelaySecondAction.setText(String.valueOf(sharedPreferences.getInt("second_delay", 2500)));
 
             builder.setView(viewInflated);
 
+            // on OK button click set the new delays
             builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                // using a try is necessary for the case of an empty string (""), because parseInt
+                // cannot handle it and throws a NumberFormatException
                 try {
+                    // set the new values with 50 milliseconds as the min and 10000 as the max
                     editor.putInt("initial_delay", Math.min(Math.max(50, Integer.parseInt(inputInitialDelay.getText().toString())), 10000));
                     editor.putInt("first_delay", Math.min(Math.max(50, Integer.parseInt(inputDelayFirstAction.getText().toString())), 10000));
                     editor.putInt("second_delay", Math.min(Math.max(50, Integer.parseInt(inputDelaySecondAction.getText().toString())), 10000));
                     editor.apply();
                 }
-                catch (Exception e) {}
+                catch (Exception ignored) {
+                }
                 dialog.dismiss();
             });
             builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
@@ -109,12 +123,14 @@ public class SettingsFragment extends Fragment {
             builder.show();
         });
 
+        // get the draggables circles and set the touch listener
         draggableOne = binding.draggableOne;
         draggableTwo = binding.draggableTwo;
 
         draggableOne.setOnTouchListener(drag);
         draggableTwo.setOnTouchListener(drag);
 
+        // on reopening set the values as they were set
         draggableOne.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
             if (sharedPreferences.contains("X_false")) {
                 draggableOne.setX(sharedPreferences.getFloat("X_false", 100));
@@ -129,6 +145,12 @@ public class SettingsFragment extends Fragment {
         return root;
     }
 
+    /**
+     * Get back the number that corresponds to the respective power off type
+     *
+     * @param checkedId the id of the clicked radio group
+     * @return the number value that corresponds to the ENUM type
+     */
     private int getChecked(int checkedId) {
         if (checkedId == idRadioClick) {
             return PowerOffType.ONECLICK.ordinal();
@@ -142,6 +164,9 @@ public class SettingsFragment extends Fragment {
     }
 
 
+    /**
+     * Set an listener for the draggables so their position is saved and set as the user requires
+     */
     View.OnTouchListener drag = new View.OnTouchListener() {
         float dX, dY;
 
@@ -150,12 +175,14 @@ public class SettingsFragment extends Fragment {
         public boolean onTouch(View view, MotionEvent event) {
             switch (event.getAction()) {
 
+                // get the first position on touch
                 case MotionEvent.ACTION_DOWN:
                     dX = view.getX() - event.getRawX();
                     dY = view.getY() - event.getRawY();
 
                     break;
 
+                // store the position and animate the movement
                 case MotionEvent.ACTION_MOVE:
 
                     if (event.getRawX() + dX > 0 && event.getRawY() + dY > 0 && event.getRawX() + dX < binding.getRoot().getWidth() && event.getRawY() + dY < binding.getRoot().getHeight()) {
@@ -167,6 +194,7 @@ public class SettingsFragment extends Fragment {
                     }
                     break;
 
+                // save values only on release
                 case MotionEvent.ACTION_UP:
                     editor.putFloat("X_" + (view.getId() == draggableTwo.getId()), dX + event.getRawX());
                     editor.putFloat("X_ABS_" + (view.getId() == draggableTwo.getId()), event.getRawX());
@@ -186,6 +214,10 @@ public class SettingsFragment extends Fragment {
         }
     };
 
+    /**
+     * This function will display the second draggable circle if the power off method requires
+     * two of them (swipe or two clicks)
+     */
     private void displaySecondDraggable() {
         PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];
         if (power_off_type == PowerOffType.SWIPE || power_off_type == PowerOffType.TWOCLICKS) {

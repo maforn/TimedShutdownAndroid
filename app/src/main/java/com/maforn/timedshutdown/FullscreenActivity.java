@@ -10,6 +10,10 @@ import androidx.appcompat.app.AppCompatActivity;
 public class FullscreenActivity extends AppCompatActivity {
     VideoView videoView;
 
+    /**
+     * This is a simple full screen view of a video that is passed with trough intent extra
+     * It's used on the Info tab to show a tutorial video
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -44,6 +44,13 @@ public class TimerFragment extends Fragment {
 
     SharedPreferences sP;
 
+    /**
+     * This function will set the global counter variable, update the db value and set the starting
+     * text on the displayed textView
+     * @param seconds for the counter
+     * @param minutes for the counter
+     * @param hours for the counter
+     */
     @SuppressLint("DefaultLocale")
     private void setCounter(int seconds, int minutes, int hours) {
         counter = seconds + 60 * minutes + 3600 * hours;
@@ -54,9 +61,11 @@ public class TimerFragment extends Fragment {
     @SuppressLint("DefaultLocale")
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        // bind the fragment to the main navigation activity
         binding = FragmentTimerBinding.inflate(inflater, container, false);
         sP = requireContext().getSharedPreferences("Timer", MODE_PRIVATE);
 
+        // if it's the first time show the initial dialog: set the gesture in the settings tab
         if (!sP.contains("firstTime")) {
             AlertDialog alertDialog = (new AlertDialog.Builder(getContext())).create();
             alertDialog.setTitle(getString(R.string.title_settings));
@@ -82,10 +91,12 @@ public class TimerFragment extends Fragment {
             alertDialog.show();
         }
 
+        // if the accessibility permission is not given require it
         if (!AccessibilityService.isAccessibilityServiceEnabled(requireContext(), AccessibilityService.class)) {
             AccessibilityService.requireAccessibility(getContext());
         }
 
+        // check for battery optimization options, in case it is needed require it
         String packageName = requireContext().getPackageName();
         PowerManager pm = (PowerManager) requireContext().getSystemService(POWER_SERVICE);
         if (!pm.isIgnoringBatteryOptimizations(packageName)) {
@@ -106,10 +117,12 @@ public class TimerFragment extends Fragment {
             alertDialog.show();
         }
 
+        // set up all three number pickers with min and max values, as well as a change listener
         numberPickerSec = binding.numberPickerSec;
         numberPickerSec.setMinValue(0);
         numberPickerSec.setMaxValue(59);
         numberPickerSec.setWrapSelectorWheel(true);
+        // if the timer is not already ticking on value changed set the new counter
         numberPickerSec.setOnValueChangedListener((picker, oldVal, newVal) -> {
             if (!isTiming) {
                 setCounter(newVal, numberPickerMin.getValue(), numberPickerHour.getValue());
@@ -138,20 +151,27 @@ public class TimerFragment extends Fragment {
 
         timerText = binding.timerText;
 
+        // on start button click
         binding.buttonStart.setOnClickListener(v -> {
             if (!isTiming) {
 
+                // try to keep the screen on and permission to show when locked, it will not work otherwise
                 ((Activity) requireContext()).getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD | WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
                 counter = numberPickerHour.getValue() * 3600 + numberPickerMin.getValue() * 60 + numberPickerSec.getValue();
 
                 isTiming = true;
+                // start the countdown timer
                 countDownTimer = new CountDownTimer(counter * 1000L, 1000) {
+                    // decrease on each tick
                     public void onTick(long millisUntilFinished) {
                         timerText.setText(String.format("%02d:%02d:%02d", counter / 3600, (counter % 3600) / 60, counter % 60));
                         counter--;
                     }
 
+                    /**
+                     * On finish even call the shutdown process
+                     */
                     @SuppressLint("SetTextI18n")
                     public void onFinish() {
                         // if the app was not forcefully terminated and the context still exists
@@ -168,6 +188,7 @@ public class TimerFragment extends Fragment {
             }
         });
 
+        // the stop button will block the countdown timer
         binding.buttonStop.setOnClickListener(view -> {
             if (countDownTimer != null) {
                 countDownTimer.cancel();
@@ -177,6 +198,7 @@ public class TimerFragment extends Fragment {
 
         });
 
+        // the last button will recover the last timer set by the user
         binding.buttonLastTimer.setOnClickListener(view -> {
             if (!isTiming) {
                 counter = sP.getInt("lastCounter", 0);

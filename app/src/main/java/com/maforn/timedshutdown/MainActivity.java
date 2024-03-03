@@ -15,6 +15,11 @@ public class MainActivity extends AppCompatActivity {
 
     public NavController navController;
 
+
+    /**
+     * onCreate will setup the app nav bar to swap between fragments views
+     * @param savedInstanceState the previous state of the app
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
