@@ -1,12 +1,10 @@
 package com.maforn.timedshutdown;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.PowerManager;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -23,6 +21,7 @@ public class AccessibilitySupportService extends Service {
      * This Service will start the power off of the device by checking the required power off method,
      * acquiring a wakelock and sending intent with the required delays to the AccessibilityService.
      * It will also deactivate the schedule if it was not a repeating type.
+     *
      * @param paramIntent the Intent that started this Service
      */
     public int onStartCommand(Intent paramIntent, int paramInt1, int paramInt2) {
@@ -46,17 +45,18 @@ public class AccessibilitySupportService extends Service {
             }
         }
 
-        // set up wake lock
-        PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
-        PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, "timed-shutdown:wl");
-
         // get all the delays
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("Settings", MODE_PRIVATE);
         int initialDelay = sharedPreferences.getInt("initial_delay", 2000);
         int firstDelay = sharedPreferences.getInt("first_delay", 2500);
         int secondDelay = sharedPreferences.getInt("second_delay", 2500);
-        // acquire a sufficiently long wakelock
-        wakeLock.acquire(2 * 1000L + initialDelay + firstDelay + secondDelay);
+
+        // start the TurnScreenOnActivity to wake the device
+        Intent wakeIntent = new Intent(getApplicationContext(), TurnScreenOnActivity.class);
+        wakeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        // add the time to wait before finishing the wake activity
+        wakeIntent.putExtra("time", 1000L + initialDelay + firstDelay + secondDelay);
+        getApplicationContext().startActivity(wakeIntent);
 
         // send a Toast to the user to let him know the shutdown is happening
         Toast.makeText(this, "Shutting down in " + initialDelay + " milli sec...", Toast.LENGTH_SHORT).show();
