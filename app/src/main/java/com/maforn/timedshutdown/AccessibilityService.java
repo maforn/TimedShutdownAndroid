@@ -30,22 +30,24 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
      */
     public int onStartCommand(Intent paramIntent, int paramInt1, int paramInt2) {
         // nothing is passed: call the power off dialog
-        if (!(paramIntent.getBooleanExtra("exec_gesture", false) || paramIntent.getBooleanExtra("exec_gesture2", false))) {
+        if (!(paramIntent.getBooleanExtra("exec_gesture", false) || paramIntent.getBooleanExtra("exec_gesture2", false) || paramIntent.getBooleanExtra("exec_gesture3", false))) {
             if (!performGlobalAction(GLOBAL_ACTION_POWER_DIALOG)) {
                 // action failed: accessibility permission is missing
                 Toast.makeText(this, R.string.not_performed, Toast.LENGTH_SHORT).show();
             }
         }
 
+
+        sharedPreferences = getApplicationContext().getSharedPreferences("Settings", MODE_PRIVATE);
+        PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];
+
         // first gesture is required
         if (paramIntent.getBooleanExtra("exec_gesture", false)) {
             // get type of gesture and coordinates
-            sharedPreferences = getApplicationContext().getSharedPreferences("Settings", MODE_PRIVATE);
             float x1 = sharedPreferences.getFloat("X_ABS_false", 100);
             float y1 = sharedPreferences.getFloat("Y_ABS_false", 100);
             float x2 = -1, y2 = -1;
             int duration = 200;
-            PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];
 
             // if it's a swipe set up the second point to swipe to
             if (power_off_type == PowerOffType.SWIPE) {
@@ -65,19 +67,20 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
         }
 
         // the second gesture is required
-        if (paramIntent.getBooleanExtra("exec_gesture2", false)) {
+        if (paramIntent.getBooleanExtra("exec_gesture2", false) || paramIntent.getBooleanExtra("exec_gesture3", false)) {
             sharedPreferences = getApplicationContext().getSharedPreferences("Settings", MODE_PRIVATE);
             float x2 = -1, y2 = -1;
             int duration = 200;
 
+            String clickType = paramIntent.getBooleanExtra("exec_gesture2", false) ? "true" : "three";
             // set up the coordinates for the second gestures
-            PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];            if (power_off_type != PowerOffType.ONECLICK) {
-                x2 = sharedPreferences.getFloat("X_ABS_true", 100);
-                y2 = sharedPreferences.getFloat("Y_ABS_true", 100);
+            if (power_off_type != PowerOffType.ONECLICK) {
+                x2 = sharedPreferences.getFloat("X_ABS_" + clickType, 100);
+                y2 = sharedPreferences.getFloat("Y_ABS_" + clickType, 100);
             }
 
             // if two clicks were required
-            if (power_off_type == PowerOffType.TWOCLICKS) {
+            if (power_off_type == PowerOffType.TWOCLICKS || power_off_type == PowerOffType.THREECLICKS) {
                 if (!this.dispatchGesture(createGesture(x2, y2, x2, y2, false, duration), null, null)) {
                     // dispathGesture failed: accessibility permission is missing
                     Toast.makeText(this, R.string.not_performed, Toast.LENGTH_SHORT).show();

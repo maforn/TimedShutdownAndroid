@@ -33,6 +33,12 @@
             android:text="@string/two_clicks" />
 
         <RadioButton
+            android:id="@+id/radio_three_click"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/three_clicks" />
+
+        <RadioButton
             android:id="@+id/radio_swipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -158,6 +164,36 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/outline_circle_24"
                 android:contentDescription="@string/circle_two" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:scaleX="1.25"
+            android:scaleY="1.25"
+            android:id="@+id/draggable_three"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@id/img_circle_three"
+                android:layout_alignTop="@id/img_circle_three"
+                android:layout_alignEnd="@id/img_circle_three"
+                android:layout_alignBottom="@id/img_circle_three"
+                android:gravity="center"
+                android:textColor="?attr/colorPrimary"
+                android:text="3"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:id="@+id/img_circle_three"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/outline_circle_24"
+                android:contentDescription="@string/circle_three" />
         </RelativeLayout>
 
     </RelativeLayout>

@@ -26,6 +26,7 @@ import androidx.navigation.Navigation;
 
 import com.maforn.timedshutdown.AccessibilityService;
 import com.maforn.timedshutdown.AccessibilitySupportService;
+import com.maforn.timedshutdown.FullscreenActivity;
 import com.maforn.timedshutdown.R;
 import com.maforn.timedshutdown.databinding.FragmentTimerBinding;
 
@@ -75,17 +76,22 @@ public class TimerFragment extends Fragment {
                     Navigation.findNavController(container).navigate(R.id.action_timerFragment_to_settingsFragment);
                 } catch (Exception ignored) {
                 }
-                paramDialogInterface.dismiss();
+                sP.edit().putBoolean("firstTime", false).apply();
             });
-            alertDialog.setButton(-2, getString(R.string.title_info), (paramDialogInterface, paramInt) -> {
+            alertDialog.setButton(-2, "VIDEO", (paramDialogInterface, paramInt) -> {
+                try {
+                    String videoPath = "android.resource://" + requireContext().getPackageName() + "/" + R.raw.screen_record;
+                    Intent intent = new Intent(getContext(), FullscreenActivity.class);
+                    intent.putExtra("videoPath", videoPath);
+                    startActivity(intent);
+                } catch (Exception ignored) {
+                }
+            });
+            alertDialog.setButton(-1, getString(R.string.title_info), (paramDialogInterface, paramInt) -> {
                 try {
                     Navigation.findNavController(container).navigate(R.id.action_timerFragment_to_infoFragment);
                 } catch (Exception ignored) {
                 }
-                paramDialogInterface.dismiss();
-            });
-            alertDialog.setButton(-1, getString(R.string.alert_permission_cancel), (paramDialogInterface, paramInt) -> paramDialogInterface.dismiss());
-            alertDialog.setOnDismissListener(dialogInterface -> {
                 sP.edit().putBoolean("firstTime", false).apply();
             });
             alertDialog.show();
@@ -156,7 +162,7 @@ public class TimerFragment extends Fragment {
             if (!isTiming) {
 
                 // try to keep the screen on and permission to show when locked, it will not work otherwise
-                ((Activity) requireContext()).getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD | WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                ((Activity) requireContext()).getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
                 counter = numberPickerHour.getValue() * 3600 + numberPickerMin.getValue() * 60 + numberPickerSec.getValue();
 

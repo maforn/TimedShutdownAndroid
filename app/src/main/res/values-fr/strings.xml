@@ -57,4 +57,6 @@
     <string name="required_ignoring_optimization">L\'application ne fonctionnera que si l\'Optimisation de la Batterie est ignorée.</string>
     <string name="battery_optimization">Optimisation de la Batterie</string>
     <string name="battery_optimization_toast">Ignoring battery optimization is required for this app to work.\nPlease enable it in the settings of your device.</string>
+    <string name="three_clicks">Trois clics</string>
+    <string name="circle_three">Cercle 3</string>
 </resources>

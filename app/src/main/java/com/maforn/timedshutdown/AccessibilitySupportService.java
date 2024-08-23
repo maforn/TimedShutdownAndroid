@@ -50,6 +50,7 @@ public class AccessibilitySupportService extends Service {
         int initialDelay = sharedPreferences.getInt("initial_delay", 2000);
         int firstDelay = sharedPreferences.getInt("first_delay", 2500);
         int secondDelay = sharedPreferences.getInt("second_delay", 2500);
+        int thirdDelay = sharedPreferences.getInt("third_delay", 2500);
 
         // start the TurnScreenOnActivity to wake the device
         Intent wakeIntent = new Intent(getApplicationContext(), TurnScreenOnActivity.class);
@@ -76,13 +77,23 @@ public class AccessibilitySupportService extends Service {
                 getApplicationContext().startService(intent12);
                 // handler added for the second click option
                 PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];
-                if (power_off_type == PowerOffType.TWOCLICKS) {
+                if (power_off_type == PowerOffType.TWOCLICKS || power_off_type == PowerOffType.THREECLICKS) {
                     Handler handler1 = new Handler();
                     handler1.postDelayed(() -> {
                         // call for the second click
                         Intent intent1 = new Intent(getApplicationContext(), AccessibilityService.class);
                         intent1.putExtra("exec_gesture2", true);
                         getApplicationContext().startService(intent1);
+
+                        if (power_off_type == PowerOffType.THREECLICKS) {
+                            Handler handler2 = new Handler();
+                            handler2.postDelayed(() -> {
+                                // call for the second click
+                                Intent intent2 = new Intent(getApplicationContext(), AccessibilityService.class);
+                                intent2.putExtra("exec_gesture3", true);
+                                getApplicationContext().startService(intent2);
+                            }, thirdDelay);
+                        }
                     }, secondDelay);
                 }
             }, firstDelay);

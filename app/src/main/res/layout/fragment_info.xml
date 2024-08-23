@@ -201,11 +201,11 @@
                 android:layout_centerVertical="true"
                 android:scaleX="1.25"
                 android:scaleY="1.25"
-                app:layout_constraintBottom_toBottomOf="@+id/textDraggables"
                 app:layout_constraintEnd_toStartOf="@+id/draggable_two"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textDraggables">
+                app:layout_constraintTop_toTopOf="@+id/textDraggables"
+                app:layout_constraintBottom_toTopOf="@+id/draggable_three">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -235,11 +235,11 @@
                 android:layout_centerInParent="true"
                 android:scaleX="1.25"
                 android:scaleY="1.25"
-                app:layout_constraintBottom_toBottomOf="@+id/textDraggables"
                 app:layout_constraintEnd_toStartOf="@+id/textDraggables"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/draggable_one"
-                app:layout_constraintTop_toTopOf="@+id/textDraggables">
+                app:layout_constraintTop_toTopOf="@+id/textDraggables"
+                app:layout_constraintBottom_toTopOf="@+id/draggable_three">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -260,6 +260,41 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:contentDescription="@string/circle_two"
+                    android:src="@drawable/outline_circle_24" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/draggable_three"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:scaleX="1.25"
+                android:scaleY="1.25"
+                app:layout_constraintTop_toBottomOf="@+id/draggable_two"
+                app:layout_constraintEnd_toStartOf="@+id/draggable_two"
+                app:layout_constraintHorizontal_bias="0.25"
+                app:layout_constraintStart_toEndOf="@+id/draggable_one"
+                app:layout_constraintBottom_toBottomOf="@+id/textDraggables">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@id/img_circle_three"
+                    android:layout_alignTop="@id/img_circle_three"
+                    android:layout_alignEnd="@id/img_circle_three"
+                    android:layout_alignBottom="@id/img_circle_three"
+                    android:gravity="center"
+                    android:text="3"
+                    android:textColor="?attr/colorPrimary"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
+
+                <ImageView
+                    android:id="@+id/img_circle_three"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/circle_three"
                     android:src="@drawable/outline_circle_24" />
             </RelativeLayout>
 
