@@ -54,7 +54,7 @@
     <string name="scrollable_description">Scrollable list of scheduled shut down</string>
     <string name="not_performed">Action not performed, is the accessibility permission missing?</string>
     <string name="schedule_disclaimer">Here you can schedule specific power off alarms. Keep in mind that this is really taxing on the battery of the phone.</string>
-    <string name="circle_four" translatable="false">Circle three</string>
+    <string name="circle_four">Circle four</string>
     <string name="circle_three">Circle three</string>
     <string name="circle_two">Circle two</string>
     <string name="circle_one">Circle one</string>

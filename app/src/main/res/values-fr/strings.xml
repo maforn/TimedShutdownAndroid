@@ -54,7 +54,8 @@
     <string name="scrollable_description">Liste des extinctions programmées</string>
     <string name="not_performed">Action interrompue, permissions d\'accessibilité manquantes ?</string>
     <string name="schedule_disclaimer">Ici vous pouvez programmer des heures spécifiques d\'extinction de l\'appareil. Souvenez-vous qu\'ils sont coûteux en utilisation de la batterie.</string>
-    <string name="circle_three">Circle three</string>
+    <string name="circle_four">Cercle 4</string>
+    <string name="circle_three">Cercle 3</string>
     <string name="circle_two">Cercle 2</string>
     <string name="circle_one">Cercle 1</string>
     <string name="h12h24_button_desc">Ce bouton ouvrira une fenêtre pour sélectionner votre préférence entre les formats d\'affichage en 12 et 24 heures</string>
