@@ -2,6 +2,7 @@ package com.maforn.timedshutdown.ui.settings;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -12,6 +13,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -22,6 +28,9 @@ import com.maforn.timedshutdown.PowerOffType;
 import com.maforn.timedshutdown.R;
 import com.maforn.timedshutdown.databinding.FragmentSettingsBinding;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class SettingsFragment extends Fragment {
 
     private FragmentSettingsBinding binding;
@@ -29,9 +38,12 @@ public class SettingsFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
-    View draggableOne, draggableTwo, draggableThree;
+    View draggableOne, draggableTwo, draggableThree, draggableFour;
+    RadioGroup radioGroup, radioGroupConfig;
+    LinearLayout linearLayout;
+    ImageButton buttonToggleClicks, buttonToggleOptions;
 
-    int idRadioClick, idRadioLongPress, idRadioTwoClick, idRadioThreeClick, idRadioSwipe;
+    int idRadioClick, idRadioLongPress, idRadioTwoClick, idRadioThreeClick, idRadioFourClick, idRadioSwipe;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -41,20 +53,86 @@ public class SettingsFragment extends Fragment {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        radioGroup = binding.radioGroup;
+        radioGroupConfig = binding.radioGroupConfig;
+        linearLayout = binding.linearSettings;
+        buttonToggleClicks = binding.buttonToggleClicks;
+        buttonToggleOptions = binding.buttonToggleOptions;
+
+        // set the on click event on the toggle views button
+        buttonToggleClicks.setOnClickListener(v -> toggleVisibility(radioGroup, v));
+        buttonToggleOptions.setOnClickListener(v -> toggleVisibility(linearLayout, v));
+
         sharedPreferences = requireContext().getSharedPreferences("Settings", MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
         // get the gesture power off type specified by the user
         PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];
 
+        ((RadioButton) radioGroupConfig.getChildAt(sharedPreferences.getInt("chosenConfig", 0))).setChecked(true);
+        radioGroupConfig.setOnCheckedChangeListener((group, checkedId) -> {
+            int configNumber = checkedId == R.id.radioConfig1 ? 0 : 1;
+            editor.putInt("chosenConfig", configNumber);
+            try {
+                JSONObject jsonObject = new JSONObject(sharedPreferences.getString("config" + configNumber, "{power_off_method:0,initial_delay:2000,first_delay:2500,second_delay:2500,third_delay:2500,fourth_delay:2500,X_false:100,Y_false:100,X_true:100,Y_true:100,X_three:100,Y_three:100,X_four:100,Y_four:100}"));
+                ((RadioButton) radioGroup.getChildAt(jsonObject.getInt("power_off_method"))).setChecked(true);
+                editor.putInt("power_off_method", jsonObject.getInt("power_off_method"));
+                editor.putInt("initial_delay", jsonObject.getInt("initial_delay"));
+                editor.putInt("first_delay", jsonObject.getInt("first_delay"));
+                editor.putInt("second_delay", jsonObject.getInt("second_delay"));
+                editor.putInt("third_delay", jsonObject.getInt("third_delay"));
+                editor.putInt("fourth_delay", jsonObject.getInt("fourth_delay"));
+                editor.putFloat("X_false", (float) jsonObject.getDouble("X_false"));
+                editor.putFloat("Y_false", (float) jsonObject.getDouble("Y_false"));
+                editor.putFloat("X_true", (float) jsonObject.getDouble("X_true"));
+                editor.putFloat("Y_true", (float) jsonObject.getDouble("Y_true"));
+                editor.putFloat("X_three", (float) jsonObject.getDouble("X_three"));
+                editor.putFloat("Y_three", (float) jsonObject.getDouble("Y_three"));
+                editor.putFloat("X_four", (float) jsonObject.getDouble("X_four"));
+                editor.putFloat("Y_four", (float) jsonObject.getDouble("Y_four"));
+                // reload page to update the values
+                requireActivity().recreate();
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+            editor.apply();
+        });
+
+        binding.saveConfig.setOnClickListener(v -> {
+            int configNumber = sharedPreferences.getInt("chosenConfig", 0);
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("power_off_method", sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()));
+                jsonObject.put("initial_delay", sharedPreferences.getInt("initial_delay", 2000));
+                jsonObject.put("first_delay", sharedPreferences.getInt("first_delay", 2500));
+                jsonObject.put("second_delay", sharedPreferences.getInt("second_delay", 2500));
+                jsonObject.put("third_delay", sharedPreferences.getInt("third_delay", 2500));
+                jsonObject.put("fourth_delay", sharedPreferences.getInt("fourth_delay", 2500));
+                jsonObject.put("X_false", sharedPreferences.getFloat("X_false", 100));
+                jsonObject.put("Y_false", sharedPreferences.getFloat("Y_false", 100));
+                jsonObject.put("X_true", sharedPreferences.getFloat("X_true", 100));
+                jsonObject.put("Y_true", sharedPreferences.getFloat("Y_true", 100));
+                jsonObject.put("X_three", sharedPreferences.getFloat("X_three", 100));
+                jsonObject.put("Y_three", sharedPreferences.getFloat("Y_three", 100));
+                jsonObject.put("X_four", sharedPreferences.getFloat("X_four", 100));
+                jsonObject.put("Y_four", sharedPreferences.getFloat("Y_four", 100));
+                editor.putString("config" + configNumber, jsonObject.toString());
+                editor.apply();
+                Toast.makeText(requireContext(), "Saved config" + configNumber, Toast.LENGTH_SHORT).show();
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
         idRadioClick = binding.radioClick.getId();
         idRadioLongPress = binding.radioLongPress.getId();
         idRadioTwoClick = binding.radioTwoClick.getId();
         idRadioThreeClick = binding.radioThreeClick.getId();
+        idRadioFourClick = binding.radioFourClick.getId();
         idRadioSwipe = binding.radioSwipe.getId();
 
         // set up the listener to set the power off method on click
-        binding.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             editor.putInt(
                     "power_off_method",
                     getChecked(checkedId)
@@ -62,13 +140,19 @@ public class SettingsFragment extends Fragment {
             editor.apply();
             displaySecondDraggable();
             displayThirdDraggable();
+            displayFourthDraggable();
         });
 
         // if it's not the default power off type, check the selected radio group
         if (power_off_type != PowerOffType.ONECLICK) {
-            binding.radioGroup.check(power_off_type == PowerOffType.LONGPRESS ? idRadioLongPress : (power_off_type == PowerOffType.TWOCLICKS ? idRadioTwoClick : (power_off_type == PowerOffType.THREECLICKS ? idRadioThreeClick : idRadioSwipe)));
+            radioGroup.check(power_off_type == PowerOffType.LONGPRESS ? idRadioLongPress
+                    : (power_off_type == PowerOffType.TWOCLICKS ? idRadioTwoClick
+                    : (power_off_type == PowerOffType.THREECLICKS ? idRadioThreeClick
+                    : (power_off_type == PowerOffType.FOURCLICKS ? idRadioFourClick
+                    : idRadioSwipe ))));
             displaySecondDraggable();
             displayThirdDraggable();
+            displayFourthDraggable();
         }
 
         // set the on click event on the power dialog button
@@ -79,8 +163,9 @@ public class SettingsFragment extends Fragment {
 
         // set the on click event on the reset button: reset the draggables position
         binding.buttonReset.setOnClickListener(view -> {
-            binding.radioGroup.check(binding.radioClick.getId());
             editor.clear();
+            radioGroup.check(binding.radioClick.getId());
+            radioGroupConfig.check(binding.radioConfig1.getId());
             editor.apply();
             requireActivity().recreate();
         });
@@ -101,10 +186,12 @@ public class SettingsFragment extends Fragment {
             final EditText inputDelayFirstAction = viewInflated.findViewById(R.id.inputDelayFirstAction);
             final EditText inputDelaySecondAction = viewInflated.findViewById(R.id.inputDelaySecondAction);
             final EditText inputDelayThirdAction = viewInflated.findViewById(R.id.inputDelayThirdAction);
+            final EditText inputDelayFourthAction = viewInflated.findViewById(R.id.inputDelayFourthAction);
             inputInitialDelay.setText(String.valueOf(sharedPreferences.getInt("initial_delay", 2000)));
             inputDelayFirstAction.setText(String.valueOf(sharedPreferences.getInt("first_delay", 2500)));
             inputDelaySecondAction.setText(String.valueOf(sharedPreferences.getInt("second_delay", 2500)));
             inputDelayThirdAction.setText(String.valueOf(sharedPreferences.getInt("third_delay", 2500)));
+            inputDelayFourthAction.setText(String.valueOf(sharedPreferences.getInt("fourth_delay", 2500)));
 
             builder.setView(viewInflated);
 
@@ -118,9 +205,9 @@ public class SettingsFragment extends Fragment {
                     editor.putInt("first_delay", Math.min(Math.max(50, Integer.parseInt(inputDelayFirstAction.getText().toString())), 10000));
                     editor.putInt("second_delay", Math.min(Math.max(50, Integer.parseInt(inputDelaySecondAction.getText().toString())), 10000));
                     editor.putInt("third_delay", Math.min(Math.max(50, Integer.parseInt(inputDelayThirdAction.getText().toString())), 10000));
+                    editor.putInt("fourth_delay", Math.min(Math.max(50, Integer.parseInt(inputDelayFourthAction.getText().toString())), 10000));
                     editor.apply();
-                }
-                catch (Exception ignored) {
+                } catch (Exception ignored) {
                 }
                 dialog.dismiss();
             });
@@ -133,10 +220,12 @@ public class SettingsFragment extends Fragment {
         draggableOne = binding.draggableOne;
         draggableTwo = binding.draggableTwo;
         draggableThree = binding.draggableThree;
+        draggableFour = binding.draggableFour;
 
         draggableOne.setOnTouchListener(drag);
         draggableTwo.setOnTouchListener(drag);
         draggableThree.setOnTouchListener(drag);
+        draggableFour.setOnTouchListener(drag);
 
         // on reopening set the values as they were set
         draggableOne.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
@@ -152,9 +241,33 @@ public class SettingsFragment extends Fragment {
                 draggableThree.setX(sharedPreferences.getFloat("X_three", 100));
                 draggableThree.setY(sharedPreferences.getFloat("Y_three", 100));
             }
+            if (sharedPreferences.contains("X_four")) {
+                draggableFour.setX(sharedPreferences.getFloat("X_four", 100));
+                draggableFour.setY(sharedPreferences.getFloat("Y_four", 100));
+            }
         });
 
         return root;
+    }
+
+    /**
+     * Toggle the visibility of the element and animate the button rotation
+     *
+     * @param element the element to hide/show
+     * @param button  the button to animate
+     */
+    private void toggleVisibility(View element, View button) {
+        int visibility = element.getVisibility();
+        float rotationAngle = 0f;
+        if (visibility == View.VISIBLE) {
+            element.setVisibility(View.GONE);
+            rotationAngle = 180f;
+        } else {
+            element.setVisibility(View.VISIBLE);
+        }
+        ObjectAnimator rotateAnimator = ObjectAnimator.ofFloat(button, "rotation", rotationAngle);
+        rotateAnimator.setDuration(300);
+        rotateAnimator.start();
     }
 
     /**
@@ -172,6 +285,8 @@ public class SettingsFragment extends Fragment {
             return PowerOffType.TWOCLICKS.ordinal();
         } else if (checkedId == idRadioThreeClick) {
             return PowerOffType.THREECLICKS.ordinal();
+        } else if (checkedId == idRadioFourClick) {
+            return PowerOffType.FOURCLICKS.ordinal();
         } else { // idRadioSwipe
             return PowerOffType.SWIPE.ordinal();
         }
@@ -210,7 +325,7 @@ public class SettingsFragment extends Fragment {
 
                 // save values only on release
                 case MotionEvent.ACTION_UP:
-                    String viewType = view.getId() == draggableTwo.getId() ? "true" : (view.getId() == draggableThree.getId() ? "three" : "false");
+                    String viewType = view.getId() == draggableTwo.getId() ? "true" : (view.getId() == draggableThree.getId() ? "three" : (view.getId() == draggableFour.getId() ? "four" : "false"));
                     editor.putFloat("X_" + viewType, dX + event.getRawX());
                     editor.putFloat("X_ABS_" + viewType, event.getRawX());
                     editor.putFloat("Y_" + viewType, dY + event.getRawY());
@@ -235,7 +350,7 @@ public class SettingsFragment extends Fragment {
      */
     private void displaySecondDraggable() {
         PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];
-        if (power_off_type == PowerOffType.SWIPE || power_off_type == PowerOffType.TWOCLICKS  || power_off_type == PowerOffType.THREECLICKS) {
+        if (power_off_type == PowerOffType.SWIPE || power_off_type == PowerOffType.TWOCLICKS || power_off_type == PowerOffType.THREECLICKS || power_off_type == PowerOffType.FOURCLICKS) {
             binding.draggableTwo.setVisibility(View.VISIBLE);
         } else {
             binding.draggableTwo.setVisibility(View.GONE);
@@ -248,10 +363,23 @@ public class SettingsFragment extends Fragment {
      */
     private void displayThirdDraggable() {
         PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];
-        if (power_off_type == PowerOffType.THREECLICKS) {
+        if (power_off_type == PowerOffType.THREECLICKS || power_off_type == PowerOffType.FOURCLICKS) {
             binding.draggableThree.setVisibility(View.VISIBLE);
         } else {
             binding.draggableThree.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * This function will display the second draggable circle if the power off method requires
+     * three of them
+     */
+    private void displayFourthDraggable() {
+        PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];
+        if (power_off_type == PowerOffType.FOURCLICKS) {
+            binding.draggableFour.setVisibility(View.VISIBLE);
+        } else {
+            binding.draggableFour.setVisibility(View.GONE);
         }
     }
 

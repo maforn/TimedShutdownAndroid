@@ -1,21 +1,16 @@
 package com.maforn.timedshutdown;
 
-import android.accessibilityservice.AccessibilityServiceInfo;
 import android.accessibilityservice.GestureDescription;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ServiceInfo;
 import android.graphics.Path;
 import android.os.Build;
 import android.provider.Settings;
 import android.view.accessibility.AccessibilityEvent;
-import android.view.accessibility.AccessibilityManager;
 import android.widget.Toast;
-
-import java.util.List;
 
 public class AccessibilityService extends android.accessibilityservice.AccessibilityService {
 
@@ -26,11 +21,12 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
      * that are passed through the Intent. If nothing is passed then it will call the power off
      * dialog, if exec_gesture is passed then it will execute the first gesture and if exec_gesture2
      * is passed it will execute the second gesture (the second click)
+     *
      * @param paramIntent the Intent that started this Service
      */
     public int onStartCommand(Intent paramIntent, int paramInt1, int paramInt2) {
         // nothing is passed: call the power off dialog
-        if (!(paramIntent.getBooleanExtra("exec_gesture", false) || paramIntent.getBooleanExtra("exec_gesture2", false) || paramIntent.getBooleanExtra("exec_gesture3", false))) {
+        if (!(paramIntent.getBooleanExtra("exec_gesture", false) || paramIntent.getBooleanExtra("exec_gesture2", false) || paramIntent.getBooleanExtra("exec_gesture3", false) || paramIntent.getBooleanExtra("exec_gesture4", false))) {
             if (!performGlobalAction(GLOBAL_ACTION_POWER_DIALOG)) {
                 // action failed: accessibility permission is missing
                 Toast.makeText(this, R.string.not_performed, Toast.LENGTH_SHORT).show();
@@ -67,12 +63,12 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
         }
 
         // the second gesture is required
-        if (paramIntent.getBooleanExtra("exec_gesture2", false) || paramIntent.getBooleanExtra("exec_gesture3", false)) {
+        if (paramIntent.getBooleanExtra("exec_gesture2", false) || paramIntent.getBooleanExtra("exec_gesture3", false) || paramIntent.getBooleanExtra("exec_gesture4", false)) {
             sharedPreferences = getApplicationContext().getSharedPreferences("Settings", MODE_PRIVATE);
             float x2 = -1, y2 = -1;
             int duration = 200;
 
-            String clickType = paramIntent.getBooleanExtra("exec_gesture2", false) ? "true" : "three";
+            String clickType = paramIntent.getBooleanExtra("exec_gesture2", false) ? "true" :  paramIntent.getBooleanExtra("exec_gesture3", false) ? "three" : "four";
             // set up the coordinates for the second gestures
             if (power_off_type != PowerOffType.ONECLICK) {
                 x2 = sharedPreferences.getFloat("X_ABS_" + clickType, 100);
@@ -80,7 +76,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
             }
 
             // if two clicks were required
-            if (power_off_type == PowerOffType.TWOCLICKS || power_off_type == PowerOffType.THREECLICKS) {
+            if (power_off_type == PowerOffType.TWOCLICKS || power_off_type == PowerOffType.THREECLICKS || power_off_type == PowerOffType.FOURCLICKS) {
                 if (!this.dispatchGesture(createGesture(x2, y2, x2, y2, false, duration), null, null)) {
                     // dispathGesture failed: accessibility permission is missing
                     Toast.makeText(this, R.string.not_performed, Toast.LENGTH_SHORT).show();
@@ -95,11 +91,12 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
      * This function will create the gesture description for the accessibility service's function
      * dispatchGesture. If it is a swipe it will create a line and transform it to a gesture, else
      * it will just create a point (a click)
-     * @param x1 x screen coordinate of point 1
-     * @param y1 y screen coordinate of point 1
-     * @param x2 x screen coordinate of point 2
-     * @param y2 y screen coordinate of point 2
-     * @param swipe boolean: if it is a swipe (true) or just a click (false)
+     *
+     * @param x1       x screen coordinate of point 1
+     * @param y1       y screen coordinate of point 1
+     * @param x2       x screen coordinate of point 2
+     * @param y2       y screen coordinate of point 2
+     * @param swipe    boolean: if it is a swipe (true) or just a click (false)
      * @param duration the duration of the specified gesture
      * @return the built GestureDescription from the Stroke
      */
@@ -147,23 +144,20 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
 
     /**
      * A function that returns true if this app has the accessibility service permission enabled
+     *
      * @param context the application context
      * @param service type of service to check
      * @return a boolean: is accessibility enabled? -> true or false
      */
     public static boolean isAccessibilityServiceEnabled(Context context, Class<? extends android.accessibilityservice.AccessibilityService> service) {
-        // get all apps with accessibility enabled
-        AccessibilityManager am = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
-        List<AccessibilityServiceInfo> enabledServices = am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_ALL_MASK);
+        // Get the list of enabled accessibility services from Settings.Secure
+        String enabledServicesSetting = Settings.Secure.getString(
+                context.getContentResolver(),
+                Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
+        );
 
-        // check if this app (package) is contained in the list
-        for (AccessibilityServiceInfo enabledService : enabledServices) {
-            ServiceInfo enabledServiceInfo = enabledService.getResolveInfo().serviceInfo;
-            if (enabledServiceInfo.packageName.equals(context.getPackageName()) && enabledServiceInfo.name.equals(service.getName()))
-                return true;
-        }
-
-        return false;
+        // Check to see if the enabled services list contains the sample service
+        return enabledServicesSetting != null && enabledServicesSetting.contains(context.getPackageName() + "/" + service.getName());
     }
 
     @Override

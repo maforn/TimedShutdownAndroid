@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="?android:attr/actionBarSize"
-    tools:context=".ui.info.InfoFragment"
-    android:fadeScrollbars="false" >
+    android:fadeScrollbars="false"
+    tools:context=".ui.info.InfoFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:paddingBottom="16dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="16dp">
 
         <TextView
             android:id="@+id/text_notifications"
@@ -143,6 +143,46 @@
                 app:layout_constraintTop_toTopOf="@+id/textPower"
                 app:tint="?attr/colorPrimary" />
 
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBaseline_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/textConfig"
+                app:layout_constraintEnd_toEndOf="@+id/delayButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textConfig">
+
+                <RadioButton
+                    android:id="@+id/radioConfig1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="Config 1" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Config 2" />
+
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/saveConfig"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?attr/colorOnPrimary"
+                android:text="Save"
+                android:textColor="?attr/colorPrimary"
+                android:textStyle="bold"
+                app:layout_constraintBaseline_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/textSave"
+                app:layout_constraintEnd_toEndOf="@+id/delayButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textSave"
+                app:strokeColor="?attr/colorPrimary"
+                app:strokeWidth="1dp" />
+
+
             <TextView
                 android:id="@+id/textReset"
                 android:layout_width="0dp"
@@ -174,10 +214,34 @@
                 android:layout_marginStart="6dp"
                 android:gravity="center_vertical"
                 android:text="@string/power_button_desc"
-                app:layout_constraintBottom_toTopOf="@+id/textDraggables"
+                app:layout_constraintBottom_toTopOf="@+id/textConfig"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/powerButton"
                 app:layout_constraintTop_toBottomOf="@+id/textDelay" />
+
+            <TextView
+                android:id="@+id/textConfig"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:gravity="center_vertical"
+                android:text="The config buttons are shortcuts to movement and time delay configurations, they can be loaded by clicking on them and saved using the save button."
+                app:layout_constraintBottom_toTopOf="@+id/textSave"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/powerButton"
+                app:layout_constraintTop_toBottomOf="@+id/textPower" />
+
+            <TextView
+                android:id="@+id/textSave"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:gravity="center_vertical"
+                android:text="This button saves the current settings to the selected configuration. It saved the power off method, all the time delays and the draggables positions."
+                app:layout_constraintBottom_toTopOf="@+id/textDraggables"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/powerButton"
+                app:layout_constraintTop_toBottomOf="@+id/textConfig" />
 
             <TextView
                 android:id="@+id/textDraggables"
@@ -190,7 +254,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/powerButton"
-                app:layout_constraintTop_toBottomOf="@id/textPower" />
+                app:layout_constraintTop_toBottomOf="@id/textSave" />
 
             <RelativeLayout
                 android:id="@+id/draggable_one"
@@ -201,11 +265,11 @@
                 android:layout_centerVertical="true"
                 android:scaleX="1.25"
                 android:scaleY="1.25"
+                app:layout_constraintBottom_toTopOf="@+id/draggable_three"
                 app:layout_constraintEnd_toStartOf="@+id/draggable_two"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textDraggables"
-                app:layout_constraintBottom_toTopOf="@+id/draggable_three">
+                app:layout_constraintTop_toTopOf="@+id/textDraggables">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -235,11 +299,11 @@
                 android:layout_centerInParent="true"
                 android:scaleX="1.25"
                 android:scaleY="1.25"
+                app:layout_constraintBottom_toTopOf="@+id/draggable_three"
                 app:layout_constraintEnd_toStartOf="@+id/textDraggables"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/draggable_one"
-                app:layout_constraintTop_toTopOf="@+id/textDraggables"
-                app:layout_constraintBottom_toTopOf="@+id/draggable_three">
+                app:layout_constraintTop_toTopOf="@+id/textDraggables">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -270,11 +334,11 @@
                 android:layout_centerInParent="true"
                 android:scaleX="1.25"
                 android:scaleY="1.25"
-                app:layout_constraintTop_toBottomOf="@+id/draggable_two"
+                app:layout_constraintBottom_toBottomOf="@+id/textDraggables"
                 app:layout_constraintEnd_toStartOf="@+id/draggable_two"
                 app:layout_constraintHorizontal_bias="0.25"
                 app:layout_constraintStart_toEndOf="@+id/draggable_one"
-                app:layout_constraintBottom_toBottomOf="@+id/textDraggables">
+                app:layout_constraintTop_toBottomOf="@+id/draggable_two">
 
                 <TextView
                     android:layout_width="wrap_content"

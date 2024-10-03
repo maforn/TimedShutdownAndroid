@@ -6,13 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".ui.settings.SettingsFragment">
 
+    <ImageButton
+        android:id="@+id/buttonToggleClicks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/image_button_border"
+        android:contentDescription="Arrow"
+        app:tint="?attr/colorPrimary"
+        android:src="@drawable/baseline_arrow_drop_down_24"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="6dp" />
+
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checkedButton="@id/radio_click"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/buttonToggleClicks">
 
         <RadioButton
             android:id="@+id/radio_click"
@@ -39,6 +51,12 @@
             android:text="@string/three_clicks" />
 
         <RadioButton
+            android:id="@+id/radio_four_click"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/four_clicks" />
+
+        <RadioButton
             android:id="@+id/radio_swipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,13 +64,26 @@
 
     </RadioGroup>
 
+    <ImageButton
+        android:id="@+id/buttonToggleOptions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/image_button_border"
+        android:contentDescription="Arrow"
+        app:tint="?attr/colorPrimary"
+        android:src="@drawable/baseline_arrow_drop_down_24"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="6dp" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="10dp"
+        android:id="@+id/linear_settings"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/buttonToggleOptions">
 
         <ImageButton
             android:id="@+id/buttonHelp"
@@ -92,11 +123,41 @@
             android:id="@+id/buttonPowerDialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
             android:background="@drawable/image_button_border"
             android:contentDescription="@string/img_call_power_dialog"
             android:minHeight="48dp"
             android:src="@drawable/ic_power_24dp"
             app:tint="?attr/colorPrimary" />
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioGroupConfig"
+            >
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioConfig1"
+                android:text="Config 1"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Config 2"/>
+
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/saveConfig"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="?attr/colorOnPrimary"
+            android:text="Save"
+            android:textColor="?attr/colorPrimary"
+            android:textStyle="bold"
+            app:strokeColor="?attr/colorPrimary"
+            app:strokeWidth="1dp" />
     </LinearLayout>
 
     <RelativeLayout
@@ -194,6 +255,36 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/outline_circle_24"
                 android:contentDescription="@string/circle_three" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:scaleX="1.25"
+            android:scaleY="1.25"
+            android:id="@+id/draggable_four"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@id/img_circle_four"
+                android:layout_alignTop="@id/img_circle_four"
+                android:layout_alignEnd="@id/img_circle_four"
+                android:layout_alignBottom="@id/img_circle_four"
+                android:gravity="center"
+                android:textColor="?attr/colorPrimary"
+                android:text="4"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:id="@+id/img_circle_four"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/outline_circle_24"
+                android:contentDescription="@string/circle_four" />
         </RelativeLayout>
 
     </RelativeLayout>

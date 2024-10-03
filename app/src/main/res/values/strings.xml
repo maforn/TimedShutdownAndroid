@@ -9,6 +9,7 @@
     <string name="last_selected_timer">Last Timer</string>
     <string name="two_clicks">Two Clicks</string>
     <string name="three_clicks">Three Clicks</string>
+    <string name="four_clicks">Four Clicks</string>
     <string name="swipe">Swipe</string>
     <string name="long_press">Long Press</string>
     <string name="one_click">One Click</string>
@@ -53,7 +54,8 @@
     <string name="scrollable_description">Scrollable list of scheduled shut down</string>
     <string name="not_performed">Action not performed, is the accessibility permission missing?</string>
     <string name="schedule_disclaimer">Here you can schedule specific power off alarms. Keep in mind that this is really taxing on the battery of the phone.</string>
-    <string name="circle_three">Circle two</string>
+    <string name="circle_four" translatable="false">Circle three</string>
+    <string name="circle_three">Circle three</string>
     <string name="circle_two">Circle two</string>
     <string name="circle_one">Circle one</string>
     <string name="h12h24_button_desc">This button will open a dialog to select the preference between 12 and 24 hours format</string>
