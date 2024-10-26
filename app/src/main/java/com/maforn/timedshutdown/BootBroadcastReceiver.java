@@ -18,8 +18,9 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
      * This function will be receive an intent by the OS when it powers on and, on boot completed,
      * it will get all the scheduled power offs, parse them from the json saved in SharedPreferences
      * and then set up an Alarm that will trigger the power off sequence at the specified time
+     *
      * @param context the app context
-     * @param intent an intent containing information on boot status
+     * @param intent  an intent containing information on boot status
      */
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -40,6 +41,8 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
                     throw new RuntimeException(e);
                 }
             }
+
+            NotificationHelper.createShutdownNotification(context);
         }
     }
 }

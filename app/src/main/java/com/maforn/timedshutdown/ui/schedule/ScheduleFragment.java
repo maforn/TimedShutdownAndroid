@@ -2,6 +2,7 @@ package com.maforn.timedshutdown.ui.schedule;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
@@ -12,10 +13,10 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +26,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.maforn.timedshutdown.AccessibilitySupportService;
+import com.maforn.timedshutdown.NotificationHelper;
 import com.maforn.timedshutdown.R;
 import com.maforn.timedshutdown.databinding.FragmentScheduleBinding;
 
@@ -53,7 +58,8 @@ public class ScheduleFragment extends Fragment {
 
     /**
      * This is an helper function to get the Calendar day of the week from buttons on a view
-     * @param id the id of the selected button
+     *
+     * @param id      the id of the selected button
      * @param addView the general view containing those buttons
      * @return day of the week associated with the button
      */
@@ -75,8 +81,9 @@ public class ScheduleFragment extends Fragment {
 
     /**
      * Gets the index of the id value in a json array containing json objects
+     *
      * @param arr json array of json objects
-     * @param id id value
+     * @param id  id value
      * @return the index of the id in the the array
      */
     public static int getIdIndex(@NonNull JSONArray arr, int id) throws JSONException {
@@ -90,7 +97,8 @@ public class ScheduleFragment extends Fragment {
 
     /**
      * Gets the index of the number value in a json array containing
-     * @param arr a json array of numbers
+     *
+     * @param arr    a json array of numbers
      * @param number number value
      * @return the index of the number in the array
      */
@@ -105,6 +113,7 @@ public class ScheduleFragment extends Fragment {
 
     /**
      * Converts a JsonArray to an Int Array
+     *
      * @param jsonArray the JsonArray that must be converted
      * @return an equivalent Int Array
      */
@@ -146,6 +155,42 @@ public class ScheduleFragment extends Fragment {
                 paramDialogInterface.dismiss();
             });
             alertDialog.show();
+        });
+
+        ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if (isGranted) {
+                sP.edit().putBoolean("notifications", true).apply();
+                NotificationHelper.createShutdownNotification(requireContext());
+            } else {
+                binding.toggleButton.setChecked(false);
+                Toast.makeText(requireContext(), "Notification permission is required to enable notifications", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            sP.edit().putBoolean("notifications", false).apply();
+        }
+
+        // set the toggle button to the current state
+        binding.toggleButton.setChecked(sP.getBoolean("notifications", false));
+        binding.toggleButton.setOnClickListener(v -> {
+            if (binding.toggleButton.isChecked()) {
+                // check and request the notification permission
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+                } else {
+                    // Permission already granted, enable notifications
+                    sP.edit().putBoolean("notifications", true).apply();
+                    NotificationHelper.createShutdownNotification(requireContext());
+                }
+
+                sP.edit().putBoolean("notifications", true).apply();
+                // recreate the notification
+                NotificationHelper.createShutdownNotification(requireContext());
+            } else {
+                sP.edit().putBoolean("notifications", false).apply();
+                NotificationHelper.cancelShutdownNotification(requireContext());
+            }
         });
 
         // set up AlarmManager and check if the permission for scheduling was granted
@@ -214,8 +259,9 @@ public class ScheduleFragment extends Fragment {
 
     /**
      * This function will cancel/deactivate the execution of the specified schedule
-     * @param id the id of the schedule that must be canceled
-     * @param context the app context
+     *
+     * @param id           the id of the schedule that must be canceled
+     * @param context      the app context
      * @param alarmManager the alarmManager that had the pending Intent
      */
     private static void cancelSchedules(int id, Context context, AlarmManager alarmManager) {
@@ -241,8 +287,9 @@ public class ScheduleFragment extends Fragment {
 
     /**
      * This function will set the alarm and intent to shut down the phone
-     * @param jsonObject the single schedule json object
-     * @param context the app context
+     *
+     * @param jsonObject   the single schedule json object
+     * @param context      the app context
      * @param alarmManager the alarmManager used to schedule
      */
     public static void setSchedule(JSONObject jsonObject, Context context, AlarmManager alarmManager) {
@@ -295,10 +342,13 @@ public class ScheduleFragment extends Fragment {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+
+        NotificationHelper.createShutdownNotification(context);
     }
 
     /**
      * Function to set the hour text in 12 or 24 hours format based on the settings
+     *
      * @param hour
      * @param minute
      * @param text
@@ -318,6 +368,7 @@ public class ScheduleFragment extends Fragment {
     /**
      * This function will add an inflated view for a json schedule entry. It is used both when creating
      * new schedules and when the fragment is reloaded
+     *
      * @param jsonObject the single schedule json object
      */
     @SuppressLint("DefaultLocale")

@@ -118,7 +118,7 @@ public class SettingsFragment extends Fragment {
                 jsonObject.put("Y_four", sharedPreferences.getFloat("Y_four", 100));
                 editor.putString("config" + configNumber, jsonObject.toString());
                 editor.apply();
-                Toast.makeText(requireContext(), "Saved config" + configNumber, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Saved Config " + (configNumber + 1), Toast.LENGTH_SHORT).show();
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }

@@ -1,5 +1,7 @@
 package com.maforn.timedshutdown;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,12 +14,14 @@ import androidx.navigation.ui.NavigationUI;
 import com.maforn.timedshutdown.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String CHANNEL_ID = "shutdown_channel";
 
     public NavController navController;
 
 
     /**
      * onCreate will setup the app nav bar to swap between fragments views
+     *
      * @param savedInstanceState the previous state of the app
      */
     @Override
@@ -36,6 +40,18 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
+        createNotificationChannel();
+    }
+
+    private void createNotificationChannel() {
+        CharSequence name = "Shutdown Channel";
+        String description = "Channel for scheduled shutdown notifications";
+        int importance = NotificationManager.IMPORTANCE_LOW;
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+        channel.setDescription(description);
+
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
     }
 
     @Override

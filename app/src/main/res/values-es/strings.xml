@@ -63,4 +63,5 @@
     <string name="battery_optimization">Optimización de batería</string>
     <string name="battery_optimization_toast">Es necesario ignorar la optimización de la batería para que esta app funcione.\nPor favor, actívala en los ajustes de tu dispositivo.</string>
     <string name="four_clicks">Cuatro clics</string>
+    <string name="widget_description">Apagado Rápido</string>
 </resources>

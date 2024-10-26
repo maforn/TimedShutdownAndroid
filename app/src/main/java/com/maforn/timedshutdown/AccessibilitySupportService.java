@@ -107,6 +107,8 @@ public class AccessibilitySupportService extends Service {
                         }
                     }, secondDelay);
                 }
+
+                NotificationHelper.createShutdownNotification(getApplicationContext());
             }, firstDelay);
         }, initialDelay);
 

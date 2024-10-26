@@ -29,10 +29,21 @@
             app:strokeColor="?attr/colorPrimary"
             app:strokeWidth="1dp" />
 
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/buttonTimeFormat"
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/toggleButton"
+            android:textOn="Notification On"
+            android:textOff="Notification Off"
+            android:textColor="?attr/colorPrimary" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/buttonTimeFormat"
+            android:layout_below="@+id/toggleButton"
             android:orientation="vertical">
 
             <TextView
