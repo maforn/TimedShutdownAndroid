@@ -35,7 +35,7 @@
             tools:ignore="LockedOrientationActivity" />
 
         <activity
-            android:name=".AutomationSupportActivityLastUsed"
+            android:name=".AutomationSupportActivity"
             android:exported="true"
             android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity" />
@@ -107,7 +107,7 @@
                 android:resource="@xml/shutdown_widget_info_config2" />
         </receiver>
         <receiver
-            android:name=".ShutdownWidgetProviderLast"
+            android:name=".ShutdownWidgetProvider"
             android:description="@string/widget_description"
             android:label="@string/widget_description"
             android:exported="false">
@@ -117,7 +117,7 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/shutdown_widget_info_last" />
+                android:resource="@xml/shutdown_widget_info" />
         </receiver>
     </application>
 

@@ -94,6 +94,29 @@ public class TimerFragment extends Fragment {
                 }
                 sP.edit().putBoolean("firstTime", false).apply();
             });
+            alertDialog.setOnDismissListener(dialog -> sP.edit().putBoolean("firstTime", false).apply());
+            alertDialog.show();
+        }
+
+        if (!sP.contains("firstTimeSinceUpdate2.85")) {
+            AlertDialog alertDialog = (new AlertDialog.Builder(getContext())).create();
+            alertDialog.setTitle("Update Notice");
+            alertDialog.setMessage("This update changed the way configurations are stored, please reset configs and set them again in the settings tab if you used them. Also, the automation activities have been expanded.");
+            alertDialog.setButton(-3, getString(R.string.title_settings), (paramDialogInterface, paramInt) -> {
+                try {
+                    Navigation.findNavController(container).navigate(R.id.action_timerFragment_to_settingsFragment);
+                } catch (Exception ignored) {
+                }
+                sP.edit().putBoolean("firstTimeSinceUpdate2.85", false).apply();
+            });
+            alertDialog.setButton(-1, getString(R.string.title_info), (paramDialogInterface, paramInt) -> {
+                try {
+                    Navigation.findNavController(container).navigate(R.id.action_timerFragment_to_infoFragment);
+                } catch (Exception ignored) {
+                }
+                sP.edit().putBoolean("firstTimeSinceUpdate2.85", false).apply();
+            });
+            alertDialog.setOnDismissListener(dialog -> sP.edit().putBoolean("firstTimeSinceUpdate2.85", false).apply());
             alertDialog.show();
         }
 

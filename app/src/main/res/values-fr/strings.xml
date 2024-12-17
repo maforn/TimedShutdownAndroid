@@ -39,7 +39,7 @@
     <string name="alert_settings_text">N\'oubliez pas de configurer les mouvements de mise hors tension dans l\'onglet Paramètres de l\'application.\nConsultez l\'onglet Info si vous avez besoin d\'aide.</string>
     <string name="alert_settings_hours_format">Choisissez entre le format d\'affichage en 24 heures et le format 12 heures dans l\'onglet Programme.</string>
     <string name="info_title_automate">Automate</string>
-    <string name="info_text_automate">You may automate the shutdown process using other apps such as Tasker or Automate by starting the Activity <i>com.maforn.timedshutdown.AutomationSupportActivityConfig1</i>.</string>
+    <string name="info_text_automate">Vous pouvez automatiser le processus d\'arrêt à l\'aide d\'autres applications telles que Tasker ou Automate en démarrant l\'activité <i>com.maforn.timedshutdown.AutomationSupportActivity</i> si vous souhaitez démarrer le dernier mouvement utilisé, ou à la place <i>com.maforn.timedshutdown.AutomationSupportActivityConfig1</i> pour utiliser config1 et <i>com.maforn.timedshutdown.AutomationSupportActivityConfig2</i> pour config2.</string>
     <string name="info_title_contribute">Contribuez</string>
     <string name="info_text_contribute">Cette application est open-source : vous pouvez contribuer à son développement, demander de nouvelles fonctionnalités ou signaler des bugs sur la <a href="https://github.com/maforn/TimedShutdownAndroid">page Github</a>du projet.</string>
     <string name="accessibility_description">The app requires the accessibility permission to emulate the manual gestures that are used to power off the phone. The permission will not be used for anything else.</string>

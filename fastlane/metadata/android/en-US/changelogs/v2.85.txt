@@ -1,0 +1,3 @@
+- Fixed custom configuration issue
+- Added two new services for automation support to call the config 1 and config 2 shutdown sequence - ATTENTION: this requires a reset of the configurations
+- Added two new widgets for the configs

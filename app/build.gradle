@@ -4,14 +4,14 @@ plugins {
 
 android {
     namespace 'com.maforn.timedshutdown'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.maforn.timedshutdown"
         minSdk 27
-        targetSdk 34
-        versionCode 28
-        versionName "v2.80"
+        targetSdk 35
+        versionCode 29
+        versionName "v2.85"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -38,11 +38,11 @@ android {
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation 'androidx.core:core:1.13.1'
+    implementation 'androidx.core:core:1.15.0'
     implementation 'com.google.android.material:material:1.12.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.navigation:navigation-fragment:2.8.3'
-    implementation 'androidx.navigation:navigation-ui:2.8.3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
+    implementation 'androidx.navigation:navigation-fragment:2.8.5'
+    implementation 'androidx.navigation:navigation-ui:2.8.5'
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.22"))
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'

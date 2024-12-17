@@ -18,6 +18,8 @@ import androidx.fragment.app.Fragment;
 import com.maforn.timedshutdown.FullscreenActivity;
 import com.maforn.timedshutdown.R;
 import com.maforn.timedshutdown.ShutdownWidgetProviderConfig1;
+import com.maforn.timedshutdown.ShutdownWidgetProviderConfig2;
+import com.maforn.timedshutdown.ShutdownWidgetProvider;
 import com.maforn.timedshutdown.databinding.FragmentInfoBinding;
 
 public class InfoFragment extends Fragment {
@@ -44,18 +46,28 @@ public class InfoFragment extends Fragment {
             startActivity(intent);
         });
 
-        binding.addWidget.setOnClickListener(v -> {
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(requireContext());
-            if (appWidgetManager.isRequestPinAppWidgetSupported()) {
-                Intent pinnedWidgetCallbackIntent = new Intent(requireContext(), ShutdownWidgetProviderConfig1.class);
-                ComponentName shutdownWidgetProvider = new ComponentName(requireContext(), ShutdownWidgetProviderConfig1.class);
-                PendingIntent successCallback = PendingIntent.getBroadcast(requireContext(), 0,
-                        pinnedWidgetCallbackIntent, PendingIntent.FLAG_MUTABLE);
-                appWidgetManager.requestPinAppWidget(shutdownWidgetProvider, null, successCallback);
-            }
+        binding.addWidgetConfig1.setOnClickListener(v -> {
+            addWidget(new Intent(requireContext(), ShutdownWidgetProviderConfig1.class), new ComponentName(requireContext(), ShutdownWidgetProviderConfig1.class));
+        });
+
+        binding.addWidgetConfig2.setOnClickListener(v -> {
+            addWidget(new Intent(requireContext(), ShutdownWidgetProviderConfig2.class), new ComponentName(requireContext(), ShutdownWidgetProviderConfig2.class));
+        });
+
+        binding.addWidgetLast.setOnClickListener(v -> {
+            addWidget(new Intent(requireContext(), ShutdownWidgetProvider.class), new ComponentName(requireContext(), ShutdownWidgetProvider.class));
         });
 
         return binding.getRoot();
+    }
+
+    private void addWidget(Intent pinnedWidgetCallbackIntent, ComponentName shutdownWidgetProvider) {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(requireContext());
+        if (appWidgetManager.isRequestPinAppWidgetSupported()) {
+            PendingIntent successCallback = PendingIntent.getBroadcast(requireContext(), 0,
+                    pinnedWidgetCallbackIntent, PendingIntent.FLAG_MUTABLE);
+            appWidgetManager.requestPinAppWidget(shutdownWidgetProvider, null, successCallback);
+        }
     }
 
     @Override

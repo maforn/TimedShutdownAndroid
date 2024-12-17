@@ -411,7 +411,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Widget"
+            android:text="Widgets"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -419,14 +419,42 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8sp"
-            android:text="This app provides a widget that can be placed on the home screen to quickly start the shutdown sequence."
+            android:text="This app provides a few widgets that can be placed on the home screen to quickly start the shutdown sequence."
             android:textSize="16sp" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/addWidget"
-            android:text="Add Widget"
+            android:id="@+id/addWidgetLast"
+            android:text="Quick Shutdown with last used config"
+            android:backgroundTint="?attr/colorOnPrimary"
+            android:layout_gravity="center"
+            android:minHeight="48dip"
+            android:paddingVertical="12dp"
+            android:textColor="?attr/colorPrimary"
+            android:textStyle="bold"
+            app:strokeColor="?attr/colorPrimary"
+            app:strokeWidth="1dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/addWidgetConfig1"
+            android:text="Quick Shutdown with Config 1"
+            android:backgroundTint="?attr/colorOnPrimary"
+            android:layout_gravity="center"
+            android:minHeight="48dip"
+            android:paddingVertical="12dp"
+            android:textColor="?attr/colorPrimary"
+            android:textStyle="bold"
+            app:strokeColor="?attr/colorPrimary"
+            app:strokeWidth="1dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/addWidgetConfig2"
+            android:text="Quick Shutdown with Config 2"
             android:backgroundTint="?attr/colorOnPrimary"
             android:layout_gravity="center"
             android:minHeight="48dip"
