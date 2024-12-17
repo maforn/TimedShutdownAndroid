@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,6 +34,7 @@ import org.json.JSONObject;
 
 public class SettingsFragment extends Fragment {
 
+    public static final int DEFAULT_POINT_VALUE = 100;
     private FragmentSettingsBinding binding;
 
     private SharedPreferences sharedPreferences;
@@ -74,28 +76,18 @@ public class SettingsFragment extends Fragment {
             int configNumber = checkedId == R.id.radioConfig1 ? 0 : 1;
             editor.putInt("chosenConfig", configNumber);
             try {
-                JSONObject jsonObject = new JSONObject(sharedPreferences.getString("config" + configNumber, "{power_off_method:0,initial_delay:2000,first_delay:2500,second_delay:2500,third_delay:2500,fourth_delay:2500,X_false:100,Y_false:100,X_true:100,Y_true:100,X_three:100,Y_three:100,X_four:100,Y_four:100}"));
+                JSONObject jsonObject = new JSONObject(sharedPreferences.getString("config" + configNumber, "{power_off_method:0,initial_delay:2000,first_delay:2500,second_delay:2500,third_delay:2500,fourth_delay:2500,X_false:100,Y_false:100,X_true:100,Y_true:100,X_three:100,Y_three:100,X_four:100,Y_four:100,X_ABS_false:100,Y_ABS_false:100,X_ABS_true:100,Y_ABS_true:100,X_ABS_three:100,Y_ABS_three:100,X_ABS_four:100,Y_ABS_four:100}"));
+                Log.d("CONFIG status json", jsonObject.toString());
                 ((RadioButton) radioGroup.getChildAt(jsonObject.getInt("power_off_method"))).setChecked(true);
-                editor.putInt("power_off_method", jsonObject.getInt("power_off_method"));
-                editor.putInt("initial_delay", jsonObject.getInt("initial_delay"));
-                editor.putInt("first_delay", jsonObject.getInt("first_delay"));
-                editor.putInt("second_delay", jsonObject.getInt("second_delay"));
-                editor.putInt("third_delay", jsonObject.getInt("third_delay"));
-                editor.putInt("fourth_delay", jsonObject.getInt("fourth_delay"));
-                editor.putFloat("X_false", (float) jsonObject.getDouble("X_false"));
-                editor.putFloat("Y_false", (float) jsonObject.getDouble("Y_false"));
-                editor.putFloat("X_true", (float) jsonObject.getDouble("X_true"));
-                editor.putFloat("Y_true", (float) jsonObject.getDouble("Y_true"));
-                editor.putFloat("X_three", (float) jsonObject.getDouble("X_three"));
-                editor.putFloat("Y_three", (float) jsonObject.getDouble("Y_three"));
-                editor.putFloat("X_four", (float) jsonObject.getDouble("X_four"));
-                editor.putFloat("Y_four", (float) jsonObject.getDouble("Y_four"));
+                switchConfig(editor, jsonObject);
                 // reload page to update the values
                 requireActivity().recreate();
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
-            editor.apply();
+            Log.d("CONFIG chosenConfig", String.valueOf(configNumber));
+            editor.commit();
+            Log.d("CONFIG Y_true", String.valueOf(sharedPreferences.getFloat("Y_false", DEFAULT_POINT_VALUE)));
         });
 
         binding.saveConfig.setOnClickListener(v -> {
@@ -108,14 +100,22 @@ public class SettingsFragment extends Fragment {
                 jsonObject.put("second_delay", sharedPreferences.getInt("second_delay", 2500));
                 jsonObject.put("third_delay", sharedPreferences.getInt("third_delay", 2500));
                 jsonObject.put("fourth_delay", sharedPreferences.getInt("fourth_delay", 2500));
-                jsonObject.put("X_false", sharedPreferences.getFloat("X_false", 100));
-                jsonObject.put("Y_false", sharedPreferences.getFloat("Y_false", 100));
-                jsonObject.put("X_true", sharedPreferences.getFloat("X_true", 100));
-                jsonObject.put("Y_true", sharedPreferences.getFloat("Y_true", 100));
-                jsonObject.put("X_three", sharedPreferences.getFloat("X_three", 100));
-                jsonObject.put("Y_three", sharedPreferences.getFloat("Y_three", 100));
-                jsonObject.put("X_four", sharedPreferences.getFloat("X_four", 100));
-                jsonObject.put("Y_four", sharedPreferences.getFloat("Y_four", 100));
+                jsonObject.put("X_false", sharedPreferences.getFloat("X_false", DEFAULT_POINT_VALUE));
+                jsonObject.put("Y_false", sharedPreferences.getFloat("Y_false", DEFAULT_POINT_VALUE));
+                jsonObject.put("X_true", sharedPreferences.getFloat("X_true", DEFAULT_POINT_VALUE));
+                jsonObject.put("Y_true", sharedPreferences.getFloat("Y_true", DEFAULT_POINT_VALUE));
+                jsonObject.put("X_three", sharedPreferences.getFloat("X_three", DEFAULT_POINT_VALUE));
+                jsonObject.put("Y_three", sharedPreferences.getFloat("Y_three", DEFAULT_POINT_VALUE));
+                jsonObject.put("X_four", sharedPreferences.getFloat("X_four", DEFAULT_POINT_VALUE));
+                jsonObject.put("Y_four", sharedPreferences.getFloat("Y_four", DEFAULT_POINT_VALUE));
+                jsonObject.put("X_ABS_false", sharedPreferences.getFloat("X_ABS_false", DEFAULT_POINT_VALUE));
+                jsonObject.put("Y_ABS_false", sharedPreferences.getFloat("Y_ABS_false", DEFAULT_POINT_VALUE));
+                jsonObject.put("X_ABS_true", sharedPreferences.getFloat("X_ABS_true", DEFAULT_POINT_VALUE));
+                jsonObject.put("Y_ABS_true", sharedPreferences.getFloat("Y_ABS_true", DEFAULT_POINT_VALUE));
+                jsonObject.put("X_ABS_three", sharedPreferences.getFloat("X_ABS_three", DEFAULT_POINT_VALUE));
+                jsonObject.put("Y_ABS_three", sharedPreferences.getFloat("Y_ABS_three", DEFAULT_POINT_VALUE));
+                jsonObject.put("X_ABS_four", sharedPreferences.getFloat("X_ABS_four", DEFAULT_POINT_VALUE));
+                jsonObject.put("Y_ABS_four", sharedPreferences.getFloat("Y_ABS_four", DEFAULT_POINT_VALUE));
                 editor.putString("config" + configNumber, jsonObject.toString());
                 editor.apply();
                 Toast.makeText(requireContext(), "Saved Config " + (configNumber + 1), Toast.LENGTH_SHORT).show();
@@ -230,24 +230,49 @@ public class SettingsFragment extends Fragment {
         // on reopening set the values as they were set
         draggableOne.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
             if (sharedPreferences.contains("X_false")) {
-                draggableOne.setX(sharedPreferences.getFloat("X_false", 100));
-                draggableOne.setY(sharedPreferences.getFloat("Y_false", 100));
+                draggableOne.setX(sharedPreferences.getFloat("X_false", DEFAULT_POINT_VALUE));
+                draggableOne.setY(sharedPreferences.getFloat("Y_false", DEFAULT_POINT_VALUE));
             }
             if (sharedPreferences.contains("X_true")) {
-                draggableTwo.setX(sharedPreferences.getFloat("X_true", 100));
-                draggableTwo.setY(sharedPreferences.getFloat("Y_true", 100));
+                draggableTwo.setX(sharedPreferences.getFloat("X_true", DEFAULT_POINT_VALUE));
+                draggableTwo.setY(sharedPreferences.getFloat("Y_true", DEFAULT_POINT_VALUE));
             }
             if (sharedPreferences.contains("X_three")) {
-                draggableThree.setX(sharedPreferences.getFloat("X_three", 100));
-                draggableThree.setY(sharedPreferences.getFloat("Y_three", 100));
+                draggableThree.setX(sharedPreferences.getFloat("X_three", DEFAULT_POINT_VALUE));
+                draggableThree.setY(sharedPreferences.getFloat("Y_three", DEFAULT_POINT_VALUE));
             }
             if (sharedPreferences.contains("X_four")) {
-                draggableFour.setX(sharedPreferences.getFloat("X_four", 100));
-                draggableFour.setY(sharedPreferences.getFloat("Y_four", 100));
+                draggableFour.setX(sharedPreferences.getFloat("X_four", DEFAULT_POINT_VALUE));
+                draggableFour.setY(sharedPreferences.getFloat("Y_four", DEFAULT_POINT_VALUE));
             }
         });
 
         return root;
+    }
+
+    public static void switchConfig(SharedPreferences.Editor editor, JSONObject jsonObject) throws JSONException {
+        editor.putInt("power_off_method", jsonObject.getInt("power_off_method"));
+        editor.putInt("initial_delay", jsonObject.getInt("initial_delay"));
+        editor.putInt("first_delay", jsonObject.getInt("first_delay"));
+        editor.putInt("second_delay", jsonObject.getInt("second_delay"));
+        editor.putInt("third_delay", jsonObject.getInt("third_delay"));
+        editor.putInt("fourth_delay", jsonObject.getInt("fourth_delay"));
+        editor.putFloat("X_false", (float) jsonObject.optDouble("X_false", DEFAULT_POINT_VALUE));
+        editor.putFloat("Y_false", (float) jsonObject.optDouble("Y_false", DEFAULT_POINT_VALUE));
+        editor.putFloat("X_true", (float) jsonObject.optDouble("X_true", DEFAULT_POINT_VALUE));
+        editor.putFloat("Y_true", (float) jsonObject.optDouble("Y_true", DEFAULT_POINT_VALUE));
+        editor.putFloat("X_three", (float) jsonObject.optDouble("X_three", DEFAULT_POINT_VALUE));
+        editor.putFloat("Y_three", (float) jsonObject.optDouble("Y_three", DEFAULT_POINT_VALUE));
+        editor.putFloat("X_four", (float) jsonObject.optDouble("X_four", DEFAULT_POINT_VALUE));
+        editor.putFloat("Y_four", (float) jsonObject.optDouble("Y_four", DEFAULT_POINT_VALUE));
+        editor.putFloat("X_ABS_false", (float) jsonObject.optDouble("X_ABS_false", DEFAULT_POINT_VALUE));
+        editor.putFloat("Y_ABS_false", (float) jsonObject.optDouble("Y_ABS_false", DEFAULT_POINT_VALUE));
+        editor.putFloat("X_ABS_true", (float) jsonObject.optDouble("X_ABS_true", DEFAULT_POINT_VALUE));
+        editor.putFloat("Y_ABS_true", (float) jsonObject.optDouble("Y_ABS_true", DEFAULT_POINT_VALUE));
+        editor.putFloat("X_ABS_three", (float) jsonObject.optDouble("X_ABS_three", DEFAULT_POINT_VALUE));
+        editor.putFloat("Y_ABS_three", (float) jsonObject.optDouble("Y_ABS_three", DEFAULT_POINT_VALUE));
+        editor.putFloat("X_ABS_four", (float) jsonObject.optDouble("X_ABS_four", DEFAULT_POINT_VALUE));
+        editor.putFloat("Y_ABS_four", (float) jsonObject.optDouble("Y_ABS_four", DEFAULT_POINT_VALUE));
     }
 
     /**

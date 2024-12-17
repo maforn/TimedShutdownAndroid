@@ -39,7 +39,7 @@
     <string name="alert_settings_text">Remember to set in the Settings tab the movement to power off the phone.\nIf you need help consult the Info tab.</string>
     <string name="alert_settings_hours_format">Choose between 24 hours format and 12 hours format in the schedule tab.</string>
     <string name="info_title_automate">Automate</string>
-    <string name="info_text_automate">You may automate the shutdown process using other apps such as Tasker or Automate by starting the Activity <i>com.maforn.timedshutdown.AutomationSupportActivity</i>.</string>
+    <string name="info_text_automate">You may automate the shutdown process using other apps such as Tasker or Automate by starting the Activity <i>com.maforn.timedshutdown.AutomationSupportActivityLastUsed</i> if you want to start the last used motion, or instead <i>com.maforn.timedshutdown.AutomationSupportActivityConfig1</i> to use config1 and <i>com.maforn.timedshutdown.AutomationSupportActivityConfig2</i> for config2.</string>
     <string name="info_title_contribute">Contribute</string>
     <string name="info_text_contribute">This app is open-source; you can contribute to the development, request new features or signal any bugs on the <a href="https://github.com/maforn/TimedShutdownAndroid">github page</a>.</string>
     <string name="accessibility_description">The app requires the accessibility permission to emulate the manual gestures that are used to power off the phone. The permission will not be used for anything else.</string>
@@ -63,4 +63,6 @@
     <string name="battery_optimization">Battery Optimization</string>
     <string name="battery_optimization_toast">Ignoring battery optimization is required for this app to work.\nPlease enable it in the settings of your device.</string>
     <string name="widget_description">Quick Shutdown</string>
+    <string name="quick_config_1">Quick Config 1</string>
+    <string name="quick_config_2">Quick Config 2</string>
 </resources>

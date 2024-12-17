@@ -30,15 +30,28 @@
         </activity>
         <activity
             android:name=".FullscreenActivity"
-            android:screenOrientation="sensorPortrait"
             android:label="Tutorial Video"
+            android:screenOrientation="sensorPortrait"
+            tools:ignore="LockedOrientationActivity" />
+
+        <activity
+            android:name=".AutomationSupportActivityLastUsed"
+            android:exported="true"
+            android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".AutomationSupportActivity"
-            android:screenOrientation="sensorPortrait"
+            android:name=".AutomationSupportActivityConfig1"
             android:exported="true"
+            android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity" />
-        <activity android:name=".TurnScreenOnActivity"
+        <activity
+            android:name=".AutomationSupportActivityConfig2"
+            android:exported="true"
+            android:screenOrientation="sensorPortrait"
+            tools:ignore="LockedOrientationActivity" />
+
+        <activity
+            android:name=".TurnScreenOnActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
 
         <service
@@ -67,7 +80,10 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".ShutdownWidgetProvider"
+        <receiver
+            android:name=".ShutdownWidgetProviderConfig1"
+            android:description="@string/quick_config_1"
+            android:label="@string/quick_config_1"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -75,7 +91,33 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/shutdown_widget_info" />
+                android:resource="@xml/shutdown_widget_info_config1" />
+        </receiver>
+        <receiver
+            android:name=".ShutdownWidgetProviderConfig2"
+            android:description="@string/quick_config_2"
+            android:label="@string/quick_config_2"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/shutdown_widget_info_config2" />
+        </receiver>
+        <receiver
+            android:name=".ShutdownWidgetProviderLast"
+            android:description="@string/widget_description"
+            android:label="@string/widget_description"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/shutdown_widget_info_last" />
         </receiver>
     </application>
 

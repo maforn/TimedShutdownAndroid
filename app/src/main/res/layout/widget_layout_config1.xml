@@ -10,4 +10,11 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/widget_description"
         android:src="@mipmap/ic_widget" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:textAlignment="center"
+        android:layout_height="wrap_content"
+        android:textColor="@color/design_default_color_on_primary"
+        android:text="@string/quick_config_1" />
 </LinearLayout>

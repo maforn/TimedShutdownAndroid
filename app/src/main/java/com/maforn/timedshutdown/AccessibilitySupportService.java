@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -47,6 +48,7 @@ public class AccessibilitySupportService extends Service {
 
         // get all the delays
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("Settings", MODE_PRIVATE);
+        Log.d("CONFIG AccessibilitySupportService", "onStartCommand: " + sharedPreferences.getAll());
         int initialDelay = sharedPreferences.getInt("initial_delay", 2000);
         int firstDelay = sharedPreferences.getInt("first_delay", 2500);
         int secondDelay = sharedPreferences.getInt("second_delay", 2500);

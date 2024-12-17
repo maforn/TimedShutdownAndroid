@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class AutomationSupportActivity extends AppCompatActivity {
+public class AutomationSupportActivityLastUsed extends AppCompatActivity {
 
     /**
      * This activity is just a support activity for automation apps such as Tasker and Automate,
