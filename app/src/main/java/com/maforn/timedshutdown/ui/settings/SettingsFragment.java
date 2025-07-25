@@ -200,12 +200,12 @@ public class SettingsFragment extends Fragment {
                 // using a try is necessary for the case of an empty string (""), because parseInt
                 // cannot handle it and throws a NumberFormatException
                 try {
-                    // set the new values with 50 milliseconds as the min and 10000 as the max
-                    editor.putInt("initial_delay", Math.min(Math.max(50, Integer.parseInt(inputInitialDelay.getText().toString())), 10000));
-                    editor.putInt("first_delay", Math.min(Math.max(50, Integer.parseInt(inputDelayFirstAction.getText().toString())), 10000));
-                    editor.putInt("second_delay", Math.min(Math.max(50, Integer.parseInt(inputDelaySecondAction.getText().toString())), 10000));
-                    editor.putInt("third_delay", Math.min(Math.max(50, Integer.parseInt(inputDelayThirdAction.getText().toString())), 10000));
-                    editor.putInt("fourth_delay", Math.min(Math.max(50, Integer.parseInt(inputDelayFourthAction.getText().toString())), 10000));
+                    // set the new values with 50 milliseconds as the min and 60000 as the max
+                    editor.putInt("initial_delay", Math.min(Math.max(50, Integer.parseInt(inputInitialDelay.getText().toString())), 60000));
+                    editor.putInt("first_delay", Math.min(Math.max(50, Integer.parseInt(inputDelayFirstAction.getText().toString())), 60000));
+                    editor.putInt("second_delay", Math.min(Math.max(50, Integer.parseInt(inputDelaySecondAction.getText().toString())), 60000));
+                    editor.putInt("third_delay", Math.min(Math.max(50, Integer.parseInt(inputDelayThirdAction.getText().toString())), 60000));
+                    editor.putInt("fourth_delay", Math.min(Math.max(50, Integer.parseInt(inputDelayFourthAction.getText().toString())), 60000));
                     editor.apply();
                 } catch (Exception ignored) {
                 }

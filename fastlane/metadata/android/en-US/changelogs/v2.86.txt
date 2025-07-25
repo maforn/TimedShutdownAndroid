@@ -1,0 +1,2 @@
+- Updated libraries to the latest versions
+- Raised timers' upper limit to 60 seconds
