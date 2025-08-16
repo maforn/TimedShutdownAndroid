@@ -54,6 +54,7 @@
     <string name="scrollable_description">Lista desplazable de apagados programados</string>
     <string name="not_performed">Acción no realizada, ¿falta el permiso de accesibilidad?</string>
     <string name="schedule_disclaimer">Aquí puedes programar alarmas específicas para apagar el teléfono. Ten en cuenta que esto consume mucha batería del teléfono.</string>
+    <string name="circle_five">Círculo cuatro plus one</string>
     <string name="circle_four">Círculo cuatro</string>
     <string name="circle_three">Círculo tres</string>
     <string name="circle_two">Círculo dos</string>
@@ -63,6 +64,7 @@
     <string name="battery_optimization">Optimización de batería</string>
     <string name="battery_optimization_toast">Es necesario ignorar la optimización de la batería para que esta app funcione.\nPor favor, actívala en los ajustes de tu dispositivo.</string>
     <string name="four_clicks">Cuatro clics</string>
+    <string name="five_clicks">Cuatro clics plus one</string>
     <string name="widget_description">Apagado Rápido</string>
     <string name="quick_config_1">Config. rápida 1</string>
     <string name="quick_config_2">Config. rápida 2</string>
