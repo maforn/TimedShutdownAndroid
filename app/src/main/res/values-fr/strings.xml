@@ -54,6 +54,7 @@
     <string name="scrollable_description">Liste des extinctions programmées</string>
     <string name="not_performed">Action interrompue, permissions d\'accessibilité manquantes ?</string>
     <string name="schedule_disclaimer">Ici vous pouvez programmer des heures spécifiques d\'extinction de l\'appareil. Souvenez-vous qu\'ils sont coûteux en utilisation de la batterie.</string>
+    <string name="circle_six">Cercle 6</string>
     <string name="circle_five">Cercle 5</string>
     <string name="circle_four">Cercle 4</string>
     <string name="circle_three">Cercle 3</string>
@@ -65,6 +66,7 @@
     <string name="battery_optimization_toast">Ignoring battery optimization is required for this app to work.\nPlease enable it in the settings of your device.</string>
     <string name="four_clicks">Quatre clics</string>
     <string name="five_clicks">Quatre clics plus one</string>
+    <string name="six_clicks">Quatre clics plus two</string>
     <string name="widget_description">"Arrêt Rapide "</string>
     <string name="quick_config_1">Config rapide 1</string>
     <string name="quick_config_2">Config rapide 2</string>

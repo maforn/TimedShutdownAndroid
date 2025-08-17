@@ -11,6 +11,7 @@
     <string name="three_clicks">Three Clicks</string>
     <string name="four_clicks">Four Clicks</string>
     <string name="five_clicks">Five Clicks</string>
+    <string name="six_clicks">Six Clicks</string>
     <string name="swipe">Swipe</string>
     <string name="long_press">Long Press</string>
     <string name="one_click">One Click</string>
@@ -55,6 +56,7 @@
     <string name="scrollable_description">Scrollable list of scheduled shut down</string>
     <string name="not_performed">Action not performed, is the accessibility permission missing?</string>
     <string name="schedule_disclaimer">Here you can schedule specific power off alarms. Keep in mind that this is really taxing on the battery of the phone.</string>
+    <string name="circle_six">Circle six</string>
     <string name="circle_five">Circle five</string>
     <string name="circle_four">Circle four</string>
     <string name="circle_three">Circle three</string>

@@ -40,12 +40,12 @@ public class SettingsFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
-    View draggableOne, draggableTwo, draggableThree, draggableFour, draggableFive;
+    View draggableOne, draggableTwo, draggableThree, draggableFour, draggableFive, draggableSix;
     RadioGroup radioGroup, radioGroupConfig;
     LinearLayout linearLayout;
     ImageButton buttonToggleClicks, buttonToggleOptions;
 
-    int idRadioClick, idRadioLongPress, idRadioTwoClick, idRadioThreeClick, idRadioFourClick, idRadioFiveClick, idRadioSwipe;
+    int idRadioClick, idRadioLongPress, idRadioTwoClick, idRadioThreeClick, idRadioFourClick, idRadioFiveClick, idRadioSixClick, idRadioSwipe;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -130,6 +130,7 @@ public class SettingsFragment extends Fragment {
         idRadioThreeClick = binding.radioThreeClick.getId();
         idRadioFourClick = binding.radioFourClick.getId();
         idRadioFiveClick = binding.radioFiveClick.getId();
+        idRadioSixClick = binding.radioSixClick.getId();
         idRadioSwipe = binding.radioSwipe.getId();
 
         // set up the listener to set the power off method on click
@@ -143,6 +144,7 @@ public class SettingsFragment extends Fragment {
             displayThirdDraggable();
             displayFourthDraggable();
             displayFifthDraggable();
+            displaySixthDraggable();
         });
 
         // if it's not the default power off type, check the selected radio group
@@ -152,11 +154,13 @@ public class SettingsFragment extends Fragment {
                     : (power_off_type == PowerOffType.THREECLICKS ? idRadioThreeClick
                     : (power_off_type == PowerOffType.FOURCLICKS ? idRadioFourClick
                     : (power_off_type == PowerOffType.FIVECLICKS ? idRadioFiveClick
-                    : idRadioSwipe )))));
+                    : (power_off_type == PowerOffType.SIXCLICKS ? idRadioSixClick
+                    : idRadioSwipe ))))));
             displaySecondDraggable();
             displayThirdDraggable();
             displayFourthDraggable();
             displayFifthDraggable();
+            displaySixthDraggable();
         }
 
         // set the on click event on the power dialog button
@@ -226,12 +230,14 @@ public class SettingsFragment extends Fragment {
         draggableThree = binding.draggableThree;
         draggableFour = binding.draggableFour;
         draggableFive = binding.draggableFive;
+        draggableSix = binding.draggableSix;
 
         draggableOne.setOnTouchListener(drag);
         draggableTwo.setOnTouchListener(drag);
         draggableThree.setOnTouchListener(drag);
         draggableFour.setOnTouchListener(drag);
         draggableFive.setOnTouchListener(drag);
+        draggableSix.setOnTouchListener(drag);
 
         // on reopening set the values as they were set
         draggableOne.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
@@ -254,6 +260,10 @@ public class SettingsFragment extends Fragment {
             if (sharedPreferences.contains("X_five")) {
                 draggableFive.setX(sharedPreferences.getFloat("X_five", DEFAULT_POINT_VALUE));
                 draggableFive.setY(sharedPreferences.getFloat("Y_five", DEFAULT_POINT_VALUE));
+            }
+            if (sharedPreferences.contains("X_five")) {
+                draggableSix.setX(sharedPreferences.getFloat("X_five", DEFAULT_POINT_VALUE));
+                draggableSix.setY(sharedPreferences.getFloat("Y_five", DEFAULT_POINT_VALUE));
             }
         });
 
@@ -324,6 +334,8 @@ public class SettingsFragment extends Fragment {
             return PowerOffType.FOURCLICKS.ordinal();
         } else if (checkedId == idRadioFiveClick) {
             return PowerOffType.FIVECLICKS.ordinal();
+        } else if (checkedId == idRadioSixClick) {
+            return PowerOffType.SIXCLICKS.ordinal();
         } else { // idRadioSwipe
             return PowerOffType.SWIPE.ordinal();
         }
@@ -362,7 +374,7 @@ public class SettingsFragment extends Fragment {
 
                 // save values only on release
                 case MotionEvent.ACTION_UP:
-                    String viewType = view.getId() == draggableTwo.getId() ? "true" : (view.getId() == draggableThree.getId() ? "three" : (view.getId() == draggableFour.getId() ? "four" : (view.getId() == draggableFive.getId() ? "five" : "false")));
+                    String viewType = view.getId() == draggableTwo.getId() ? "true" : (view.getId() == draggableThree.getId() ? "three" : (view.getId() == draggableFour.getId() ? "four" : (view.getId() == draggableFive.getId() ? "five" :  (view.getId() == draggableSix.getId() ? "six" : "false"))));
                     editor.putFloat("X_" + viewType, dX + event.getRawX());
                     editor.putFloat("X_ABS_" + viewType, event.getRawX());
                     editor.putFloat("Y_" + viewType, dY + event.getRawY());
@@ -387,7 +399,7 @@ public class SettingsFragment extends Fragment {
      */
     private void displaySecondDraggable() {
         PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];
-        if (power_off_type == PowerOffType.SWIPE || power_off_type == PowerOffType.TWOCLICKS || power_off_type == PowerOffType.THREECLICKS || power_off_type == PowerOffType.FOURCLICKS || power_off_type == PowerOffType.FIVECLICKS) {
+        if (power_off_type == PowerOffType.SWIPE || power_off_type == PowerOffType.TWOCLICKS || power_off_type == PowerOffType.THREECLICKS || power_off_type == PowerOffType.FOURCLICKS || power_off_type == PowerOffType.FIVECLICKS || power_off_type == PowerOffType.SIXCLICKS) {
             binding.draggableTwo.setVisibility(View.VISIBLE);
         } else {
             binding.draggableTwo.setVisibility(View.GONE);
@@ -400,7 +412,7 @@ public class SettingsFragment extends Fragment {
      */
     private void displayThirdDraggable() {
         PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];
-        if (power_off_type == PowerOffType.THREECLICKS || power_off_type == PowerOffType.FOURCLICKS || power_off_type == PowerOffType.FIVECLICKS) {
+        if (power_off_type == PowerOffType.THREECLICKS || power_off_type == PowerOffType.FOURCLICKS || power_off_type == PowerOffType.FIVECLICKS || power_off_type == PowerOffType.SIXCLICKS) {
             binding.draggableThree.setVisibility(View.VISIBLE);
         } else {
             binding.draggableThree.setVisibility(View.GONE);
@@ -413,7 +425,7 @@ public class SettingsFragment extends Fragment {
      */
     private void displayFourthDraggable() {
         PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];
-        if (power_off_type == PowerOffType.FOURCLICKS || power_off_type == PowerOffType.FIVECLICKS) {
+        if (power_off_type == PowerOffType.FOURCLICKS || power_off_type == PowerOffType.FIVECLICKS || power_off_type == PowerOffType.SIXCLICKS) {
             binding.draggableFour.setVisibility(View.VISIBLE);
         } else {
             binding.draggableFour.setVisibility(View.GONE);
@@ -421,10 +433,19 @@ public class SettingsFragment extends Fragment {
     }
     private void displayFifthDraggable() {
         PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];
-        if (power_off_type == PowerOffType.FIVECLICKS) {
+        if (power_off_type == PowerOffType.FIVECLICKS || power_off_type == PowerOffType.SIXCLICKS) {
             binding.draggableFive.setVisibility(View.VISIBLE);
         } else {
             binding.draggableFive.setVisibility(View.GONE);
+        }
+    }
+
+    private void displaySixthDraggable() {
+        PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];
+        if (power_off_type == PowerOffType.SIXCLICKS) {
+            binding.draggableSix.setVisibility(View.VISIBLE);
+        } else {
+            binding.draggableSix.setVisibility(View.GONE);
         }
     }
 
