@@ -35,6 +35,7 @@ import org.json.JSONObject;
 public class SettingsFragment extends Fragment {
 
     public static final int DEFAULT_POINT_VALUE = 100;
+    public static final String DEFAULT_JSON_CONFIG = "{power_off_method:0,initial_delay:2000,first_delay:2500,second_delay:2500,third_delay:2500,fourth_delay:2500,fifth_delay:2500,sixth_delay:2500,X_false:100,Y_false:100,X_true:100,Y_true:100,X_three:100,Y_three:100,X_four:100,Y_four:100,X_five:100,Y_five:100,X_six:100,Y_six:100,X_ABS_false:100,Y_ABS_false:100,X_ABS_true:100,Y_ABS_true:100,X_ABS_three:100,Y_ABS_three:100,X_ABS_four:100,Y_ABS_four:100,X_ABS_five:100,Y_ABS_five:100,X_ABS_six:100,Y_ABS_six:100}";
     private FragmentSettingsBinding binding;
 
     private SharedPreferences sharedPreferences;
@@ -76,9 +77,12 @@ public class SettingsFragment extends Fragment {
             int configNumber = checkedId == R.id.radioConfig1 ? 0 : 1;
             editor.putInt("chosenConfig", configNumber);
             try {
-                JSONObject jsonObject = new JSONObject(sharedPreferences.getString("config" + configNumber, "{power_off_method:0,initial_delay:2000,first_delay:2500,second_delay:2500,third_delay:2500,fourth_delay:2500,X_false:100,Y_false:100,X_true:100,Y_true:100,X_three:100,Y_three:100,X_four:100,Y_four:100,X_ABS_false:100,Y_ABS_false:100,X_ABS_true:100,Y_ABS_true:100,X_ABS_three:100,Y_ABS_three:100,X_ABS_four:100,Y_ABS_four:100}"));
+                JSONObject jsonObject = new JSONObject(sharedPreferences.getString("config" + configNumber, DEFAULT_JSON_CONFIG));
                 Log.d("CONFIG status json", jsonObject.toString());
-                ((RadioButton) radioGroup.getChildAt(jsonObject.getInt("power_off_method"))).setChecked(true);
+                RadioButton radioButton = binding.getRoot().findViewById(getRadioIdFromOrdinal(jsonObject.getInt("power_off_method")));
+                if (radioButton != null) {
+                    radioButton.setChecked(true);
+                }
                 switchConfig(editor, jsonObject);
                 // reload page to update the values
                 requireActivity().recreate();
@@ -100,6 +104,8 @@ public class SettingsFragment extends Fragment {
                 jsonObject.put("second_delay", sharedPreferences.getInt("second_delay", 2500));
                 jsonObject.put("third_delay", sharedPreferences.getInt("third_delay", 2500));
                 jsonObject.put("fourth_delay", sharedPreferences.getInt("fourth_delay", 2500));
+                jsonObject.put("fifth_delay", sharedPreferences.getInt("fifth_delay", 2500));
+                jsonObject.put("sixth_delay", sharedPreferences.getInt("sixth_delay", 2500));
                 jsonObject.put("X_false", sharedPreferences.getFloat("X_false", DEFAULT_POINT_VALUE));
                 jsonObject.put("Y_false", sharedPreferences.getFloat("Y_false", DEFAULT_POINT_VALUE));
                 jsonObject.put("X_true", sharedPreferences.getFloat("X_true", DEFAULT_POINT_VALUE));
@@ -108,6 +114,10 @@ public class SettingsFragment extends Fragment {
                 jsonObject.put("Y_three", sharedPreferences.getFloat("Y_three", DEFAULT_POINT_VALUE));
                 jsonObject.put("X_four", sharedPreferences.getFloat("X_four", DEFAULT_POINT_VALUE));
                 jsonObject.put("Y_four", sharedPreferences.getFloat("Y_four", DEFAULT_POINT_VALUE));
+                jsonObject.put("X_five", sharedPreferences.getFloat("X_five", DEFAULT_POINT_VALUE));
+                jsonObject.put("Y_five", sharedPreferences.getFloat("Y_five", DEFAULT_POINT_VALUE));
+                jsonObject.put("X_six", sharedPreferences.getFloat("X_six", DEFAULT_POINT_VALUE));
+                jsonObject.put("Y_six", sharedPreferences.getFloat("Y_six", DEFAULT_POINT_VALUE));
                 jsonObject.put("X_ABS_false", sharedPreferences.getFloat("X_ABS_false", DEFAULT_POINT_VALUE));
                 jsonObject.put("Y_ABS_false", sharedPreferences.getFloat("Y_ABS_false", DEFAULT_POINT_VALUE));
                 jsonObject.put("X_ABS_true", sharedPreferences.getFloat("X_ABS_true", DEFAULT_POINT_VALUE));
@@ -116,6 +126,10 @@ public class SettingsFragment extends Fragment {
                 jsonObject.put("Y_ABS_three", sharedPreferences.getFloat("Y_ABS_three", DEFAULT_POINT_VALUE));
                 jsonObject.put("X_ABS_four", sharedPreferences.getFloat("X_ABS_four", DEFAULT_POINT_VALUE));
                 jsonObject.put("Y_ABS_four", sharedPreferences.getFloat("Y_ABS_four", DEFAULT_POINT_VALUE));
+                jsonObject.put("X_ABS_five", sharedPreferences.getFloat("X_ABS_five", DEFAULT_POINT_VALUE));
+                jsonObject.put("Y_ABS_five", sharedPreferences.getFloat("Y_ABS_five", DEFAULT_POINT_VALUE));
+                jsonObject.put("X_ABS_six", sharedPreferences.getFloat("X_ABS_six", DEFAULT_POINT_VALUE));
+                jsonObject.put("Y_ABS_six", sharedPreferences.getFloat("Y_ABS_six", DEFAULT_POINT_VALUE));
                 editor.putString("config" + configNumber, jsonObject.toString());
                 editor.apply();
                 Toast.makeText(requireContext(), "Saved Config " + (configNumber + 1), Toast.LENGTH_SHORT).show();
@@ -155,7 +169,7 @@ public class SettingsFragment extends Fragment {
                     : (power_off_type == PowerOffType.FOURCLICKS ? idRadioFourClick
                     : (power_off_type == PowerOffType.FIVECLICKS ? idRadioFiveClick
                     : (power_off_type == PowerOffType.SIXCLICKS ? idRadioSixClick
-                    : idRadioSwipe ))))));
+                    : idRadioSwipe))))));
             displaySecondDraggable();
             displayThirdDraggable();
             displayFourthDraggable();
@@ -195,11 +209,16 @@ public class SettingsFragment extends Fragment {
             final EditText inputDelaySecondAction = viewInflated.findViewById(R.id.inputDelaySecondAction);
             final EditText inputDelayThirdAction = viewInflated.findViewById(R.id.inputDelayThirdAction);
             final EditText inputDelayFourthAction = viewInflated.findViewById(R.id.inputDelayFourthAction);
+            final EditText inputDelayFifthAction = viewInflated.findViewById(R.id.inputDelayFifthAction);
+            final EditText inputDelaySixthAction = viewInflated.findViewById(R.id.inputDelaySixthAction);
+
             inputInitialDelay.setText(String.valueOf(sharedPreferences.getInt("initial_delay", 2000)));
             inputDelayFirstAction.setText(String.valueOf(sharedPreferences.getInt("first_delay", 2500)));
             inputDelaySecondAction.setText(String.valueOf(sharedPreferences.getInt("second_delay", 2500)));
             inputDelayThirdAction.setText(String.valueOf(sharedPreferences.getInt("third_delay", 2500)));
             inputDelayFourthAction.setText(String.valueOf(sharedPreferences.getInt("fourth_delay", 2500)));
+            inputDelayFifthAction.setText(String.valueOf(sharedPreferences.getInt("fifth_delay", 2500)));
+            inputDelaySixthAction.setText(String.valueOf(sharedPreferences.getInt("sixth_delay", 2500)));
 
             builder.setView(viewInflated);
 
@@ -214,6 +233,8 @@ public class SettingsFragment extends Fragment {
                     editor.putInt("second_delay", Math.min(Math.max(50, Integer.parseInt(inputDelaySecondAction.getText().toString())), 60000));
                     editor.putInt("third_delay", Math.min(Math.max(50, Integer.parseInt(inputDelayThirdAction.getText().toString())), 60000));
                     editor.putInt("fourth_delay", Math.min(Math.max(50, Integer.parseInt(inputDelayFourthAction.getText().toString())), 60000));
+                    editor.putInt("fifth_delay", Math.min(Math.max(50, Integer.parseInt(inputDelayFifthAction.getText().toString())), 60000));
+                    editor.putInt("sixth_delay", Math.min(Math.max(50, Integer.parseInt(inputDelaySixthAction.getText().toString())), 60000));
                     editor.apply();
                 } catch (Exception ignored) {
                 }
@@ -261,9 +282,9 @@ public class SettingsFragment extends Fragment {
                 draggableFive.setX(sharedPreferences.getFloat("X_five", DEFAULT_POINT_VALUE));
                 draggableFive.setY(sharedPreferences.getFloat("Y_five", DEFAULT_POINT_VALUE));
             }
-            if (sharedPreferences.contains("X_five")) {
-                draggableSix.setX(sharedPreferences.getFloat("X_five", DEFAULT_POINT_VALUE));
-                draggableSix.setY(sharedPreferences.getFloat("Y_five", DEFAULT_POINT_VALUE));
+            if (sharedPreferences.contains("X_six")) {
+                draggableSix.setX(sharedPreferences.getFloat("X_six", DEFAULT_POINT_VALUE));
+                draggableSix.setY(sharedPreferences.getFloat("Y_six", DEFAULT_POINT_VALUE));
             }
         });
 
@@ -277,6 +298,8 @@ public class SettingsFragment extends Fragment {
         editor.putInt("second_delay", jsonObject.getInt("second_delay"));
         editor.putInt("third_delay", jsonObject.getInt("third_delay"));
         editor.putInt("fourth_delay", jsonObject.getInt("fourth_delay"));
+        editor.putInt("fifth_delay", jsonObject.optInt("fifth_delay", 2500));
+        editor.putInt("sixth_delay", jsonObject.optInt("sixth_delay", 2500));
         editor.putFloat("X_false", (float) jsonObject.optDouble("X_false", DEFAULT_POINT_VALUE));
         editor.putFloat("Y_false", (float) jsonObject.optDouble("Y_false", DEFAULT_POINT_VALUE));
         editor.putFloat("X_true", (float) jsonObject.optDouble("X_true", DEFAULT_POINT_VALUE));
@@ -285,6 +308,10 @@ public class SettingsFragment extends Fragment {
         editor.putFloat("Y_three", (float) jsonObject.optDouble("Y_three", DEFAULT_POINT_VALUE));
         editor.putFloat("X_four", (float) jsonObject.optDouble("X_four", DEFAULT_POINT_VALUE));
         editor.putFloat("Y_four", (float) jsonObject.optDouble("Y_four", DEFAULT_POINT_VALUE));
+        editor.putFloat("X_five", (float) jsonObject.optDouble("X_five", DEFAULT_POINT_VALUE));
+        editor.putFloat("Y_five", (float) jsonObject.optDouble("Y_five", DEFAULT_POINT_VALUE));
+        editor.putFloat("X_six", (float) jsonObject.optDouble("X_six", DEFAULT_POINT_VALUE));
+        editor.putFloat("Y_six", (float) jsonObject.optDouble("Y_six", DEFAULT_POINT_VALUE));
         editor.putFloat("X_ABS_false", (float) jsonObject.optDouble("X_ABS_false", DEFAULT_POINT_VALUE));
         editor.putFloat("Y_ABS_false", (float) jsonObject.optDouble("Y_ABS_false", DEFAULT_POINT_VALUE));
         editor.putFloat("X_ABS_true", (float) jsonObject.optDouble("X_ABS_true", DEFAULT_POINT_VALUE));
@@ -293,6 +320,10 @@ public class SettingsFragment extends Fragment {
         editor.putFloat("Y_ABS_three", (float) jsonObject.optDouble("Y_ABS_three", DEFAULT_POINT_VALUE));
         editor.putFloat("X_ABS_four", (float) jsonObject.optDouble("X_ABS_four", DEFAULT_POINT_VALUE));
         editor.putFloat("Y_ABS_four", (float) jsonObject.optDouble("Y_ABS_four", DEFAULT_POINT_VALUE));
+        editor.putFloat("X_ABS_five", (float) jsonObject.optDouble("X_ABS_five", DEFAULT_POINT_VALUE));
+        editor.putFloat("Y_ABS_five", (float) jsonObject.optDouble("Y_ABS_five", DEFAULT_POINT_VALUE));
+        editor.putFloat("X_ABS_six", (float) jsonObject.optDouble("X_ABS_six", DEFAULT_POINT_VALUE));
+        editor.putFloat("Y_ABS_six", (float) jsonObject.optDouble("Y_ABS_six", DEFAULT_POINT_VALUE));
     }
 
     /**
@@ -343,6 +374,24 @@ public class SettingsFragment extends Fragment {
 
 
     /**
+     * Get back the id of the radio button that corresponds to the respective power off type
+     *
+     * @param ordinal the ordinal of the ENUM type
+     * @return the id of the clicked radio group
+     */
+    private int getRadioIdFromOrdinal(int ordinal) {
+        if (ordinal == PowerOffType.ONECLICK.ordinal()) return idRadioClick;
+        if (ordinal == PowerOffType.LONGPRESS.ordinal()) return idRadioLongPress;
+        if (ordinal == PowerOffType.TWOCLICKS.ordinal()) return idRadioTwoClick;
+        if (ordinal == PowerOffType.THREECLICKS.ordinal()) return idRadioThreeClick;
+        if (ordinal == PowerOffType.FOURCLICKS.ordinal()) return idRadioFourClick;
+        if (ordinal == PowerOffType.FIVECLICKS.ordinal()) return idRadioFiveClick;
+        if (ordinal == PowerOffType.SIXCLICKS.ordinal()) return idRadioSixClick;
+        if (ordinal == PowerOffType.SWIPE.ordinal()) return idRadioSwipe;
+        throw new IllegalArgumentException("Unknown ordinal: " + ordinal);
+    }
+
+    /**
      * Set an listener for the draggables so their position is saved and set as the user requires
      */
     View.OnTouchListener drag = new View.OnTouchListener() {
@@ -374,7 +423,7 @@ public class SettingsFragment extends Fragment {
 
                 // save values only on release
                 case MotionEvent.ACTION_UP:
-                    String viewType = view.getId() == draggableTwo.getId() ? "true" : (view.getId() == draggableThree.getId() ? "three" : (view.getId() == draggableFour.getId() ? "four" : (view.getId() == draggableFive.getId() ? "five" :  (view.getId() == draggableSix.getId() ? "six" : "false"))));
+                    String viewType = view.getId() == draggableTwo.getId() ? "true" : (view.getId() == draggableThree.getId() ? "three" : (view.getId() == draggableFour.getId() ? "four" : (view.getId() == draggableFive.getId() ? "five" : (view.getId() == draggableSix.getId() ? "six" : "false"))));
                     editor.putFloat("X_" + viewType, dX + event.getRawX());
                     editor.putFloat("X_ABS_" + viewType, event.getRawX());
                     editor.putFloat("Y_" + viewType, dY + event.getRawY());
@@ -420,8 +469,8 @@ public class SettingsFragment extends Fragment {
     }
 
     /**
-     * This function will display the second draggable circle if the power off method requires
-     * three of them
+     * This function will display the fourth draggable circle if the power off method requires
+     * four of them
      */
     private void displayFourthDraggable() {
         PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];
@@ -431,6 +480,11 @@ public class SettingsFragment extends Fragment {
             binding.draggableFour.setVisibility(View.GONE);
         }
     }
+
+    /**
+     * This function will display the fifth draggable circle if the power off method requires
+     * five of them
+     */
     private void displayFifthDraggable() {
         PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];
         if (power_off_type == PowerOffType.FIVECLICKS || power_off_type == PowerOffType.SIXCLICKS) {
@@ -440,6 +494,10 @@ public class SettingsFragment extends Fragment {
         }
     }
 
+    /**
+     * This function will display the sixth draggable circle if the power off method requires
+     * six of them
+     */
     private void displaySixthDraggable() {
         PowerOffType power_off_type = PowerOffType.values[(sharedPreferences.getInt("power_off_method", PowerOffType.ONECLICK.ordinal()))];
         if (power_off_type == PowerOffType.SIXCLICKS) {

@@ -1,0 +1,2 @@
+- Added 5 and 6 clicks for simple pin unlock
+- Updated libraries to the latest versions

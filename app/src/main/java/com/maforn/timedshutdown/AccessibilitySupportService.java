@@ -93,7 +93,7 @@ public class AccessibilitySupportService extends Service {
                         if (power_off_type == PowerOffType.THREECLICKS || power_off_type == PowerOffType.FOURCLICKS || power_off_type == PowerOffType.FIVECLICKS || power_off_type == PowerOffType.SIXCLICKS) {
                             Handler handler2 = new Handler();
                             handler2.postDelayed(() -> {
-                                // call for the second click
+                                // call for the third click
                                 Intent intent2 = new Intent(getApplicationContext(), AccessibilityService.class);
                                 intent2.putExtra("exec_gesture3", true);
                                 getApplicationContext().startService(intent2);
@@ -101,7 +101,7 @@ public class AccessibilitySupportService extends Service {
                                 if (power_off_type == PowerOffType.FOURCLICKS || power_off_type == PowerOffType.FIVECLICKS || power_off_type == PowerOffType.SIXCLICKS) {
                                     Handler handler3 = new Handler();
                                     handler3.postDelayed(() -> {
-                                        // call for the second click
+                                        // call for the fourth click
                                         Intent intent3 = new Intent(getApplicationContext(), AccessibilityService.class);
                                         intent3.putExtra("exec_gesture4", true);
                                         getApplicationContext().startService(intent3);
@@ -109,14 +109,14 @@ public class AccessibilitySupportService extends Service {
                                         if (power_off_type == PowerOffType.FIVECLICKS || power_off_type == PowerOffType.SIXCLICKS) {
                                             Handler handler4 = new Handler();
                                             handler4.postDelayed(() -> {
-                                                // call for the second click
+                                                // call for the fifth click
                                                 Intent intent4 = new Intent(getApplicationContext(), AccessibilityService.class);
                                                 intent4.putExtra("exec_gesture5", true);
                                                 getApplicationContext().startService(intent4);
                                                 if (power_off_type == PowerOffType.SIXCLICKS) {
                                                     Handler handler5 = new Handler();
                                                     handler5.postDelayed(() -> {
-                                                        // call for the second click
+                                                        // call for the sixth click
                                                         Intent intent5 = new Intent(getApplicationContext(), AccessibilityService.class);
                                                         intent5.putExtra("exec_gesture6", true);
                                                         getApplicationContext().startService(intent5);
