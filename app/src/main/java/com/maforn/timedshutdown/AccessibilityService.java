@@ -26,7 +26,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
      */
     public int onStartCommand(Intent paramIntent, int paramInt1, int paramInt2) {
         // nothing is passed: call the power off dialog
-        if (!(paramIntent.getBooleanExtra("exec_gesture", false) || paramIntent.getBooleanExtra("exec_gesture2", false) || paramIntent.getBooleanExtra("exec_gesture3", false) || paramIntent.getBooleanExtra("exec_gesture4", false))) {
+        if (!(paramIntent.getBooleanExtra("exec_gesture", false) || paramIntent.getBooleanExtra("exec_gesture2", false) || paramIntent.getBooleanExtra("exec_gesture3", false) || paramIntent.getBooleanExtra("exec_gesture4", false) || paramIntent.getBooleanExtra("exec_gesture5", false) || paramIntent.getBooleanExtra("exec_gesture6", false))) {
             if (!performGlobalAction(GLOBAL_ACTION_POWER_DIALOG)) {
                 // action failed: accessibility permission is missing
                 Toast.makeText(this, R.string.not_performed, Toast.LENGTH_SHORT).show();
@@ -63,12 +63,12 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
         }
 
         // the second gesture is required
-        if (paramIntent.getBooleanExtra("exec_gesture2", false) || paramIntent.getBooleanExtra("exec_gesture3", false) || paramIntent.getBooleanExtra("exec_gesture4", false)) {
+        if (paramIntent.getBooleanExtra("exec_gesture2", false) || paramIntent.getBooleanExtra("exec_gesture3", false) || paramIntent.getBooleanExtra("exec_gesture4", false) || paramIntent.getBooleanExtra("exec_gesture5", false) || paramIntent.getBooleanExtra("exec_gesture6", false)) {
             sharedPreferences = getApplicationContext().getSharedPreferences("Settings", MODE_PRIVATE);
             float x2 = -1, y2 = -1;
             int duration = 200;
 
-            String clickType = paramIntent.getBooleanExtra("exec_gesture2", false) ? "true" :  paramIntent.getBooleanExtra("exec_gesture3", false) ? "three" : "four";
+            String clickType = paramIntent.getBooleanExtra("exec_gesture2", false) ? "true" :  paramIntent.getBooleanExtra("exec_gesture3", false) ? "three" : paramIntent.getBooleanExtra("exec_gesture4", false) ? "four" :  paramIntent.getBooleanExtra("exec_gesture5", false) ? "five" : "six";
             // set up the coordinates for the second gestures
             if (power_off_type != PowerOffType.ONECLICK) {
                 x2 = sharedPreferences.getFloat("X_ABS_" + clickType, 100);
@@ -76,7 +76,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
             }
 
             // if two clicks were required
-            if (power_off_type == PowerOffType.TWOCLICKS || power_off_type == PowerOffType.THREECLICKS || power_off_type == PowerOffType.FOURCLICKS) {
+            if (power_off_type == PowerOffType.TWOCLICKS || power_off_type == PowerOffType.THREECLICKS || power_off_type == PowerOffType.FOURCLICKS || power_off_type == PowerOffType.FIVECLICKS || power_off_type == PowerOffType.SIXCLICKS) {
                 if (!this.dispatchGesture(createGesture(x2, y2, x2, y2, false, duration), null, null)) {
                     // dispathGesture failed: accessibility permission is missing
                     Toast.makeText(this, R.string.not_performed, Toast.LENGTH_SHORT).show();

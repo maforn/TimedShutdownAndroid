@@ -57,6 +57,18 @@
             android:text="@string/four_clicks" />
 
         <RadioButton
+            android:id="@+id/radio_five_click"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/five_clicks" />
+
+        <RadioButton
+            android:id="@+id/radio_six_click"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/six_clicks" />
+
+        <RadioButton
             android:id="@+id/radio_swipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -285,6 +297,66 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/outline_circle_24"
                 android:contentDescription="@string/circle_four" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:scaleX="1.25"
+            android:scaleY="1.25"
+            android:id="@+id/draggable_five"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@id/img_circle_five"
+                android:layout_alignTop="@id/img_circle_five"
+                android:layout_alignEnd="@id/img_circle_five"
+                android:layout_alignBottom="@id/img_circle_five"
+                android:gravity="center"
+                android:textColor="?attr/colorPrimary"
+                android:text="5"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:id="@+id/img_circle_five"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/outline_circle_24"
+                android:contentDescription="@string/circle_five" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:scaleX="1.25"
+            android:scaleY="1.25"
+            android:id="@+id/draggable_six"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@id/img_circle_six"
+                android:layout_alignTop="@id/img_circle_six"
+                android:layout_alignEnd="@id/img_circle_six"
+                android:layout_alignBottom="@id/img_circle_six"
+                android:gravity="center"
+                android:textColor="?attr/colorPrimary"
+                android:text="6"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:id="@+id/img_circle_six"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/outline_circle_24"
+                android:contentDescription="@string/circle_six" />
         </RelativeLayout>
 
     </RelativeLayout>
