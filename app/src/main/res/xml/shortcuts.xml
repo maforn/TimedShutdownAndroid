@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <shortcut
+        android:shortcutId="automation_support"
+        android:enabled="true"
+        android:shortcutShortLabel="@string/shortcut_standard_short_label"
+        android:shortcutLongLabel="@string/shortcut_automation_long_label"
+        android:icon="@mipmap/ic_launcher">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.maforn.timedshutdown"
+            android:targetClass="com.maforn.timedshutdown.AutomationSupportActivity" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="automation_config_1"
+        android:enabled="true"
+        android:shortcutShortLabel="@string/shortcut_config1_short_label"
+        android:shortcutLongLabel="@string/shortcut_config1_long_label"
+        android:icon="@mipmap/ic_launcher">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.maforn.timedshutdown"
+            android:targetClass="com.maforn.timedshutdown.AutomationSupportActivityConfig1" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="automation_config_2"
+        android:enabled="true"
+        android:shortcutShortLabel="@string/shortcut_config2_short_label"
+        android:shortcutLongLabel="@string/shortcut_config2_long_label"
+        android:icon="@mipmap/ic_launcher">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.maforn.timedshutdown"
+            android:targetClass="com.maforn.timedshutdown.AutomationSupportActivityConfig2" />
+    </shortcut>
+
+</shortcuts>

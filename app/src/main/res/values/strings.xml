@@ -69,4 +69,13 @@
     <string name="widget_description">Quick Shutdown</string>
     <string name="quick_config_1">Quick Config 1</string>
     <string name="quick_config_2">Quick Config 2</string>
+    <string name="shortcut_standard_short_label">Standard</string>
+    <string name="shortcut_automation_long_label">Open Automation Support</string>
+
+    <string name="shortcut_config1_short_label">Config 1</string>
+    <string name="shortcut_config1_long_label">Open Automation Support (Config 1)</string>
+
+    <string name="shortcut_config2_short_label">Config 2</string>
+    <string name="shortcut_config2_long_label">Open Automation Support (Config 2)</string>
+
 </resources>

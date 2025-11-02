@@ -1,0 +1,2 @@
+- Added App Shortcuts
+- Updated libraries to the latest versions
