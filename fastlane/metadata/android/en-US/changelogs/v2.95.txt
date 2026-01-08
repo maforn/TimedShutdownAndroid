@@ -1,0 +1,2 @@
+- Added App Tile synced with timer view
+- Updated libraries to the latest versions

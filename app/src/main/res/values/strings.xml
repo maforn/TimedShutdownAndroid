@@ -40,6 +40,8 @@
     <string name="alert_permission_ok">OK</string>
     <string name="alert_settings_text">Remember to set in the Settings tab the movement to power off the phone.\nIf you need help consult the Info tab.</string>
     <string name="alert_settings_hours_format">Choose between 24 hours format and 12 hours format in the schedule tab.</string>
+    <string name="info_title_tile">Quick Action Tile</string>
+    <string name="info_text_tile">You may add a quick tile to your drawer menu to restart the shutdown process with the last used timer in the timer screen. The actions on the timer screen is synchronized with the tile.</string>
     <string name="info_title_automate">Automate</string>
     <string name="info_text_automate">You may automate the shutdown process using other apps such as Tasker or Automate by starting the Activity <i>com.maforn.timedshutdown.AutomationSupportActivity</i> if you want to start the last used motion, or instead <i>com.maforn.timedshutdown.AutomationSupportActivityConfig1</i> to use config1 and <i>com.maforn.timedshutdown.AutomationSupportActivityConfig2</i> for config2.</string>
     <string name="info_title_contribute">Contribute</string>
@@ -77,5 +79,8 @@
 
     <string name="shortcut_config2_short_label">Config 2</string>
     <string name="shortcut_config2_long_label">Open Automation Support (Config 2)</string>
+    <string name="quick_tile_start">Timer restarted</string>
+    <string name="quick_tile_stop">Timer stopped</string>
+    <string name="quick_tile_label">Last Timer</string>
 
 </resources>

@@ -6,12 +6,18 @@ import static android.content.Context.POWER_SERVICE;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.PowerManager;
 import android.provider.Settings;
+import android.service.quicksettings.TileService;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +33,7 @@ import androidx.navigation.Navigation;
 import com.maforn.timedshutdown.AccessibilityService;
 import com.maforn.timedshutdown.AccessibilitySupportService;
 import com.maforn.timedshutdown.FullscreenActivity;
+import com.maforn.timedshutdown.QuickTileService;
 import com.maforn.timedshutdown.R;
 import com.maforn.timedshutdown.databinding.FragmentTimerBinding;
 
@@ -44,6 +51,33 @@ public class TimerFragment extends Fragment {
     NumberPicker numberPickerSec, numberPickerMin, numberPickerHour;
 
     SharedPreferences sP;
+
+    public static final String ACTION_START_TIMER = "com.maforn.timedshutdown.action.START_TIMER";
+    public static final String ACTION_STOP_TIMER = "com.maforn.timedshutdown.action.STOP_TIMER";
+
+
+    /**
+     * This function will start/stop the timer mechanism from an external call (TileService)
+     */
+    private final BroadcastReceiver timerReceiver = new BroadcastReceiver() {
+        @SuppressLint("DefaultLocale")
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (ACTION_START_TIMER.equals(intent.getAction())) {
+                if (!isTiming) {
+                    // Recover last timer value for remote start
+                    counter = sP.getInt("lastCounter", 60);
+                    timerText.setText(String.format("%02d:%02d:%02d", counter / 3600, (counter % 3600) / 60, counter % 60));
+                    numberPickerSec.setValue(counter % 60);
+                    numberPickerMin.setValue((counter % 3600) / 60);
+                    numberPickerHour.setValue(counter / 3600);
+                    startTimerMechanism();
+                }
+            } else if (ACTION_STOP_TIMER.equals(intent.getAction())) {
+                stopTimerMechanism();
+            }
+        }
+    };
 
     /**
      * This function will set the global counter variable, update the db value and set the starting
@@ -65,6 +99,16 @@ public class TimerFragment extends Fragment {
         // bind the fragment to the main navigation activity
         binding = FragmentTimerBinding.inflate(inflater, container, false);
         sP = requireContext().getSharedPreferences("Timer", MODE_PRIVATE);
+
+        // add intent filter for messages from tile service for quick start/stop
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ACTION_START_TIMER);
+        filter.addAction(ACTION_STOP_TIMER);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requireContext().registerReceiver(timerReceiver, filter, Context.RECEIVER_EXPORTED);
+        } else {
+            requireContext().registerReceiver(timerReceiver, filter);
+        }
 
         // if it's the first time show the initial dialog: set the gesture in the settings tab
         if (!sP.contains("firstTime")) {
@@ -181,51 +225,10 @@ public class TimerFragment extends Fragment {
         timerText = binding.timerText;
 
         // on start button click
-        binding.buttonStart.setOnClickListener(v -> {
-            if (!isTiming) {
-
-                // try to keep the screen on and permission to show when locked, it will not work otherwise
-                ((Activity) requireContext()).getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-                counter = numberPickerHour.getValue() * 3600 + numberPickerMin.getValue() * 60 + numberPickerSec.getValue();
-
-                isTiming = true;
-                // start the countdown timer
-                countDownTimer = new CountDownTimer(counter * 1000L, 1000) {
-                    // decrease on each tick
-                    public void onTick(long millisUntilFinished) {
-                        timerText.setText(String.format("%02d:%02d:%02d", counter / 3600, (counter % 3600) / 60, counter % 60));
-                        counter--;
-                    }
-
-                    /**
-                     * On finish even call the shutdown process
-                     */
-                    @SuppressLint("SetTextI18n")
-                    public void onFinish() {
-                        // if the app was not forcefully terminated and the context still exists
-                        if (getContext() != null) {
-                            timerText.setText("00:00:00");
-                            // call the power off service
-                            Intent intent = new Intent(getContext(), AccessibilitySupportService.class);
-                            requireContext().startService(intent);
-
-                            isTiming = false;
-                        }
-                    }
-                }.start();
-            }
-        });
+        binding.buttonStart.setOnClickListener(v -> startTimerMechanism());
 
         // the stop button will block the countdown timer
-        binding.buttonStop.setOnClickListener(view -> {
-            if (countDownTimer != null) {
-                countDownTimer.cancel();
-                countDownTimer = null;
-            }
-            isTiming = false;
-
-        });
+        binding.buttonStop.setOnClickListener(v -> stopTimerMechanism());
 
         // the last button will recover the last timer set by the user
         binding.buttonLastTimer.setOnClickListener(view -> {
@@ -239,6 +242,68 @@ public class TimerFragment extends Fragment {
         });
 
         return binding.getRoot();
+    }
+
+    /**
+     * Start the timer mechanism if not already running
+     */
+    private void startTimerMechanism() {
+        if (!isTiming && getContext() != null) {
+            // try to keep the screen on and permission to show when locked, it will not work otherwise
+            ((Activity) requireContext()).getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+            isTiming = true;
+            updateTileState(true);
+
+            // start the countdown timer
+            countDownTimer = new CountDownTimer(counter * 1000L, 1000) {
+                // decrease on each tick
+                public void onTick(long millisUntilFinished) {
+                    timerText.setText(String.format("%02d:%02d:%02d", counter / 3600, (counter % 3600) / 60, counter % 60));
+                    counter--;
+                }
+
+                /**
+                 * On finish even call the shutdown process
+                 */
+                @SuppressLint("SetTextI18n")
+                public void onFinish() {
+                    // if the app was not forcefully terminated and the context still exists
+                    if (getContext() != null) {
+                        timerText.setText("00:00:00");
+                        // call the power off service
+                        Intent intent = new Intent(getContext(), AccessibilitySupportService.class);
+                        requireContext().startService(intent);
+
+                        isTiming = false;
+                        updateTileState(false);
+                    }
+                }
+            }.start();
+        }
+    }
+
+    /**
+     * Stop the timer mechanism if running
+     */
+    private void stopTimerMechanism() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            countDownTimer = null;
+        }
+        isTiming = false;
+        updateTileState(false);
+    }
+
+    /**
+     * Update the tile state in the quick settings panel
+     * @param active boolean to set the tile as active or inactive
+     */
+    private void updateTileState(boolean active) {
+        if (getContext() != null) {
+            sP.edit().putBoolean("timerActive", active).apply();
+            TileService.requestListeningState(requireContext(), new ComponentName(requireContext(), QuickTileService.class));
+        }
     }
 
     @Override
