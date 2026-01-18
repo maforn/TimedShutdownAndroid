@@ -11,6 +11,11 @@ public class TurnScreenOnActivity extends Activity {
         // Turn on the screen and show the activity on top of the lock screen
         setTurnScreenOn(true);
         setShowWhenLocked(true);
+        if (getIntent().getBooleanExtra("isPortait", true)) {
+            setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else {
+            setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
 
         // Post a delayed runnable to the main thread
         new Handler().postDelayed(new Runnable() {

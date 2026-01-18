@@ -182,6 +182,21 @@
                 app:strokeColor="?attr/colorPrimary"
                 app:strokeWidth="1dp" />
 
+            <ImageButton
+                android:id="@+id/rotateButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/image_button_border"
+                android:contentDescription="@string/img_call_power_dialog"
+                android:minHeight="48dp"
+                android:src="@drawable/baseline_screen_rotation_24"
+                app:layout_constraintBaseline_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/textRotate"
+                app:layout_constraintEnd_toEndOf="@+id/delayButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textRotate"
+                app:tint="?attr/colorPrimary" />
+
 
             <TextView
                 android:id="@+id/textReset"
@@ -225,7 +240,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
                 android:gravity="center_vertical"
-                android:text="The config buttons are shortcuts to movement and time delay configurations, they can be loaded by clicking on them and saved using the save button."
+                android:text="@string/config_button_desc"
                 app:layout_constraintBottom_toTopOf="@+id/textSave"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/powerButton"
@@ -237,11 +252,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
                 android:gravity="center_vertical"
-                android:text="This button saves the current settings to the selected configuration. It saved the power off method, all the time delays and the draggables positions."
-                app:layout_constraintBottom_toTopOf="@+id/textDraggables"
+                android:text="@string/save_button_desc"
+                app:layout_constraintBottom_toTopOf="@+id/textRotate"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/powerButton"
                 app:layout_constraintTop_toBottomOf="@+id/textConfig" />
+
+            <TextView
+                android:id="@+id/textRotate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:gravity="center_vertical"
+                android:text="@string/rotate_button_desc"
+                app:layout_constraintBottom_toTopOf="@+id/textDraggables"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/rotateButton"
+                app:layout_constraintTop_toBottomOf="@+id/textSave" />
 
             <TextView
                 android:id="@+id/textDraggables"

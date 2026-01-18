@@ -10,167 +10,195 @@
         android:id="@+id/buttonToggleClicks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="6dp"
         android:background="@drawable/image_button_border"
         android:contentDescription="Arrow"
-        app:tint="?attr/colorPrimary"
         android:src="@drawable/baseline_arrow_drop_down_24"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="6dp" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?attr/colorPrimary" />
 
-    <RadioGroup
-        android:id="@+id/radioGroup"
+    <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checkedButton="@id/radio_click"
+        android:layout_height="0dp"
+        android:layout_marginBottom="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonToggleClicks">
 
-        <RadioButton
-            android:id="@+id/radio_click"
-            android:layout_width="match_parent"
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/one_click" />
+            android:checkedButton="@id/radio_click">
 
-        <RadioButton
-            android:id="@+id/radio_long_press"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/long_press" />
+            <RadioButton
+                android:id="@+id/radio_click"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/one_click" />
 
-        <RadioButton
-            android:id="@+id/radio_two_click"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/two_clicks" />
+            <RadioButton
+                android:id="@+id/radio_long_press"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/long_press" />
 
-        <RadioButton
-            android:id="@+id/radio_three_click"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/three_clicks" />
+            <RadioButton
+                android:id="@+id/radio_two_click"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/two_clicks" />
 
-        <RadioButton
-            android:id="@+id/radio_four_click"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/four_clicks" />
+            <RadioButton
+                android:id="@+id/radio_three_click"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/three_clicks" />
 
-        <RadioButton
-            android:id="@+id/radio_five_click"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/five_clicks" />
+            <RadioButton
+                android:id="@+id/radio_four_click"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/four_clicks" />
 
-        <RadioButton
-            android:id="@+id/radio_six_click"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/six_clicks" />
+            <RadioButton
+                android:id="@+id/radio_five_click"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/five_clicks" />
 
-        <RadioButton
-            android:id="@+id/radio_swipe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/swipe" />
+            <RadioButton
+                android:id="@+id/radio_six_click"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/six_clicks" />
 
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/radio_swipe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/swipe" />
+
+        </RadioGroup>
+    </ScrollView>
 
     <ImageButton
         android:id="@+id/buttonToggleOptions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="6dp"
         android:background="@drawable/image_button_border"
         android:contentDescription="Arrow"
-        app:tint="?attr/colorPrimary"
         android:src="@drawable/baseline_arrow_drop_down_24"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="6dp" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?attr/colorPrimary" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp"
-        android:id="@+id/linear_settings"
+        android:layout_height="0dp"
+        android:layout_marginBottom="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonToggleOptions">
 
-        <ImageButton
-            android:id="@+id/buttonHelp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/image_button_border"
-            android:contentDescription="@string/img_help_button"
-            android:minHeight="48dp"
-            android:src="@drawable/ic_info_24"
-            app:tint="?attr/colorPrimary" />
-
-        <Button
-            android:id="@+id/buttonReset"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="?attr/colorOnPrimary"
-            android:minHeight="48dip"
-            android:paddingVertical="12dp"
-            android:text="@string/reset"
-            android:textColor="?attr/colorPrimary"
-            android:textStyle="bold"
-            app:strokeColor="?attr/colorPrimary"
-            app:strokeWidth="1dp" />
-
-        <ImageButton
-            android:id="@+id/buttonSetDelay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:background="@drawable/image_button_border"
-            android:contentDescription="@string/img_set_delay"
-            android:minHeight="48dp"
-            android:src="@drawable/baseline_hourglass_top_24"
-            app:tint="?attr/colorPrimary" />
-
-        <ImageButton
-            android:id="@+id/buttonPowerDialog"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:background="@drawable/image_button_border"
-            android:contentDescription="@string/img_call_power_dialog"
-            android:minHeight="48dp"
-            android:src="@drawable/ic_power_24dp"
-            app:tint="?attr/colorPrimary" />
-
-        <RadioGroup
+        <LinearLayout
+            android:id="@+id/linear_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/radioGroupConfig"
-            >
-            <RadioButton
-                android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <ImageButton
+                android:id="@+id/buttonHelp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/radioConfig1"
-                android:text="Config 1"/>
+                android:background="@drawable/image_button_border"
+                android:contentDescription="@string/img_help_button"
+                android:minHeight="40dp"
+                android:src="@drawable/ic_info_24"
+                app:tint="?attr/colorPrimary" />
 
-            <RadioButton
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/buttonReset"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Config 2"/>
+                android:backgroundTint="?attr/colorOnPrimary"
+                android:minHeight="40dip"
+                android:paddingVertical="6dp"
+                android:text="@string/reset"
+                android:textColor="?attr/colorPrimary"
+                android:textStyle="bold"
+                app:strokeColor="?attr/colorPrimary"
+                app:strokeWidth="1dp" />
 
-        </RadioGroup>
+            <ImageButton
+                android:id="@+id/buttonSetDelay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/image_button_border"
+                android:contentDescription="@string/img_set_delay"
+                android:minHeight="40dp"
+                android:src="@drawable/baseline_hourglass_top_24"
+                app:tint="?attr/colorPrimary" />
 
-        <Button
-            android:id="@+id/saveConfig"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="?attr/colorOnPrimary"
-            android:text="Save"
-            android:textColor="?attr/colorPrimary"
-            android:textStyle="bold"
-            app:strokeColor="?attr/colorPrimary"
-            app:strokeWidth="1dp" />
-    </LinearLayout>
+            <ImageButton
+                android:id="@+id/buttonPowerDialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/image_button_border"
+                android:contentDescription="@string/img_call_power_dialog"
+                android:minHeight="40dp"
+                android:src="@drawable/ic_power_24dp"
+                app:tint="?attr/colorPrimary" />
+
+            <RadioGroup
+                android:id="@+id/radioGroupConfig"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/radioConfig1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Config 1" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Config 2" />
+
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/saveConfig"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?attr/colorOnPrimary"
+                android:minHeight="40dip"
+                android:paddingVertical="6dp"
+                android:text="Save"
+                android:textColor="?attr/colorPrimary"
+                android:textStyle="bold"
+                app:strokeColor="?attr/colorPrimary"
+                app:strokeWidth="1dp" />
+
+
+            <ImageButton
+                android:id="@+id/rotateButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/image_button_border"
+                android:contentDescription="Rotate screen"
+                android:minHeight="40dp"
+                android:src="@drawable/baseline_screen_rotation_24"
+                app:tint="?attr/colorPrimary" />
+        </LinearLayout>
+    </ScrollView>
 
     <RelativeLayout
         android:id="@+id/relative_settings"
@@ -180,13 +208,13 @@
 
         <RelativeLayout
             android:id="@+id/draggable_one"
-            android:scaleX="1.25"
-            android:scaleY="1.25"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true">
+            android:layout_centerVertical="true"
+            android:scaleX="1.25"
+            android:scaleY="1.25">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -205,18 +233,18 @@
                 android:id="@+id/img_circle_one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/outline_circle_24"
-                android:contentDescription="@string/circle_one" />
+                android:contentDescription="@string/circle_one"
+                android:src="@drawable/outline_circle_24" />
         </RelativeLayout>
 
         <RelativeLayout
-            android:visibility="gone"
-            android:scaleX="1.25"
-            android:scaleY="1.25"
             android:id="@+id/draggable_two"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+            android:layout_centerInParent="true"
+            android:scaleX="1.25"
+            android:scaleY="1.25"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -226,8 +254,8 @@
                 android:layout_alignEnd="@id/img_circle_two"
                 android:layout_alignBottom="@id/img_circle_two"
                 android:gravity="center"
-                android:textColor="?attr/colorPrimary"
                 android:text="2"
+                android:textColor="?attr/colorPrimary"
                 android:textStyle="bold"
                 tools:ignore="HardcodedText" />
 
@@ -235,18 +263,18 @@
                 android:id="@+id/img_circle_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/outline_circle_24"
-                android:contentDescription="@string/circle_two" />
+                android:contentDescription="@string/circle_two"
+                android:src="@drawable/outline_circle_24" />
         </RelativeLayout>
 
         <RelativeLayout
-            android:visibility="gone"
-            android:scaleX="1.25"
-            android:scaleY="1.25"
             android:id="@+id/draggable_three"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+            android:layout_centerInParent="true"
+            android:scaleX="1.25"
+            android:scaleY="1.25"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -256,8 +284,8 @@
                 android:layout_alignEnd="@id/img_circle_three"
                 android:layout_alignBottom="@id/img_circle_three"
                 android:gravity="center"
-                android:textColor="?attr/colorPrimary"
                 android:text="3"
+                android:textColor="?attr/colorPrimary"
                 android:textStyle="bold"
                 tools:ignore="HardcodedText" />
 
@@ -265,18 +293,18 @@
                 android:id="@+id/img_circle_three"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/outline_circle_24"
-                android:contentDescription="@string/circle_three" />
+                android:contentDescription="@string/circle_three"
+                android:src="@drawable/outline_circle_24" />
         </RelativeLayout>
 
         <RelativeLayout
-            android:visibility="gone"
-            android:scaleX="1.25"
-            android:scaleY="1.25"
             android:id="@+id/draggable_four"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+            android:layout_centerInParent="true"
+            android:scaleX="1.25"
+            android:scaleY="1.25"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -286,8 +314,8 @@
                 android:layout_alignEnd="@id/img_circle_four"
                 android:layout_alignBottom="@id/img_circle_four"
                 android:gravity="center"
-                android:textColor="?attr/colorPrimary"
                 android:text="4"
+                android:textColor="?attr/colorPrimary"
                 android:textStyle="bold"
                 tools:ignore="HardcodedText" />
 
@@ -295,18 +323,18 @@
                 android:id="@+id/img_circle_four"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/outline_circle_24"
-                android:contentDescription="@string/circle_four" />
+                android:contentDescription="@string/circle_four"
+                android:src="@drawable/outline_circle_24" />
         </RelativeLayout>
 
         <RelativeLayout
-            android:visibility="gone"
-            android:scaleX="1.25"
-            android:scaleY="1.25"
             android:id="@+id/draggable_five"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+            android:layout_centerInParent="true"
+            android:scaleX="1.25"
+            android:scaleY="1.25"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -316,8 +344,8 @@
                 android:layout_alignEnd="@id/img_circle_five"
                 android:layout_alignBottom="@id/img_circle_five"
                 android:gravity="center"
-                android:textColor="?attr/colorPrimary"
                 android:text="5"
+                android:textColor="?attr/colorPrimary"
                 android:textStyle="bold"
                 tools:ignore="HardcodedText" />
 
@@ -325,18 +353,18 @@
                 android:id="@+id/img_circle_five"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/outline_circle_24"
-                android:contentDescription="@string/circle_five" />
+                android:contentDescription="@string/circle_five"
+                android:src="@drawable/outline_circle_24" />
         </RelativeLayout>
 
         <RelativeLayout
-            android:visibility="gone"
-            android:scaleX="1.25"
-            android:scaleY="1.25"
             android:id="@+id/draggable_six"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+            android:layout_centerInParent="true"
+            android:scaleX="1.25"
+            android:scaleY="1.25"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -346,8 +374,8 @@
                 android:layout_alignEnd="@id/img_circle_six"
                 android:layout_alignBottom="@id/img_circle_six"
                 android:gravity="center"
-                android:textColor="?attr/colorPrimary"
                 android:text="6"
+                android:textColor="?attr/colorPrimary"
                 android:textStyle="bold"
                 tools:ignore="HardcodedText" />
 
@@ -355,8 +383,8 @@
                 android:id="@+id/img_circle_six"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/outline_circle_24"
-                android:contentDescription="@string/circle_six" />
+                android:contentDescription="@string/circle_six"
+                android:src="@drawable/outline_circle_24" />
         </RelativeLayout>
 
     </RelativeLayout>

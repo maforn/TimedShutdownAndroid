@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,7 +45,7 @@ public class SettingsFragment extends Fragment {
     View draggableOne, draggableTwo, draggableThree, draggableFour, draggableFive, draggableSix;
     RadioGroup radioGroup, radioGroupConfig;
     LinearLayout linearLayout;
-    ImageButton buttonToggleClicks, buttonToggleOptions;
+    ImageButton buttonToggleClicks, buttonToggleOptions, buttonRotate;
 
     int idRadioClick, idRadioLongPress, idRadioTwoClick, idRadioThreeClick, idRadioFourClick, idRadioFiveClick, idRadioSixClick, idRadioSwipe;
 
@@ -67,6 +68,11 @@ public class SettingsFragment extends Fragment {
         buttonToggleOptions.setOnClickListener(v -> toggleVisibility(linearLayout, v));
 
         sharedPreferences = requireContext().getSharedPreferences("Settings", MODE_PRIVATE);
+        if (sharedPreferences.getBoolean("isPortrait", true)) {
+            requireActivity().setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else {
+            requireActivity().setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         editor = sharedPreferences.edit();
 
         // get the gesture power off type specified by the user
@@ -286,6 +292,16 @@ public class SettingsFragment extends Fragment {
                 draggableSix.setX(sharedPreferences.getFloat("X_six", DEFAULT_POINT_VALUE));
                 draggableSix.setY(sharedPreferences.getFloat("Y_six", DEFAULT_POINT_VALUE));
             }
+        });
+
+
+        buttonRotate = binding.rotateButton;
+        buttonRotate.setOnClickListener(v -> {
+            // set shared preference and rotate the screen between vertical and horizontal
+            boolean isPortrait = sharedPreferences.getBoolean("isPortrait", true);
+            editor.putBoolean("isPortrait", !isPortrait);
+            editor.apply();
+            requireActivity().recreate();
         });
 
         return root;
@@ -509,6 +525,7 @@ public class SettingsFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onDestroyView();
         binding = null;
     }

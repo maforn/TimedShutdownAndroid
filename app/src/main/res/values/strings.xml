@@ -82,5 +82,8 @@
     <string name="quick_tile_start">Timer restarted</string>
     <string name="quick_tile_stop">Timer stopped</string>
     <string name="quick_tile_label">Last Timer</string>
+    <string name="config_button_desc">The config buttons are shortcuts to movement and time delay configurations, they can be loaded by clicking on them and saved using the save button.</string>
+    <string name="save_button_desc">This button saves the current settings to the selected configuration. It saved the power off method, all the time delays and the draggables positions.</string>
+    <string name="rotate_button_desc">This button rotate the screen layout for the shutdown procedure between portait and landscape.</string>
 
 </resources>

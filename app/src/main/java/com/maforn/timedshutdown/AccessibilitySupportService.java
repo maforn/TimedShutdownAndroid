@@ -62,6 +62,8 @@ public class AccessibilitySupportService extends Service {
         wakeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         // add the time to wait before finishing the wake activity
         wakeIntent.putExtra("time", 1000L + initialDelay + firstDelay + secondDelay);
+        // add forces screen orientation
+        wakeIntent.putExtra("isPortrait", sharedPreferences.getBoolean("isPortrait", true));
         getApplicationContext().startActivity(wakeIntent);
 
         // send a Toast to the user to let him know the shutdown is happening
